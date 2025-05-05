@@ -1,4 +1,4 @@
-<img src="https://res.cloudinary.com/lucaslelieur/image/upload/v1745253690/Portada_LinkedIn_l4wyop.png" />
+<img src="https://res.cloudinary.com/lucaslelieur/image/upload/v1745253690/Portada_LinkedIn_l4wyop.png" alt="Lucas Lelieur Full Stack Developer Profile Cover"/>
 
 ## Hi there, I'm Lucas Lelieur 👋
 
@@ -59,10 +59,12 @@ ___
   </tr>
   <tr>
     <td align="center">
-        <span><img src="https://img.shields.io/badge/-CLIENT-green?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FLelieur%2FLaPremiere_FindYourMovie" />
-</span>
-        <span><img src="https://img.shields.io/badge/-SERVER-green?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FLelieur%2FLaPremiere_FindYourMovie" />
-</span>
+        <a href="https://github.com/Lelieur/LaPremiere_FindYourMovie" target="_blank">
+  <img src="https://img.shields.io/badge/-CLIENT-green?style=for-the-badge&logo=github" />
+</a>
+      <a href="https://github.com/Lelieur/FramedIn_Server" target="_blank">
+       <img src="https://img.shields.io/badge/-SERVER-green?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FLelieur%2FLaPremiere_FindYourMovie" />
+</a>
     </td>
   </tr>
 </table>
@@ -79,11 +81,12 @@ __
 
 ## ⚙️ My stats
 
-
+<details>
 <div style="display: flex, justify-content:inline">
   <img height=150 align="center" src="https://github-readme-stats.vercel.app/api?username=lelieur&theme=dark&layout=compact" />
   <img height=150 align="center" src="https://github-readme-stats.vercel.app/api/top-langs?username=lelieur&theme=dark&layout=compact" />
 </div>
+</details>
 
 ___
 
