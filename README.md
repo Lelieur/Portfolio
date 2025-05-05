@@ -59,10 +59,10 @@ ___
   </tr>
   <tr>
     <td align="center">
-        <a href="https://github.com/Lelieur/FramedIn_Client" target="_blank">
+        <a href="https://github.com/Lelieur/PICKUP_CinephilesForum" target="_blank">
   <img src="https://img.shields.io/badge/-CLIENT-green?style=for-the-badge&logo=github" />
 </a>
-      <a href="https://github.com/Lelieur/FramedIn_Server" target="_blank">
+      <a href="https://github.com/Lelieur/PICKUP_CinephilesForum_API" target="_blank">
        <img src="https://img.shields.io/badge/-SERVER-green?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FLelieur%2FLaPremiere_FindYourMovie" />
 </a>
     </td>
