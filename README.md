@@ -49,8 +49,8 @@ ___
   </tr>
   <tr>
     <td align="center">
-      <img height=300 src="https://res.cloudinary.com/lucaslelieur/image/upload/v1736788512/MockUp-1_r5ffnv.png"/>
-      <img height=300 src="https://res.cloudinary.com/dhluctrie/image/upload/v1736788512/MockUp-1_r5ffnv.png"/>
+      <a href="https://pickup-blush.vercel.app/" target="_blank"><img height=300 src="https://res.cloudinary.com/lucaslelieur/image/upload/v1736788512/MockUp-1_r5ffnv.png"/></a>
+      <a href="https://pickup-blush.vercel.app/" target="_blank"><img height=300 src="https://res.cloudinary.com/dhluctrie/image/upload/v1736788512/MockUp-1_r5ffnv.png"/></a>
     </td>
   </tr>
   <tr>
@@ -59,7 +59,7 @@ ___
   </tr>
   <tr>
     <td align="center">
-        <a href="https://github.com/Lelieur/LaPremiere_FindYourMovie" target="_blank">
+        <a href="https://github.com/Lelieur/FramedIn_Client" target="_blank">
   <img src="https://img.shields.io/badge/-CLIENT-green?style=for-the-badge&logo=github" />
 </a>
       <a href="https://github.com/Lelieur/FramedIn_Server" target="_blank">
