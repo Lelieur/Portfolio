@@ -1,7 +1,9 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import Link from "next/link";
+
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const headerData: Record<string, { title: string }> = {
   "/": {
@@ -21,6 +23,24 @@ const headerData: Record<string, { title: string }> = {
 export default function Header() {
   const pathname = usePathname();
   const { title } = headerData[pathname] ?? headerData["/"];
+  const [startAnimation, setStartAnimation] = useState(false);
+  const [currentPath, setCurrentPath] = useState(pathname);
+
+  useEffect(() => {
+    if (pathname !== currentPath) {
+      setStartAnimation(true);
+      const timeout = setTimeout(() => {
+        setCurrentPath(pathname);
+        setStartAnimation(false);
+      }, 200);
+      return () => clearTimeout(timeout);
+    }
+  }, [pathname, currentPath]);
+
+  const animationClass = !startAnimation
+    ? "opacity-100 translate-x-0"
+    : "opacity-0 translate-x-[-15px]";
+
   return (
     <section className="flex items-center gap-2.5 text-sm">
       <Link href="/" className="group flex flex-row items-center gap-3">
@@ -31,7 +51,11 @@ export default function Header() {
         <p>Lucas Lelieur</p>
       </Link>
       <span className="text-secondary">/</span>
-      <p className="text-secondary">{title}</p>
+      <p
+        className={`text-secondary transition-all duration-100 ease-in-out ${animationClass}`}
+      >
+        {!startAnimation && title}
+      </p>
     </section>
   );
 }
