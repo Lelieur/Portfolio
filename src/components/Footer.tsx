@@ -24,19 +24,19 @@ export default function Footer() {
           </li>
           <li>
             <Link
+              href="/thoughts"
+              className="text-secondary hover:text-primary hover:underline"
+            >
+              Thoughts
+            </Link>
+          </li>
+          <li>
+            <Link
               href="/about"
               className="text-secondary hover:text-primary hover:underline"
             >
               About
             </Link>
-            <li>
-              <Link
-                href="/about"
-                className="text-secondary hover:text-primary hover:underline"
-              >
-                Thougths
-              </Link>
-            </li>
           </li>
         </ul>
         <p className="text-secondary">(© 2025 - {currentYear})</p>

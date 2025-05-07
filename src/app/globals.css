@@ -2,9 +2,9 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
-  --primary: #171717;
+  --primary: #111110;
   --secondary: #272727;
+  --emerald: #6ee7b7;
 }
 
 @theme inline {
@@ -12,6 +12,7 @@
   --color-foreground: var(--foreground);
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
+  --color-emerald: var(--emerald);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-inter: var(--font-inter);
@@ -19,8 +20,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #111110;
     --primary: #ededed;
     --secondary: #b3b3b3;
   }
@@ -28,5 +28,6 @@
 
 body {
   background: var(--background);
+  color: var(--primary);
   font-family: var(--font-inter);
 }
