@@ -21,6 +21,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Lucas Lelieur · Web Developer",
+  icons: {
+    icon: "/favicon.png",
+  },
   description:
     "Personal portfolio of Lucas Lelieur, a full stack developer focused on building modern and scalable web applications using JavaScript, React, and Node.js. Explore featured projects, technical skills, and contact information.",
   keywords: [
@@ -71,7 +74,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased max-w-screen-sm mx-auto px-4 py-12 md:px-0 md:py-16 space-y-24`}
+        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} antialiased max-w-screen-sm mx-auto w-full px-4 py-12 md:px-0 md:py-16 space-y-24`}
       >
         <Header />
         {children}

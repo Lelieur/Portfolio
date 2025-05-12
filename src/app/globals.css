@@ -5,6 +5,7 @@
   --primary: #111110;
   --secondary: #272727;
   --emerald: #6ee7b7;
+  --gray: #b3b3b3;
 }
 
 @theme inline {
@@ -13,6 +14,7 @@
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
   --color-emerald: var(--emerald);
+  --color-gray: var(--gray);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-inter: var(--font-inter);
@@ -23,6 +25,7 @@
     --background: #111110;
     --primary: #ededed;
     --secondary: #b3b3b3;
+    --gray: #272727;
   }
 }
 
