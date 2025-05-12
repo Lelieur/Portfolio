@@ -1,6 +1,6 @@
 import Hero from "@/components/Hero";
 import SocialLinks from "@/components/SocialLinks/SocialLinks";
-import HomeSection from "@/components/HomeSection";
+import HomeSection from "@/components/HomeComponents/HomeSection";
 import { thoughts } from "@/data/thoughts";
 import { projects } from "@/data/projects";
 import { experiments } from "@/data/experiments";
