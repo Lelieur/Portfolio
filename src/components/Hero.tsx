@@ -24,7 +24,7 @@ export default function Hero() {
             </span>
           </span>
         </Link>
-        <Link href="/about" className="w-fit block">
+        <Link href="/now" className="w-fit block">
           <span className="group inline text-base">
             <span className="inline underline underline-offset-4 decoration-dotted ">
               What I&#39;m to now

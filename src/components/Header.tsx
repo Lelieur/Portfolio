@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArrowUturnLeftIcon } from "@heroicons/react/16/solid";
 
 const headerData: Record<string, { title: string }> = {
   "/": {
@@ -17,6 +18,9 @@ const headerData: Record<string, { title: string }> = {
   },
   "/thoughts": {
     title: "Thoughts",
+  },
+  "/now": {
+    title: "Now",
   },
 };
 
@@ -44,15 +48,26 @@ export default function Header() {
   return (
     <section className="flex items-center gap-2.5 text-sm">
       <Link href="/" className="group flex flex-row items-center gap-3">
+        {pathname !== "/" && (
+          <ArrowUturnLeftIcon className="size-4 text-secondary group-hover:text-primary" />
+        )}
         <div className="relative flex size-2.5">
           <span className="absolute inline-flex h-full w-full animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite] rounded-full bg-emerald opacity-75"></span>
           <span className="relative inline-flex size-2.5 rounded-full bg-emerald"></span>
         </div>
-        <p>Lucas Lelieur</p>
+        <p
+          className={`${
+            pathname !== "/" && "text-secondary group-hover:text-primary"
+          }`}
+        >
+          Lucas Lelieur
+        </p>
       </Link>
       <span className="text-secondary">/</span>
       <p
-        className={`text-secondary transition-all duration-100 ease-in-out ${animationClass}`}
+        className={`${
+          pathname === "/" && "text-secondary"
+        } transition-all duration-100 ease-in-out ${animationClass}`}
       >
         {!startAnimation && title}
       </p>

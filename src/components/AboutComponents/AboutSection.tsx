@@ -20,8 +20,8 @@ export default function AboutSection({ title, items }: AboutSectionProps) {
             <li
               key={item.title}
               className={`grid grid-cols-1 items-start gap-4 ${
-                title === "Experience" ? "py-6" : "py-0"
-              } first:pt-0 last:pb-0 sm:grid-cols-3 md:gap-8 md:py-8`}
+                title === "Experience" ? "py-6 md:py-8" : "py-0"
+              } first:pt-0 last:pb-0 sm:grid-cols-3 md:gap-8 `}
             >
               <AboutItem {...item} />
             </li>

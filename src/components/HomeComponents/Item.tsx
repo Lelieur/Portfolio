@@ -4,7 +4,7 @@ import { ItemType } from "@/types/item";
 export default function Item({ title, description, year, link }: ItemType) {
   return (
     <Link
-      href={link}
+      href={link || "#"}
       className="grid grid-cols-10 duration-300  hover:translate-x-0.5"
     >
       <div className="col-span-9 flex flex-col items-start md:flex-row md:items-center gap-2 md:gap-4">

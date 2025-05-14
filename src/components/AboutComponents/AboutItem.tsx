@@ -33,7 +33,7 @@ export default function AboutItem({
         {Array.isArray(description) ? (
           description.map((desc, index) => (
             <li key={index}>
-              <p className="text-base inline leading-relaxed text-primary">
+              <p className="text-sm inline leading-relaxed text-primary">
                 {desc}
               </p>
             </li>

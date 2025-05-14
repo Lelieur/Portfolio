@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import "./about.css";
-import { getLastUpdatedDate } from "@/lib/lastUpdated";
 import {
   experiences,
   studies,
@@ -11,9 +10,9 @@ import {
   softSkills,
 } from "@/data/aboutData";
 import AboutSection from "@/components/AboutComponents/AboutSection";
+import LastUpdated from "@/components/LastUpdated";
 
 export default function About() {
-  const lastUpdated = getLastUpdatedDate("src/app/about/page.tsx");
   const aboutSections = [
     {
       title: "Experience",
@@ -88,12 +87,7 @@ export default function About() {
           </p>
         </article>
       </section>
-      <span className="flex flex-row items-center gap-1">
-        <p className="text-sm leading-normal italic text-secondary">
-          * Last Updated on the
-        </p>
-        <p className="text-sm leading-normal text-secondary">{lastUpdated}</p>
-      </span>
+      <LastUpdated />
       {aboutSections.map((section) => (
         <AboutSection
           key={section.title}
