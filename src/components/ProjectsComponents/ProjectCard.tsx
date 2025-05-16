@@ -1,20 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Project } from '@/types/project';
 
-type ProjectCardProps = {
-  image: string;
-  title: string;
-  year: string;
-  description: string;
-  links: {
-    route: string;
-    url: string;
-  };
-};
-
-export default function ProjectCard({ image, title, year, description, links }: ProjectCardProps) {
+export default function ProjectCard({ image, title, year, description, link }: Project) {
   return (
-    <Link href={links.url}>
+    <Link href={link}>
       <div className="relative grid grid-cols-6 items-center gap-3 md:gap-6">
         <div className="col-span-6 flex flex-row place-content-between md:col-span-2">
           <Image
@@ -22,6 +12,7 @@ export default function ProjectCard({ image, title, year, description, links }: 
             height="600"
             src={image}
             alt={title}
+            priority
             className="h-auto w-full rounded-md border border-primary/15 object-cover"
           />
         </div>

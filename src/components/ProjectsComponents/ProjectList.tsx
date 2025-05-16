@@ -1,11 +1,15 @@
 import ProjectCard from './ProjectCard';
-import { projects } from '@/data/projects';
+import { Project } from '@/types/project';
 
-export default function ProjectList() {
+interface ProjectListProps {
+  projects: Project[];
+}
+
+export default async function ProjectList({ projects }: ProjectListProps) {
   return (
     <div className="flex flex-col gap-6">
-      {projects.map((project, id) => (
-        <ProjectCard key={id} {...project} />
+      {projects.map((project) => (
+        <ProjectCard key={project._id} {...project} />
       ))}
     </div>
   );

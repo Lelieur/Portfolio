@@ -1,7 +1,7 @@
-import Link from "next/link";
-import Item from "./Item";
-import { ItemType } from "@/types/item";
-import { ChevronRightIcon } from "@heroicons/react/16/solid";
+import Link from 'next/link';
+import Item from './Item';
+import { ItemType } from '@/types/item';
+import { ChevronRightIcon } from '@heroicons/react/16/solid';
 
 type HomeSectionProps = {
   title: string;
@@ -14,7 +14,7 @@ export default function HomeSection({ title, link, items }: HomeSectionProps) {
     <section className="flex flex-col gap-4 md:gap-8">
       <Link href={link}>
         <div className="group hover:cursor-pointer flex flex-row place-content-between items-center">
-          <p className="text-xs leading-normal uppercase text-secondary uppercase group-hover:text-primary group-hover:font-medium">
+          <p className="text-xs leading-normal text-secondary uppercase group-hover:text-primary group-hover:font-medium">
             {title}
           </p>
           <ChevronRightIcon className="size-8 rounded-full p-1.5 transition-colors duration-300 group-hover:bg-gray" />
