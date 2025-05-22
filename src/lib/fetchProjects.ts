@@ -1,6 +1,6 @@
-import { Project } from '@/types/project';
+import { ProjectSummary } from '@/types/project';
 
-export async function fetchProjects(): Promise<Project[]> {
+export async function fetchProjects(): Promise<ProjectSummary[]> {
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`, {
     cache: 'no-store',
   });

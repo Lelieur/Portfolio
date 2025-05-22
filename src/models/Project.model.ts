@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, models } from 'mongoose';
-import { ProjectAboutSection } from '@/types/project';
+import { AboutDetails } from '@/types/project';
 
 export interface ProjectType extends Document {
   title: string;
@@ -8,12 +8,8 @@ export interface ProjectType extends Document {
   year: string;
   slug: string;
   featured: boolean;
-  details: {
-    category: 'app' | 'design' | 'tool' | 'experiment' | 'other';
-    tools: string[];
-    link: string;
-  };
-  about: ProjectAboutSection[];
+  details: Record<string, string | string[]>;
+  about: AboutDetails[];
 }
 
 const ProjectSchema = new Schema<ProjectType>(

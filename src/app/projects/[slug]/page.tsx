@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation';
 import { fetchOneProject } from '@/lib/fetchOneProject';
 import { Project } from '@/types/project';
+import PageTitle from '@/components/PageTitle';
+import ProjectSection from '@/components/ProjectsComponents/ProjectSection';
 import ProjectDetailsList from '@/components/ProjectsComponents/ProjectDetailsList';
 import Image from 'next/image';
 
@@ -14,15 +16,12 @@ export default async function ProjectPage({ params }: Params) {
 
   if (!project) return notFound();
 
-  const { title, year, description, details, image } = project;
+  const { title, year, description, details, image, about } = project;
 
   return (
     <main className="flex flex-col gap-16">
       <article className="flex flex-col gap-16">
-        <section className="flex flex-col gap-0.5">
-          <h1 className="text-lg font-medium leading-relaxed text-primary">{title}</h1>
-          <p className="text-sm leading-normal text-secondary">Published on {year}</p>
-        </section>
+        <PageTitle title={title} description={`Published on ${year}`} />
         <ProjectDetailsList details={details} />
         <article className="text-primary [&>p]:leading-relaxed">
           <p className="text-base leading-normal mt-8 text-secondary first:mt-0">{description}</p>
@@ -38,6 +37,9 @@ export default async function ProjectPage({ params }: Params) {
             <figcaption className="pb-2 text-xs leading-normal text-secondary">{`Figure 1: ${title}`}</figcaption>
           </figure>
         </article>
+        {about.map((aboutDetails) => (
+          <ProjectSection key={aboutDetails.title} about={aboutDetails} />
+        ))}
       </article>
     </main>
   );

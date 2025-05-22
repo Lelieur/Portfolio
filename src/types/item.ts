@@ -1,7 +1,7 @@
 export type ItemType = {
   title: string;
   description: string | string[];
-  link: string;
+  link?: string;
   year: string;
   slug: string;
 };

@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Project } from '@/types/project';
+import { ProjectSummary } from '@/types/project';
 
-export default function ProjectCard({ image, title, year, description, link }: Project) {
+export default function ProjectCard({ image, title, year, description, slug }: ProjectSummary) {
   return (
-    <Link href={link}>
+    <Link href={`projects/${slug}`}>
       <div className="relative grid grid-cols-6 items-center gap-3 md:gap-6">
         <div className="col-span-6 flex flex-row place-content-between md:col-span-2">
           <Image

@@ -1,4 +1,4 @@
-export type ProjectAboutSection = {
+export type AboutDetails = {
   title: string;
   content: string | string[] | Record<string, string[]>[];
   links?: Record<string, string>[];
@@ -13,5 +13,7 @@ export type Project = {
   slug: string;
   featured: boolean;
   details: Record<string, string | string[]>;
-  about: ProjectAboutSection[];
+  about: AboutDetails[];
 };
+
+export type ProjectSummary = Pick<Project, 'title' | 'year' | 'slug' | 'image' | 'description'>;
