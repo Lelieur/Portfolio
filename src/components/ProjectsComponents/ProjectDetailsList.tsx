@@ -1,17 +1,19 @@
-import ProjectDetailsCard from './ProjectDetailsCard';
-import { Project } from '@/types/project';
-import { ArrowUpRightIcon } from '@heroicons/react/16/solid';
+import ProjectDetailsCard from "./ProjectDetailsCard";
+import { Project } from "@/types/project";
+import { ArrowUpRightIcon } from "@heroicons/react/16/solid";
 
 interface ProjectDetailsListProps {
-  details: Project['details'];
+  details: Project["details"];
 }
 
-export default function ProjectDetailsList({ details }: ProjectDetailsListProps) {
+export default function ProjectDetailsList({
+  details,
+}: ProjectDetailsListProps) {
   return (
-    <div className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
+    <section className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
       {Object.entries(details).map(([key, value]) => (
         <ProjectDetailsCard key={key} detail={{ [key]: value.toString() }}>
-          {!Array.isArray(value) && value.includes('http') ? (
+          {!Array.isArray(value) && value.includes("http") ? (
             <a
               href={value}
               target="_blank"
@@ -26,7 +28,9 @@ export default function ProjectDetailsList({ details }: ProjectDetailsListProps)
               </span>
             </a>
           ) : !Array.isArray(value) ? (
-            <p className="text-base leading-normal capitalize text-primary">{value}</p>
+            <p className="text-base leading-normal capitalize text-primary">
+              {value}
+            </p>
           ) : (
             <ul className="flex flex-row justify-between">
               {value.map((elm) => (
@@ -38,6 +42,6 @@ export default function ProjectDetailsList({ details }: ProjectDetailsListProps)
           )}
         </ProjectDetailsCard>
       ))}
-    </div>
+    </section>
   );
 }

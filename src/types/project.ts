@@ -1,6 +1,7 @@
 export type AboutDetails = {
   title: string;
   content: string | string[] | Record<string, string[]>[];
+  type: string;
   links?: Record<string, string>[];
 };
 
@@ -16,4 +17,7 @@ export type Project = {
   about: AboutDetails[];
 };
 
-export type ProjectSummary = Pick<Project, 'title' | 'year' | 'slug' | 'image' | 'description'>;
+export type ProjectSummary = Pick<
+  Project,
+  "title" | "year" | "slug" | "image" | "description"
+>;

@@ -1,10 +1,10 @@
-import { notFound } from 'next/navigation';
-import { fetchOneProject } from '@/lib/fetchOneProject';
-import { Project } from '@/types/project';
-import PageTitle from '@/components/PageTitle';
-import ProjectSection from '@/components/ProjectsComponents/ProjectSection';
-import ProjectDetailsList from '@/components/ProjectsComponents/ProjectDetailsList';
-import Image from 'next/image';
+import { notFound } from "next/navigation";
+import { fetchOneProject } from "@/lib/fetchOneProject";
+import { Project } from "@/types/project";
+import PageTitle from "@/components/PageTitle";
+import ProjectSection from "@/components/ProjectsComponents/ProjectSection";
+import ProjectDetailsList from "@/components/ProjectsComponents/ProjectDetailsList";
+import Image from "next/image";
 
 interface Params {
   params: { slug: string };
@@ -23,8 +23,10 @@ export default async function ProjectPage({ params }: Params) {
       <article className="flex flex-col gap-16">
         <PageTitle title={title} description={`Published on ${year}`} />
         <ProjectDetailsList details={details} />
-        <article className="text-primary [&>p]:leading-relaxed">
-          <p className="text-base leading-normal mt-8 text-secondary first:mt-0">{description}</p>
+        <section className="text-primary [&>p]:leading-relaxed">
+          <p className="text-base leading-normal mt-8 text-secondary first:mt-0">
+            {description}
+          </p>
           <figure className="mt-8 flex flex-col gap-4">
             <Image
               src={image}
@@ -36,10 +38,10 @@ export default async function ProjectPage({ params }: Params) {
             />
             <figcaption className="pb-2 text-xs leading-normal text-secondary">{`Figure 1: ${title}`}</figcaption>
           </figure>
-        </article>
-        {about.map((aboutDetails) => (
-          <ProjectSection key={aboutDetails.title} about={aboutDetails} />
-        ))}
+          {about.map((section, index) => (
+            <ProjectSection key={index} about={section} />
+          ))}
+        </section>
       </article>
     </main>
   );

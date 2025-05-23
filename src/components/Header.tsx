@@ -1,49 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import Breadcrump from "./BreadCrump/BreadCrump";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 import { ArrowUturnLeftIcon } from "@heroicons/react/16/solid";
-
-const headerData: Record<string, { title: string }> = {
-  "/": {
-    title: "Web Developer",
-  },
-  "/projects": {
-    title: "Projects",
-  },
-  "/about": {
-    title: "About",
-  },
-  "/thoughts": {
-    title: "Thoughts",
-  },
-  "/now": {
-    title: "Now",
-  },
-};
 
 export default function Header() {
   const pathname = usePathname();
-  const { title } = headerData[pathname] ?? headerData["/"];
-  const [startAnimation, setStartAnimation] = useState(false);
-  const [currentPath, setCurrentPath] = useState(pathname);
-
-  useEffect(() => {
-    if (pathname !== currentPath) {
-      setStartAnimation(true);
-      const timeout = setTimeout(() => {
-        setCurrentPath(pathname);
-        setStartAnimation(false);
-      }, 200);
-      return () => clearTimeout(timeout);
-    }
-  }, [pathname, currentPath]);
-
-  const animationClass = !startAnimation
-    ? "opacity-100 translate-x-0"
-    : "opacity-0 translate-x-[-15px]";
+  const breadcrumbs = pathname.split("/").slice(1);
 
   return (
     <section className="flex items-center gap-2.5 text-sm">
@@ -63,14 +28,7 @@ export default function Header() {
           Lucas Lelieur
         </p>
       </Link>
-      <span className="text-secondary">/</span>
-      <p
-        className={`${
-          pathname === "/" && "text-secondary"
-        } transition-all duration-100 ease-in-out ${animationClass}`}
-      >
-        {!startAnimation && title}
-      </p>
+      <Breadcrump items={breadcrumbs} />
     </section>
   );
 }
