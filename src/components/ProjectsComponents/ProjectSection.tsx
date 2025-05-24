@@ -1,4 +1,5 @@
 import { AboutDetails } from "@/types/project";
+import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 
 interface ProjectSectionProps {
   about: AboutDetails;
@@ -37,7 +38,7 @@ export default function ProjectSectionBis({ about }: ProjectSectionProps) {
         <ul className="list-disc pl-5">
           {Object.entries(about.content).map(([key, value]) => (
             <li key={key}>
-              <strong>{key[0].toUpperCase() + key.slice(1)}:</strong>{" "}
+              <strong>{capitalizeFirstLetter(key)}:</strong>{" "}
               {Array.isArray(value) ? (
                 value.map((item, index) => (
                   <span

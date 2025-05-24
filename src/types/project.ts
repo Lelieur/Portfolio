@@ -13,11 +13,11 @@ export type Project = {
   year: string;
   slug: string;
   featured: boolean;
-  details: Record<string, string | string[]>;
+  details: Record<string, string>;
   about: AboutDetails[];
 };
 
 export type ProjectSummary = Pick<
   Project,
-  "title" | "year" | "slug" | "image" | "description"
+  "title" | "year" | "slug" | "image" | "description" | "details"
 >;

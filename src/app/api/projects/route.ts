@@ -1,13 +1,20 @@
-import { NextResponse } from 'next/server';
-import connectDB from '@/lib/mongodb';
-import ProjectModel from '@/models/Project.model';
-import { ProjectSummary } from '@/types/project';
+import { NextResponse } from "next/server";
+import connectDB from "@/lib/mongodb";
+import ProjectModel from "@/models/Project.model";
+import { ProjectSummary } from "@/types/project";
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const category = searchParams.get("category");
+
     await connectDB();
-    const rawProjects = await ProjectModel.find({ featured: true })
-      .select('title year slug image description')
+
+    const filter = category ? { "details.category": category } : {};
+    console.log(filter);
+
+    const rawProjects = await ProjectModel.find(filter)
+      .select("title year slug image description details")
       .lean();
 
     const projects: ProjectSummary[] = rawProjects.map((p) => ({
@@ -17,11 +24,15 @@ export async function GET() {
       image: p.image,
       year: p.year,
       slug: p.slug,
+      details: p.details,
     }));
 
     return NextResponse.json(projects);
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Error fetching projects' }, { status: 500 });
+    console.error("Error fetching projects:", error);
+    return NextResponse.json(
+      { error: "Error fetching projects" },
+      { status: 500 }
+    );
   }
 }

@@ -1,5 +1,5 @@
-import mongoose, { Schema, Document, models } from 'mongoose';
-import { AboutDetails } from '@/types/project';
+import mongoose, { Schema, Document, models } from "mongoose";
+import { AboutDetails } from "@/types/project";
 
 export interface ProjectType extends Document {
   title: string;
@@ -8,7 +8,7 @@ export interface ProjectType extends Document {
   year: string;
   slug: string;
   featured: boolean;
-  details: Record<string, string | string[]>;
+  details: Record<string, string>;
   about: AboutDetails[];
 }
 
@@ -21,8 +21,7 @@ const ProjectSchema = new Schema<ProjectType>(
     slug: { type: String, required: true, unique: true },
     featured: { type: Boolean, default: false },
     details: {
-      type: Map,
-      of: Schema.Types.Mixed,
+      type: [String],
       default: undefined,
     },
     about: {
@@ -39,11 +38,11 @@ const ProjectSchema = new Schema<ProjectType>(
       default: [],
     },
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
 const Project =
   (models.Project as mongoose.Model<ProjectType>) ||
-  mongoose.model<ProjectType>('Project', ProjectSchema);
+  mongoose.model<ProjectType>("Project", ProjectSchema);
 
 export default Project;
