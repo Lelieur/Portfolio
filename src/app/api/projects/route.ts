@@ -11,7 +11,6 @@ export async function GET(request: Request) {
     await connectDB();
 
     const filter = category ? { "details.category": category } : {};
-    console.log(filter);
 
     const rawProjects = await ProjectModel.find(filter)
       .select("title year slug image description details")
