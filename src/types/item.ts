@@ -5,5 +5,5 @@ export type ItemType = {
   link?: string;
   year?: string;
   date?: string;
-  slug: string;
+  slug?: string;
 };

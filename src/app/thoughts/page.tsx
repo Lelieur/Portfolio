@@ -1,5 +1,5 @@
 import PageTitle from "@/components/PageTitle";
-import ThougthsList from "@/components/ThougthsComponents/ThougthsList";
+import ThoughtsList from "@/components/ThougthsComponents/ThoughtsList";
 import { fetchMediumPosts } from "@/lib/fetchMediumPosts";
 
 export default async function Thoughts() {
@@ -14,7 +14,7 @@ export default async function Thoughts() {
         />
       </section>
       <section className="flex flex-col gap-8 md:gap-12">
-        <ThougthsList thougths={thoughts} />
+        <ThoughtsList thougths={thoughts} />
       </section>
     </main>
   );

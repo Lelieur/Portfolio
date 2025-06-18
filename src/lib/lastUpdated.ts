@@ -1,12 +1,5 @@
 import { execSync } from "child_process";
-
-function getOrdinalSuffix(day: number): string {
-  const suffixes = ["th", "st", "nd", "rd"];
-  const relevant = day % 100;
-  return (
-    day + (suffixes[(relevant - 20) % 10] || suffixes[relevant] || suffixes[0])
-  );
-}
+import { formatDate } from "./formatDate";
 
 export function getLastUpdatedDate(filePath: string): string {
   try {
@@ -17,12 +10,9 @@ export function getLastUpdatedDate(filePath: string): string {
 
     const date = new Date(isoDate);
 
-    const day = date.getDate();
-    const ordinalDay = getOrdinalSuffix(day); // "29th"
-    const month = date.toLocaleString("en-US", { month: "short" }); // "Mar"
-    const year = date.getFullYear();
+    const formattedDate = formatDate(date);
 
-    return `${ordinalDay} of ${month} ${year}`;
+    return `${formattedDate}`;
   } catch (error) {
     console.error("Failed to get last updated date:", error);
     return "";

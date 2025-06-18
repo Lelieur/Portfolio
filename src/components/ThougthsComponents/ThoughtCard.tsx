@@ -1,16 +1,16 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MediumPost } from "@/types/thougths";
+import { MediumPost } from "@/types/thoughts";
+import { toSlug } from "@/lib/toSlug";
 
-export default function ThougthCard({
+export default function ThoughtCard({
   title,
   content,
-  slug,
   date,
   image,
 }: MediumPost) {
   return (
-    <Link href={`thoughts/${slug}`}>
+    <Link href={`thoughts/${toSlug(title)}`}>
       <div className="relative grid grid-cols-6 items-center gap-3 md:gap-6">
         <div className="col-span-6 flex flex-row place-content-between md:col-span-2">
           <Image

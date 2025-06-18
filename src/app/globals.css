@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
@@ -6,18 +8,6 @@
   --secondary: #272727;
   --emerald: #6ee7b7;
   --gray: #b3b3b3;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-emerald: var(--emerald);
-  --color-gray: var(--gray);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-inter: var(--font-inter);
 }
 
 @media (prefers-color-scheme: dark) {
