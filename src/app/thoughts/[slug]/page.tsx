@@ -5,8 +5,10 @@ import PageTitle from "@/components/PageTitle";
 import ThoughtDetailsList from "@/components/ThougthsComponents/ThoughtDetailsList";
 import Image from "next/image";
 
+export const dynamic = "force-dynamic";
+
 interface Params {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function ThoughtPage({ params }: Params) {
@@ -36,23 +38,12 @@ export default async function ThoughtPage({ params }: Params) {
           />
           <figcaption className="pb-2 text-xs leading-normal text-secondary">{`Figure 1: ${title}`}</figcaption>
         </figure>
-        {/* <article
-          className="prose prose-neutral max-w-none"
-          dangerouslySetInnerHTML={{ __html: content }}
-        /> */}
-        <article className="prose lg:prose-xl">
-          <h1>Garlic bread with cheese: What the science tells us</h1>
-          <p>
-            For years parents have espoused the health benefits of eating garlic
-            bread with cheese to their children, with the food earning such an
-            iconic status in our culture that kids will often dress up as warm,
-            cheesy loaf for Halloween.
-          </p>
-          <p>
-            But a recent study shows that the celebrated appetizer may be linked
-            to a series of rabies cases springing up around the country.
-          </p>
-        </article>
+        {
+          <article
+            className="prose prose-neutral max-w-none"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        }
       </article>
     </main>
   );

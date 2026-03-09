@@ -3,12 +3,14 @@ import ProjectList from "@/components/ProjectsComponents/ProjectList";
 import ProjectsFilterBar from "@/components/ProjectsComponents/ProjectsFilterBar";
 import { fetchProjects } from "@/lib/fetchProjects";
 
+export const dynamic = "force-dynamic";
+
 export default async function Projects({
   searchParams,
 }: {
-  searchParams: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const projects = await fetchProjects(searchParams);
+  const projects = await fetchProjects(await searchParams);
   const projectCategories = projects.map((project) => project.details.category);
 
   return (

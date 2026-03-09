@@ -2,6 +2,8 @@ import PageTitle from "@/components/PageTitle";
 import ThoughtsList from "@/components/ThougthsComponents/ThoughtsList";
 import { fetchMediumPosts } from "@/lib/fetchMediumPosts";
 
+export const dynamic = "force-dynamic";
+
 export default async function Thoughts() {
   const thoughts = await fetchMediumPosts();
 

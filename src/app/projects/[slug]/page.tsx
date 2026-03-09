@@ -6,8 +6,10 @@ import ProjectSection from "@/components/ProjectsComponents/ProjectSection";
 import ProjectDetailsList from "@/components/ProjectsComponents/ProjectDetailsList";
 import Image from "next/image";
 
+export const dynamic = "force-dynamic";
+
 interface Params {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function ProjectPage({ params }: Params) {
