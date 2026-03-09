@@ -3,6 +3,10 @@ import SocialLink from "./SocialLink";
 export default function SocialLinksSection() {
   const socialLinks = [
     {
+      label: "Resume",
+      href: "https://drive.google.com/file/d/1AicP0aUGytWnDqaLEtal3juuX1drnm6q/view?usp=sharing",
+    },
+    {
       label: "Email",
       href: "mailto:lucas.lelieur.ll@gmail.com",
     },
