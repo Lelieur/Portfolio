@@ -13,6 +13,7 @@
 
 # env files
 .env*
+!.env.example
 *.pem
 
 # TypeScript
