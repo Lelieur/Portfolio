@@ -1,32 +1,30 @@
-export interface VersionedContentSnapshot<TDraft, TPublished = TDraft> {
+export interface VersionedContentSnapshot<TContent> {
   id: string;
-  draft: TDraft | null;
-  published: TPublished | null;
+  draft: TContent | null;
+  published: TContent | null;
 }
 
-export interface VersionedContentStore<TDraft, TPublished = TDraft> {
-  get(id: string): Promise<VersionedContentSnapshot<TDraft, TPublished> | null>;
+export interface VersionedContentStore<TContent> {
+  get(id: string): Promise<VersionedContentSnapshot<TContent> | null>;
   save(
-    snapshot: VersionedContentSnapshot<TDraft, TPublished>
-  ): Promise<VersionedContentSnapshot<TDraft, TPublished>>;
+    snapshot: VersionedContentSnapshot<TContent>
+  ): Promise<VersionedContentSnapshot<TContent>>;
 }
 
-export function createVersionedContentBoundary<TDraft, TPublished = TDraft>(
-  store: VersionedContentStore<TDraft, TPublished>
+export function createVersionedContentBoundary<TContent>(
+  store: VersionedContentStore<TContent>
 ) {
   return {
-    async getPublic(id: string): Promise<TPublished | null> {
+    async getPublic(id: string): Promise<TContent | null> {
       const snapshot = await store.get(id);
       return snapshot?.published ?? null;
     },
 
-    async getPreview(
-      id: string
-    ): Promise<VersionedContentSnapshot<TDraft, TPublished> | null> {
+    async getPreview(id: string): Promise<VersionedContentSnapshot<TContent> | null> {
       return store.get(id);
     },
 
-    async saveDraft(id: string, draft: TDraft) {
+    async saveDraft(id: string, draft: TContent) {
       const snapshot = await store.get(id);
 
       return store.save({
@@ -46,7 +44,7 @@ export function createVersionedContentBoundary<TDraft, TPublished = TDraft>(
       return store.save({
         id,
         draft: snapshot.draft,
-        published: snapshot.draft as TPublished,
+        published: snapshot.draft,
       });
     },
 
