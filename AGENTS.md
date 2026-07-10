@@ -27,3 +27,17 @@ Set `MONGODB_URI` locally before running database-backed pages or API routes. Do
 
 ## Persistent Migration Context
 If the task is related to the planned modernization of this repository, read [docs/next16-react19-prisma-migration-plan.md](/Users/lucas/Desktop/WebDev/Portfolio/portfolio/docs/next16-react19-prisma-migration-plan.md) before making changes. It contains the confirmed version baseline, target architecture, migration phases, and continuity prompt for future GPT sessions.
+
+## Agent skills
+
+### Issue tracker
+
+Issues are tracked in GitHub Issues for this repository. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+This repo uses the default five-label triage vocabulary. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+This repo uses a single-context domain-doc layout. See `docs/agents/domain.md`.
