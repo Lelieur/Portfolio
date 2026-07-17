@@ -4,6 +4,9 @@ import { randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { createPrismaContentBoundary } from "@/server/content/prismaBoundary";
+import { createPrismaVersionedContentStore } from "@/server/content/boundary";
+import { prisma } from "@/lib/prisma";
+import { asThought, parseThoughtSettingsForm } from "./domain";
 import { getThoughtDocuments } from "./queries";
 import type { ThoughtActionState } from "./actionState";
 import type { Thought } from "./types";
@@ -131,4 +134,101 @@ export async function unpublishThoughtAction(
       activeId: id,
     };
   }
+}
+
+export async function saveThoughtSettingsAction(
+  _previousState: ThoughtActionState,
+  formData: FormData
+): Promise<ThoughtActionState> {
+  const id = typeof formData.get("id") === "string" ? String(formData.get("id")) : "";
+
+  if (!(await ownerOnly())) {
+    return {
+      status: "error",
+      message: "You must be signed in to edit thoughts.",
+      fieldErrors: {},
+      activeId: id,
+    };
+  }
+
+  const parsed = parseThoughtSettingsForm(formData);
+  if (!parsed.ok) {
+    return {
+      status: "error",
+      message: "Fix the highlighted fields and try again.",
+      fieldErrors: parsed.errors,
+      activeId: id,
+    };
+  }
+
+  const document = (await getThoughtDocuments()).find((item) => item.id === id);
+  const current = document && (asThought(document.draft) ?? asThought(document.published));
+  if (!current) {
+    return {
+      status: "error",
+      message: "Thought not found.",
+      fieldErrors: {},
+      activeId: id,
+    };
+  }
+
+  try {
+    await assertUniqueSlug(id, parsed.value.slug);
+    await createPrismaContentBoundary<Thought>("thoughts").saveDraft(id, {
+      ...current,
+      ...parsed.value,
+    });
+
+    revalidatePath("/admin/thoughts");
+    revalidatePath(`/admin/thoughts/${id}`);
+    revalidatePath("/");
+    revalidatePath("/thoughts");
+
+    return {
+      status: "success",
+      message: "Settings saved as a draft.",
+      fieldErrors: {},
+      activeId: id,
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "Unable to save settings.",
+      fieldErrors: {},
+      activeId: id,
+    };
+  }
+}
+
+export async function reorderThoughtsAction(ids: string[]) {
+  if (!(await ownerOnly())) throw new Error("You must be signed in to reorder thoughts.");
+
+  const documents = await getThoughtDocuments();
+  const published = new Map(
+    documents.flatMap((document) => {
+      const thought = asThought(document.published);
+      return thought ? [[document.id, { document, thought }] as const] : [];
+    })
+  );
+
+  if (ids.length !== published.size || new Set(ids).size !== ids.length || ids.some((id) => !published.has(id))) {
+    throw new Error("The published thought list changed. Refresh and try again.");
+  }
+
+  const store = createPrismaVersionedContentStore<Thought>(prisma, "thoughts");
+  await Promise.all(
+    ids.map((id, order) => {
+      const entry = published.get(id)!;
+      const draft = asThought(entry.document.draft);
+      return store.save({
+        id,
+        draft: draft ? { ...draft, order } : null,
+        published: { ...entry.thought, order },
+      });
+    })
+  );
+
+  revalidatePath("/admin/thoughts");
+  revalidatePath("/");
+  revalidatePath("/thoughts");
 }

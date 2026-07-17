@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseThoughtForm, summarizeThoughtDocument } from "./domain.ts";
+import {
+  parseThoughtForm,
+  parseThoughtSettingsForm,
+  summarizeThoughtDocument,
+} from "./domain.ts";
 
 function validFormData() {
   const formData = new FormData();
@@ -41,6 +45,22 @@ test("parseThoughtForm reports field errors for invalid input", () => {
     assert.equal(result.errors.coverImageUrl, "Enter a valid http(s) URL");
     assert.equal(result.errors.order, "Must be a non-negative integer");
   }
+});
+
+test("parseThoughtSettingsForm only accepts editable metadata", () => {
+  const formData = validFormData();
+  formData.set("featured", "on");
+  const result = parseThoughtSettingsForm(formData);
+
+  assert.deepEqual(result, {
+    ok: true,
+    value: {
+      slug: "a-thought",
+      excerpt: "Short summary",
+      publishedDate: "2026-07-17",
+      featured: true,
+    },
+  });
 });
 
 test("summarizeThoughtDocument prefers draft content and exposes status", () => {

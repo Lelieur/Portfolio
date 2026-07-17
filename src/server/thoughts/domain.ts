@@ -6,6 +6,15 @@ export type ThoughtFormResult =
   | { ok: true; value: Thought }
   | { ok: false; errors: ThoughtErrorMap };
 
+export type ThoughtSettings = Pick<
+  Thought,
+  "slug" | "excerpt" | "publishedDate" | "featured"
+>;
+
+export type ThoughtSettingsFormResult =
+  | { ok: true; value: ThoughtSettings }
+  | { ok: false; errors: ThoughtErrorMap };
+
 export type ThoughtSummary = {
   title: string;
   excerpt: string;
@@ -99,6 +108,37 @@ export function parseThoughtForm(formData: FormData): ThoughtFormResult {
       order,
       featured: formData.get("featured") === "on",
       featuredOrder,
+    },
+  };
+}
+
+export function parseThoughtSettingsForm(
+  formData: FormData
+): ThoughtSettingsFormResult {
+  const errors: ThoughtErrorMap = {};
+  const slug = requiredString(formData, "slug", errors);
+  const excerpt = requiredString(formData, "excerpt", errors);
+  const publishedDate = requiredString(formData, "publishedDate", errors);
+
+  if (slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    errors.slug = "Use lowercase letters, numbers, and hyphens only";
+  }
+
+  if (publishedDate && !validDate(publishedDate)) {
+    errors.publishedDate = "Enter a valid date";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return { ok: false, errors };
+  }
+
+  return {
+    ok: true,
+    value: {
+      slug,
+      excerpt,
+      publishedDate,
+      featured: formData.get("featured") === "on",
     },
   };
 }

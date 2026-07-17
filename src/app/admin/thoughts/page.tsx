@@ -1,66 +1,51 @@
-import { AdminContentList } from "@/components/AdminContent/AdminContentList";
-import { AdminEditorShell } from "@/components/AdminContent/AdminEditorShell";
-import { ThoughtEditor } from "@/components/AdminThoughts/ThoughtEditor";
+import { ThoughtsAdminList } from "@/components/AdminThoughts/ThoughtsAdminList";
 import { getThoughtDocuments } from "@/server/thoughts/queries";
-import { summarizeThoughtDocument } from "@/server/thoughts/domain";
-import { EMPTY_THOUGHT, type Thought } from "@/server/thoughts/types";
+import { asThought, summarizeThoughtDocument } from "@/server/thoughts/domain";
 
-function value(document: { draft: unknown; published: unknown }): Thought {
-  return (document.draft ?? document.published ?? EMPTY_THOUGHT) as Thought;
-}
-
-export default async function AdminThoughtsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ id?: string }>;
-}) {
+export default async function AdminThoughtsPage() {
   const documents = await getThoughtDocuments();
-  const { id } = await searchParams;
-  const selectedId = id && documents.some((document) => document.id === id)
-    ? id
-    : documents[0]?.id ?? "new";
-  const selectedDocument = selectedId === "new"
-    ? { id: "", draft: EMPTY_THOUGHT, published: null }
-    : documents.find((document) => document.id === selectedId) ?? {
-        id: "",
-        draft: EMPTY_THOUGHT,
-        published: null,
-      };
-  const summary = summarizeThoughtDocument(selectedDocument);
 
   return (
-    <AdminEditorShell
-      eyebrow="Admin"
-      title="Thoughts"
-      description="Preview-first editing for authored long-form content. Draft changes stay private until you publish."
-      sidebar={
-        <AdminContentList
-          title="Documents"
-          description="Review document status, pick an existing thought, or start a new draft."
-          createHref="/admin/thoughts?id=new"
-          items={documents.map((document) => {
-            const documentSummary = summarizeThoughtDocument(document);
-            return {
-              id: document.id,
-              href: `/admin/thoughts?id=${document.id}`,
-              title: documentSummary.title,
-              description: documentSummary.excerpt,
-              meta: `${documentSummary.updatedAtLabel} · /thoughts/${documentSummary.slug}`,
-              status: documentSummary.status,
-              selected: document.id === selectedId,
-            };
-          })}
-        />
-      }
-      editor={
-        <ThoughtEditor
-          key={selectedDocument.id || "new"}
-          documentId={selectedDocument.id}
-          initialThought={value(selectedDocument)}
-          hasSavedDocument={Boolean(selectedDocument.id)}
-          status={summary.status}
-        />
-      }
-    />
+    <main className="flex flex-col gap-8">
+      <header className="flex flex-col gap-2">
+        <p className="text-sm uppercase tracking-[0.2em] text-secondary">
+          Admin
+        </p>
+        <h1 className="text-3xl font-medium text-primary">Thoughts</h1>
+        <p className="max-w-3xl text-base text-secondary">
+          Lista de artículos. La edición vive fuera de esta vista.
+        </p>
+      </header>
+
+      <ThoughtsAdminList
+        items={documents.flatMap((document) => {
+          const documentSummary = summarizeThoughtDocument(document);
+          const draftThought = asThought(document.draft);
+          const publishedThought = asThought(document.published);
+          const thought = publishedThought ?? draftThought;
+          if (!thought) return [];
+          const settingsThought = draftThought ?? thought;
+
+          const href = `/admin/thoughts/${document.id}`;
+
+          return [{
+            id: document.id,
+            href,
+            draftHref: `/admin/thoughts/${document.id}`,
+            title: thought.title || documentSummary.title,
+            excerpt: thought.excerpt || documentSummary.excerpt,
+            draftTitle: draftThought?.title,
+            draftExcerpt: draftThought?.excerpt,
+            slug: settingsThought.slug || documentSummary.slug,
+            publishedDate: settingsThought.publishedDate,
+            featured: settingsThought.featured,
+            meta: `${documentSummary.updatedAtLabel} · /thoughts/${publishedThought?.slug ?? thought.slug ?? documentSummary.slug}`,
+            status: documentSummary.status,
+            order: publishedThought?.order ?? 0,
+            published: Boolean(publishedThought),
+          }];
+        })}
+      />
+    </main>
   );
 }

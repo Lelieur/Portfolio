@@ -13,10 +13,16 @@ type Document = {
 async function documents(): Promise<Document[]> {
   if (process.env.NEXT_PHASE === "phase-production-build") return [];
 
-  return prisma.contentDocument.findMany({
+  const records = await prisma.contentDocument.findMany({
     where: { domain },
-    select: { id: true, draft: true, published: true },
+    select: { contentKey: true, draft: true, published: true },
   });
+
+  return records.map(({ contentKey, draft, published }) => ({
+    id: contentKey,
+    draft,
+    published,
+  }));
 }
 
 export async function getPublishedThoughts(): Promise<Thought[]> {
@@ -34,15 +40,33 @@ export async function getFeaturedThoughts(): Promise<Thought[]> {
 }
 
 export async function getPublishedThought(slug: string): Promise<Thought | null> {
-  return (await getPublishedThoughts()).find((thought) => thought.slug === slug) ?? null;
+  return (await getPublishedThoughtDocument(slug))?.thought ?? null;
+}
+
+export async function getPublishedThoughtDocument(slug: string) {
+  for (const document of await documents()) {
+    const thought = asThought(document.published);
+    if (thought?.slug === slug) {
+      return { id: document.id, thought };
+    }
+  }
+
+  return null;
 }
 
 export async function getThoughtDocuments() {
   if (process.env.NEXT_PHASE === "phase-production-build") return [];
 
-  return prisma.contentDocument.findMany({
+  const records = await prisma.contentDocument.findMany({
     where: { domain },
     orderBy: { updatedAt: "desc" },
-    select: { id: true, draft: true, published: true, updatedAt: true },
+    select: { contentKey: true, draft: true, published: true, updatedAt: true },
   });
+
+  return records.map(({ contentKey, draft, published, updatedAt }) => ({
+    id: contentKey,
+    draft,
+    published,
+    updatedAt,
+  }));
 }

@@ -1,11 +1,15 @@
 "use client";
 
 import type { ChangeEvent } from "react";
-import { useActionState, useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
+import { Button, Drawer, useOverlayState } from "@heroui/react";
 import { emptyThoughtActionState, type ThoughtActionState } from "@/server/thoughts/actionState";
 import { saveThoughtAction, unpublishThoughtAction } from "@/server/thoughts/actions";
 import type { Thought } from "@/server/thoughts/types";
+import { TipTapEditor } from "./TipTapEditor";
 
 type ThoughtEditorProps = {
   documentId: string;
@@ -37,6 +41,8 @@ export function ThoughtEditor({
   hasSavedDocument,
   status,
 }: ThoughtEditorProps) {
+  const router = useRouter();
+  const settings = useOverlayState();
   const [draft, setDraft] = useState(initialThought);
   const [pendingIntent, setPendingIntent] = useState<PendingIntent>(null);
   const [saveState, saveAction, savePending] = useActionState(
@@ -54,6 +60,14 @@ export function ThoughtEditor({
     const date = new Date(draft.publishedDate);
     return Number.isNaN(date.valueOf()) ? "Choose a valid date" : date.toLocaleDateString();
   }, [draft.publishedDate]);
+
+  useEffect(() => {
+    if (saveState.status !== "success" || !saveState.activeId) return;
+    settings.close();
+    if (saveState.activeId !== documentId) {
+      router.replace(`/admin/thoughts/${saveState.activeId}`);
+    }
+  }, [documentId, router, saveState.activeId, saveState.status, settings]);
 
   function bind<K extends keyof Thought>(key: K) {
     return {
@@ -73,14 +87,24 @@ export function ThoughtEditor({
       <section className="rounded-md border border-primary/15 p-5 lg:hidden">
         <h2 className="text-lg font-medium text-primary">Desktop editor only</h2>
         <p className="mt-2 text-sm text-secondary">
-          Thoughts editing is available from `lg` screens and up. The list stays
-          available here so you can review document status on smaller devices.
+          La edición está disponible desde pantallas `lg`. Consulta el artículo desde
+          su vista previa en pantallas más pequeñas.
         </p>
       </section>
 
       <section className="hidden min-w-0 lg:block">
-        <form action={saveAction} className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <form
+          id="thought-editor"
+          action={saveAction}
+          className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]"
+        >
           <input type="hidden" name="id" value={documentId} />
+          <input type="hidden" name="slug" value={draft.slug} />
+          <input type="hidden" name="excerpt" value={draft.excerpt} />
+          <input type="hidden" name="publishedDate" value={draft.publishedDate} />
+          <input type="hidden" name="order" value={draft.order} />
+          <input type="hidden" name="featuredOrder" value={draft.featuredOrder} />
+          <input type="hidden" name="featured" value={draft.featured ? "on" : "off"} />
 
           <div className="grid gap-6 rounded-md border border-primary/15 p-5">
             <div className="flex items-start justify-between gap-4">
@@ -92,9 +116,20 @@ export function ThoughtEditor({
                   {draft.title || "Untitled thought"}
                 </h2>
               </div>
-              <span className="rounded-full border border-primary/15 px-3 py-1 text-xs uppercase tracking-[0.2em] text-secondary">
-                {status}
-              </span>
+              <div className="flex items-center gap-2">
+                <Button
+                  isIconOnly
+                  variant="ghost"
+                  size="sm"
+                  aria-label="Abrir ajustes"
+                  onPress={settings.open}
+                >
+                  <Cog6ToothIcon className="size-5" />
+                </Button>
+                <span className="rounded-full border border-primary/15 px-3 py-1 text-xs uppercase tracking-[0.2em] text-secondary">
+                  {status}
+                </span>
+              </div>
             </div>
 
             <p aria-live="polite" className={`text-sm ${statusLabel(actionState)}`}>
@@ -115,33 +150,6 @@ export function ThoughtEditor({
                 <FieldError id="title-error" message={saveState.fieldErrors.title} />
               </label>
 
-              <label className="grid gap-2 text-sm text-primary">
-                Slug
-                <input
-                  name="slug"
-                  required
-                  aria-invalid={Boolean(saveState.fieldErrors.slug)}
-                  aria-describedby={saveState.fieldErrors.slug ? "slug-error" : undefined}
-                  className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
-                  {...bind("slug")}
-                />
-                <FieldError id="slug-error" message={saveState.fieldErrors.slug} />
-              </label>
-
-              <label className="grid gap-2 text-sm text-primary md:col-span-2">
-                Excerpt
-                <textarea
-                  name="excerpt"
-                  required
-                  rows={3}
-                  aria-invalid={Boolean(saveState.fieldErrors.excerpt)}
-                  aria-describedby={saveState.fieldErrors.excerpt ? "excerpt-error" : undefined}
-                  className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
-                  {...bind("excerpt")}
-                />
-                <FieldError id="excerpt-error" message={saveState.fieldErrors.excerpt} />
-              </label>
-
               <label className="grid gap-2 text-sm text-primary md:col-span-2">
                 Cover image URL
                 <input
@@ -159,89 +167,16 @@ export function ThoughtEditor({
                 />
               </label>
 
-              <label className="grid gap-2 text-sm text-primary">
-                Published date
-                <input
-                  name="publishedDate"
-                  type="date"
-                  required
-                  aria-invalid={Boolean(saveState.fieldErrors.publishedDate)}
-                  aria-describedby={saveState.fieldErrors.publishedDate ? "publishedDate-error" : undefined}
-                  className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
-                  value={draft.publishedDate.slice(0, 10)}
-                  onChange={(event) =>
-                    setDraft((current) => ({
-                      ...current,
-                      publishedDate: event.currentTarget.value,
-                    }))
-                  }
-                />
-                <FieldError
-                  id="publishedDate-error"
-                  message={saveState.fieldErrors.publishedDate}
-                />
-              </label>
-
-              <label className="grid gap-2 text-sm text-primary">
-                Collection order
-                <input
-                  name="order"
-                  type="number"
-                  min="0"
-                  aria-invalid={Boolean(saveState.fieldErrors.order)}
-                  aria-describedby={saveState.fieldErrors.order ? "order-error" : undefined}
-                  className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
-                  {...bind("order")}
-                />
-                <FieldError id="order-error" message={saveState.fieldErrors.order} />
-              </label>
-
-              <label className="grid gap-2 text-sm text-primary">
-                Featured order
-                <input
-                  name="featuredOrder"
-                  type="number"
-                  min="0"
-                  aria-invalid={Boolean(saveState.fieldErrors.featuredOrder)}
-                  aria-describedby={saveState.fieldErrors.featuredOrder ? "featuredOrder-error" : undefined}
-                  className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
-                  {...bind("featuredOrder")}
-                />
-                <FieldError
-                  id="featuredOrder-error"
-                  message={saveState.fieldErrors.featuredOrder}
-                />
-              </label>
-
-              <label className="mt-7 inline-flex items-center gap-3 text-sm text-primary">
-                <input
-                  name="featured"
-                  type="checkbox"
-                  checked={draft.featured}
-                  onChange={(event) =>
-                    setDraft((current) => ({
-                      ...current,
-                      featured: event.currentTarget.checked,
-                    }))
-                  }
-                />
-                Featured on homepage
-              </label>
             </div>
 
-            <label className="grid gap-2 text-sm text-primary">
-              Markdown body
-              <textarea
-                name="body"
-                required
-                rows={16}
-                aria-invalid={Boolean(saveState.fieldErrors.body)}
-                aria-describedby={saveState.fieldErrors.body ? "body-error" : undefined}
-                className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
-                {...bind("body")}
+            <div className="grid gap-2 text-sm text-primary">
+              <p>Contenido</p>
+              <TipTapEditor
+                value={draft.body}
+                onChange={(body) => setDraft((current) => ({ ...current, body }))}
+                error={saveState.fieldErrors.body}
               />
-              <FieldError id="body-error" message={saveState.fieldErrors.body} />
-            </label>
+            </div>
 
             <div className="flex flex-wrap gap-3">
               <button
@@ -313,6 +248,78 @@ export function ThoughtEditor({
               </p>
             </div>
           </aside>
+
+          <Drawer state={settings}>
+            <Drawer.Backdrop>
+              <Drawer.Content placement="right">
+                <Drawer.Dialog>
+                  <Drawer.Header>
+                    <Drawer.Heading>Ajustes</Drawer.Heading>
+                  </Drawer.Header>
+                  <Drawer.Body className="grid gap-4">
+                    <label className="grid gap-2 text-sm text-primary">
+                      Slug
+                      <input
+                        required
+                        aria-invalid={Boolean(saveState.fieldErrors.slug)}
+                        className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
+                        {...bind("slug")}
+                      />
+                      <FieldError id="slug-error" message={saveState.fieldErrors.slug} />
+                    </label>
+                    <label className="grid gap-2 text-sm text-primary">
+                      Excerpt
+                      <textarea
+                        required
+                        rows={3}
+                        aria-invalid={Boolean(saveState.fieldErrors.excerpt)}
+                        className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
+                        {...bind("excerpt")}
+                      />
+                      <FieldError id="excerpt-error" message={saveState.fieldErrors.excerpt} />
+                    </label>
+                    <label className="grid gap-2 text-sm text-primary">
+                      Fecha
+                      <input
+                        type="date"
+                        required
+                        value={draft.publishedDate.slice(0, 10)}
+                        onChange={(event) =>
+                          setDraft((current) => ({
+                            ...current,
+                            publishedDate: event.currentTarget.value,
+                          }))
+                        }
+                        className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
+                      />
+                    </label>
+                    <label className="inline-flex items-center gap-3 text-sm text-primary">
+                      <input
+                        type="checkbox"
+                        checked={draft.featured}
+                        onChange={(event) =>
+                          setDraft((current) => ({
+                            ...current,
+                            featured: event.currentTarget.checked,
+                          }))
+                        }
+                      />
+                      Featured on homepage
+                    </label>
+                    <p className="text-sm text-secondary">
+                      El orden de colección y de destacados se ajusta desde la lista mediante arrastre.
+                    </p>
+                  </Drawer.Body>
+                  <Drawer.Footer>
+                    <Drawer.CloseTrigger className="button button--ghost">Cancelar</Drawer.CloseTrigger>
+                    <Button type="submit" form="thought-editor" variant="primary">
+                      Guardar ajustes
+                    </Button>
+                  </Drawer.Footer>
+                </Drawer.Dialog>
+              </Drawer.Content>
+            </Drawer.Backdrop>
+          </Drawer>
         </form>
       </section>
     </>
