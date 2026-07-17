@@ -1,8 +1,8 @@
 import ThoughtCard from "./ThoughtCard";
-import { MediumPost } from "@/types/thoughts";
+import type { Thought } from "@/server/thoughts/types";
 
 interface ThougthsListProps {
-  thougths: MediumPost[];
+  thougths: Thought[];
 }
 
 export default async function ThoughtsList({ thougths }: ThougthsListProps) {

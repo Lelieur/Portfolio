@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import Link from "next/link";
 import { CONTENT_DOMAINS } from "@/server/content/domains";
 import { SignOutButton } from "./SignOutButton";
 
@@ -40,6 +41,11 @@ export default async function AdminPage() {
                 {domain.kind}
               </span>
             </div>
+            {domain.key === "thoughts" && (
+              <Link href="/admin/thoughts" className="mt-4 inline-block underline">
+                Manage Thoughts
+              </Link>
+            )}
           </article>
         ))}
       </section>

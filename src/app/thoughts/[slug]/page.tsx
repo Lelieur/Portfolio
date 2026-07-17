@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
-import { MediumPost } from "@/types/thoughts";
-import { fetchMediumPost } from "@/lib/fetchOneMediumPost";
+import { getPublishedThought } from "@/server/thoughts/queries";
 import PageTitle from "@/components/PageTitle";
 import ThoughtDetailsList from "@/components/ThougthsComponents/ThoughtDetailsList";
 import Image from "next/image";
@@ -13,23 +12,23 @@ interface Params {
 
 export default async function ThoughtPage({ params }: Params) {
   const { slug } = await params;
-  const thought: MediumPost | null = await fetchMediumPost(slug);
+  const thought = await getPublishedThought(slug);
 
   if (!thought) return notFound();
 
-  const { title, content, date, link, image } = thought;
+  const { title, body, publishedDate, coverImageUrl } = thought;
 
   return (
     <main className="flex flex-col gap-16 text-justify">
       <article className="flex flex-col gap-16">
         <PageTitle
           title={title}
-          description={content.match(/<p>(.*?)<\/p>/)?.[1] || ""}
+          description={thought.excerpt}
         />
-        <ThoughtDetailsList details={{ date, link }} />
+        <ThoughtDetailsList details={{ date: publishedDate }} />
         <figure className="mt-8 flex flex-col gap-4">
           <Image
-            src={image}
+            src={coverImageUrl}
             alt={title}
             width="1280"
             height="1600"
@@ -39,10 +38,7 @@ export default async function ThoughtPage({ params }: Params) {
           <figcaption className="pb-2 text-xs leading-normal text-secondary">{`Figure 1: ${title}`}</figcaption>
         </figure>
         {
-          <article
-            className="prose prose-neutral max-w-none"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
+          <p className="prose prose-neutral max-w-none whitespace-pre-wrap">{body}</p>
         }
       </article>
     </main>

@@ -1,22 +1,22 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MediumPost } from "@/types/thoughts";
-import { toSlug } from "@/lib/toSlug";
+import type { Thought } from "@/server/thoughts/types";
 
 export default function ThoughtCard({
   title,
-  content,
-  date,
-  image,
-}: MediumPost) {
+  slug,
+  excerpt,
+  coverImageUrl,
+  publishedDate,
+}: Thought) {
   return (
-    <Link href={`thoughts/${toSlug(title)}`}>
+    <Link href={`/thoughts/${slug}`}>
       <div className="relative grid grid-cols-6 items-center gap-3 md:gap-6">
         <div className="col-span-6 flex flex-row place-content-between md:col-span-2">
           <Image
             width="1200"
             height="600"
-            src={image}
+            src={coverImageUrl}
             alt={title}
             priority
             className="h-auto w-full rounded-md border border-primary/15 object-cover"
@@ -29,13 +29,11 @@ export default function ThoughtCard({
             </p>
             <div className="hidden flex-auto border-[0.5px] border-secondary/15 md:block"></div>
             <p className="text-sm leading-normal relative text-primary">
-              {new Date(date).toLocaleDateString()}
+              {new Date(publishedDate).toLocaleDateString()}
             </p>
           </div>
           <div className="text-sm leading-normal line-clamp-1 text-secondary">
-            <p className="text-sm leading-normal line-clamp-1 text-secondary">
-              {content.match(/<h3>(.*?)<\/h3>/)?.[1] || ""}
-            </p>
+            <p className="text-sm leading-normal line-clamp-1 text-secondary">{excerpt}</p>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import SocialLinks from "@/components/SocialLinks/SocialLinks";
 import HomeSection from "@/components/HomeComponents/HomeSection";
-import { fetchMediumPosts } from "@/lib/fetchMediumPosts";
+import { getFeaturedThoughts } from "@/server/thoughts/queries";
 import { experiments } from "@/data/experiments";
 import { fetchProjects } from "@/lib/fetchProjects";
 
@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const projects = await fetchProjects();
-  const thoughts = await fetchMediumPosts();
+  const thoughts = await getFeaturedThoughts();
 
   return (
     <main className="flex flex-col gap-16">

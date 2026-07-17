@@ -1,11 +1,11 @@
 import PageTitle from "@/components/PageTitle";
 import ThoughtsList from "@/components/ThougthsComponents/ThoughtsList";
-import { fetchMediumPosts } from "@/lib/fetchMediumPosts";
+import { getPublishedThoughts } from "@/server/thoughts/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function Thoughts() {
-  const thoughts = await fetchMediumPosts();
+  const thoughts = await getPublishedThoughts();
 
   return (
     <main className="flex flex-col gap-16">

@@ -1,8 +1,7 @@
 import ThoughtDetailCard from "./ThoughtDetailCard";
-import { MediumPost } from "@/types/thoughts";
 
 interface ThoughtsDetailsListProps {
-  details: Pick<MediumPost, "date" | "link">;
+  details: { date: string };
 }
 
 export default function ThoughtsDetailsList({
