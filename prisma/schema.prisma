@@ -20,3 +20,15 @@ model User {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
+
+model ContentDocument {
+  id         String   @id @default(cuid())
+  domain     String
+  contentKey String
+  draft      Json?
+  published  Json?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([domain, contentKey])
+}

@@ -1,3 +1,12 @@
+import { Prisma } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
+
+function toPrismaJson<TContent>(
+  value: TContent | null
+): Prisma.InputJsonValue | Prisma.NullableJsonNullValueInput {
+  return value === null ? Prisma.DbNull : (value as Prisma.InputJsonValue);
+}
+
 export interface VersionedContentSnapshot<TContent> {
   id: string;
   draft: TContent | null;
@@ -9,6 +18,47 @@ export interface VersionedContentStore<TContent> {
   save(
     snapshot: VersionedContentSnapshot<TContent>
   ): Promise<VersionedContentSnapshot<TContent>>;
+}
+
+export function createPrismaVersionedContentStore<TContent>(
+  prisma: Pick<PrismaClient, "contentDocument">,
+  domain: string
+): VersionedContentStore<TContent> {
+  return {
+    async get(id) {
+      const document = await prisma.contentDocument.findUnique({
+        where: { domain_contentKey: { domain, contentKey: id } },
+      });
+
+      return document
+        ? {
+            id: document.contentKey,
+            draft: document.draft as TContent | null,
+            published: document.published as TContent | null,
+          }
+        : null;
+    },
+
+    async save(snapshot) {
+      await prisma.contentDocument.upsert({
+        where: {
+          domain_contentKey: { domain, contentKey: snapshot.id },
+        },
+        update: {
+          draft: toPrismaJson(snapshot.draft),
+          published: toPrismaJson(snapshot.published),
+        },
+        create: {
+          domain,
+          contentKey: snapshot.id,
+          draft: toPrismaJson(snapshot.draft),
+          published: toPrismaJson(snapshot.published),
+        },
+      });
+
+      return snapshot;
+    },
+  };
 }
 
 export function createVersionedContentBoundary<TContent>(
