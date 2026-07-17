@@ -11,6 +11,17 @@ const config: Config = {
         secondary: "var(--secondary)",
         emerald: "var(--emerald)",
         gray: "var(--gray)",
+        surface: "var(--surface)",
+        "surface-raised": "var(--surface-raised)",
+        text: "var(--text)",
+        "text-muted": "var(--text-muted)",
+        border: "var(--border)",
+        focus: "var(--focus)",
+        action: "var(--action-background)",
+      },
+      borderRadius: {
+        control: "var(--radius-control)",
+        card: "var(--radius-card)",
       },
       fontFamily: {
         sans: "var(--font-geist-sans)",
