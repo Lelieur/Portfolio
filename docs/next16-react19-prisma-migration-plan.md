@@ -233,6 +233,18 @@ Possible patterns:
   - project detail renders
   - thoughts page renders
 
+## Phase 9. Establish the editorial UI foundation
+- Use Tailwind CSS 4 and HeroUI 3 as the shared visual layer for application UI.
+- Keep the existing portfolio palette and typography through semantic CSS tokens. Add a Header selector for System, Light, and Dark, persisted in local storage and shared by admin and public pages.
+- Apply the shared content list pattern to every editable collection: Published and Draft filters, card overflow Settings, and drag ordering for published content.
+- Keep editorial settings limited to slug, excerpt, publication date, and homepage featured state. Collection order and featured order are drag-only operations in their corresponding list.
+- Introduce TipTap progressively per content domain. Store editable JSON as the source, generate safe HTML for public rendering, and require missing editorial settings after the first canvas save.
+- Add owner-only image uploads for cover and inline images, then use HeroUI feedback primitives for save, publish, upload, and error states.
+- Migrate Thoughts first; Projects, Experiments, About, and Now adopt the same shell only after their domain-specific editors are defined.
+
+### Pending Editorial Experience
+- The current Thoughts creation and editing routes are transitional. They must not be considered the final product until title, images, and previewed content are authored through TipTap; first-save required settings are enforced; and safe rich-text rendering and uploads are complete.
+
 ## Suggested Folder Direction After Refactor
 ```txt
 src/

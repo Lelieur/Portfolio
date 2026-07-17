@@ -32,6 +32,18 @@ _Avoid_: homepage CMS, nav CMS
 Published collection content selected to appear on homepage sections. Featured content has its own manual homepage order within its content domain.
 _Avoid_: homepage page data, promoted feed item
 
+**Editorial settings**:
+The non-body metadata of a content item: slug, excerpt, publication date, and whether it is featured on the homepage. Editorial settings are edited from Settings, never from the content canvas.
+_Avoid_: body metadata, editor fields
+
+**Editorial order**:
+The manual order of published collection content or of its featured subset. It is changed by dragging items in the relevant admin list, not through a settings field.
+_Avoid_: order input, position metadata
+
+**Theme preference**:
+The global visual mode selected as System, Light, or Dark. System follows the device preference; an explicit selection applies to both public and admin views.
+_Avoid_: admin theme, page theme
+
 **Project detail field**:
 An ordered labeled field attached to a Project for short metadata such as category, year, role, or external link. Project detail fields are edited as a list rather than stored as an unordered object.
 _Avoid_: details object, metadata map
