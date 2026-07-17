@@ -1,47 +1,66 @@
-import { saveThought, unpublishThought } from "@/server/thoughts/actions";
+import { AdminContentList } from "@/components/AdminContent/AdminContentList";
+import { AdminEditorShell } from "@/components/AdminContent/AdminEditorShell";
+import { ThoughtEditor } from "@/components/AdminThoughts/ThoughtEditor";
 import { getThoughtDocuments } from "@/server/thoughts/queries";
+import { summarizeThoughtDocument } from "@/server/thoughts/domain";
 import { EMPTY_THOUGHT, type Thought } from "@/server/thoughts/types";
 
 function value(document: { draft: unknown; published: unknown }): Thought {
   return (document.draft ?? document.published ?? EMPTY_THOUGHT) as Thought;
 }
 
-export default async function AdminThoughtsPage() {
+export default async function AdminThoughtsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ id?: string }>;
+}) {
   const documents = await getThoughtDocuments();
+  const { id } = await searchParams;
+  const selectedId = id && documents.some((document) => document.id === id)
+    ? id
+    : documents[0]?.id ?? "new";
+  const selectedDocument = selectedId === "new"
+    ? { id: "", draft: EMPTY_THOUGHT, published: null }
+    : documents.find((document) => document.id === selectedId) ?? {
+        id: "",
+        draft: EMPTY_THOUGHT,
+        published: null,
+      };
+  const summary = summarizeThoughtDocument(selectedDocument);
 
   return (
-    <main className="flex flex-col gap-8">
-      <h1 className="text-3xl font-medium text-primary">Thoughts</h1>
-      {[{ id: "", draft: EMPTY_THOUGHT, published: null }, ...documents].map(
-        (document) => {
-          const thought = value(document);
-          return (
-            <form key={document.id || "new"} action={saveThought} className="grid gap-3 rounded-md border border-primary/15 p-4">
-              <input type="hidden" name="id" value={document.id} />
-              <label>Title<input name="title" defaultValue={thought.title} required /></label>
-              <label>Slug<input name="slug" defaultValue={thought.slug} required /></label>
-              <label>Excerpt<input name="excerpt" defaultValue={thought.excerpt} required /></label>
-              <label>Cover image URL<input name="coverImageUrl" defaultValue={thought.coverImageUrl} required /></label>
-              <label>Published date<input name="publishedDate" type="date" defaultValue={thought.publishedDate.slice(0, 10)} required /></label>
-              <label>Markdown body<textarea name="body" defaultValue={thought.body} rows={10} required /></label>
-              <label>Collection order<input name="order" type="number" min="0" defaultValue={thought.order} /></label>
-              <label>Featured order<input name="featuredOrder" type="number" min="0" defaultValue={thought.featuredOrder} /></label>
-              <label><input name="featured" type="checkbox" defaultChecked={thought.featured} /> Featured</label>
-              <aside className="rounded-md bg-primary/5 p-4">
-                <p className="mb-2 text-sm uppercase tracking-[0.2em] text-secondary">Preview</p>
-                <h2 className="text-xl font-medium text-primary">{thought.title || "Untitled thought"}</h2>
-                <p className="mt-2 text-secondary">{thought.excerpt}</p>
-                <p className="mt-4 whitespace-pre-wrap text-primary">{thought.body}</p>
-              </aside>
-              <div className="flex gap-3">
-                <button name="intent" value="draft" type="submit">Save draft</button>
-                <button name="intent" value="publish" type="submit">Publish</button>
-                {document.id && <button formAction={unpublishThought} type="submit">Unpublish</button>}
-              </div>
-            </form>
-          );
-        }
-      )}
-    </main>
+    <AdminEditorShell
+      eyebrow="Admin"
+      title="Thoughts"
+      description="Preview-first editing for authored long-form content. Draft changes stay private until you publish."
+      sidebar={
+        <AdminContentList
+          title="Documents"
+          description="Review document status, pick an existing thought, or start a new draft."
+          createHref="/admin/thoughts?id=new"
+          items={documents.map((document) => {
+            const documentSummary = summarizeThoughtDocument(document);
+            return {
+              id: document.id,
+              href: `/admin/thoughts?id=${document.id}`,
+              title: documentSummary.title,
+              description: documentSummary.excerpt,
+              meta: `${documentSummary.updatedAtLabel} · /thoughts/${documentSummary.slug}`,
+              status: documentSummary.status,
+              selected: document.id === selectedId,
+            };
+          })}
+        />
+      }
+      editor={
+        <ThoughtEditor
+          key={selectedDocument.id || "new"}
+          documentId={selectedDocument.id}
+          initialThought={value(selectedDocument)}
+          hasSavedDocument={Boolean(selectedDocument.id)}
+          status={summary.status}
+        />
+      }
+    />
   );
 }

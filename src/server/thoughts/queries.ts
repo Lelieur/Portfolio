@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { asThought } from "./domain";
 import type { Thought } from "./types";
 
 const domain = "thoughts";
@@ -8,24 +9,6 @@ type Document = {
   draft: unknown;
   published: unknown;
 };
-
-function asThought(value: unknown): Thought | null {
-  if (!value || typeof value !== "object") return null;
-
-  const thought = value as Partial<Thought>;
-
-  return typeof thought.title === "string" &&
-    typeof thought.slug === "string" &&
-    typeof thought.excerpt === "string" &&
-    typeof thought.coverImageUrl === "string" &&
-    typeof thought.publishedDate === "string" &&
-    typeof thought.body === "string" &&
-    typeof thought.order === "number" &&
-    typeof thought.featured === "boolean" &&
-    typeof thought.featuredOrder === "number"
-    ? (thought as Thought)
-    : null;
-}
 
 async function documents(): Promise<Document[]> {
   if (process.env.NEXT_PHASE === "phase-production-build") return [];

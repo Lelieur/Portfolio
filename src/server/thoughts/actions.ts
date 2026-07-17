@@ -1,43 +1,17 @@
 "use server";
 
 import { randomUUID } from "node:crypto";
+import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
 import { createPrismaContentBoundary } from "@/server/content/prismaBoundary";
 import { getThoughtDocuments } from "./queries";
+import type { ThoughtActionState } from "./actionState";
 import type { Thought } from "./types";
-
-function required(formData: FormData, name: string) {
-  const value = formData.get(name);
-  if (typeof value !== "string" || !value.trim()) {
-    throw new Error(`${name} is required`);
-  }
-
-  return value.trim();
-}
-
-function number(formData: FormData, name: string) {
-  const value = Number(formData.get(name) ?? 0);
-  if (!Number.isInteger(value) || value < 0) throw new Error(`${name} is invalid`);
-  return value;
-}
+import { parseThoughtForm } from "./domain";
 
 async function ownerOnly() {
   const session = await auth();
-  if (!session?.user) throw new Error("Unauthorized");
-}
-
-function thoughtFromForm(formData: FormData): Thought {
-  return {
-    title: required(formData, "title"),
-    slug: required(formData, "slug"),
-    excerpt: required(formData, "excerpt"),
-    coverImageUrl: required(formData, "coverImageUrl"),
-    publishedDate: required(formData, "publishedDate"),
-    body: required(formData, "body"),
-    order: number(formData, "order"),
-    featured: formData.get("featured") === "on",
-    featuredOrder: number(formData, "featuredOrder"),
-  };
+  return Boolean(session?.user);
 }
 
 async function assertUniqueSlug(id: string, slug: string) {
@@ -53,23 +27,108 @@ async function assertUniqueSlug(id: string, slug: string) {
   if (duplicate) throw new Error(`Slug already exists: ${slug}`);
 }
 
-export async function saveThought(formData: FormData) {
-  await ownerOnly();
+export async function saveThoughtAction(
+  _previousState: ThoughtActionState,
+  formData: FormData
+): Promise<ThoughtActionState> {
+  const activeId =
+    typeof formData.get("id") === "string" && formData.get("id")
+      ? String(formData.get("id"))
+      : randomUUID();
 
-  const id = typeof formData.get("id") === "string" && formData.get("id")
-    ? String(formData.get("id"))
-    : randomUUID();
-  const thought = thoughtFromForm(formData);
-  await assertUniqueSlug(id, thought.slug);
+  if (!(await ownerOnly())) {
+    return {
+      status: "error",
+      message: "You must be signed in to edit thoughts.",
+      fieldErrors: {},
+      activeId,
+    };
+  }
 
-  const boundary = createPrismaContentBoundary<Thought>("thoughts");
-  await boundary.saveDraft(id, thought);
+  const parsed = parseThoughtForm(formData);
+  if (!parsed.ok) {
+    return {
+      status: "error",
+      message: "Fix the highlighted fields and try again.",
+      fieldErrors: parsed.errors,
+      activeId,
+    };
+  }
 
-  if (formData.get("intent") === "publish") await boundary.publish(id);
+  try {
+    await assertUniqueSlug(activeId, parsed.value.slug);
+
+    const boundary = createPrismaContentBoundary<Thought>("thoughts");
+    await boundary.saveDraft(activeId, parsed.value);
+
+    const intent = formData.get("intent");
+    if (intent === "publish") {
+      await boundary.publish(activeId);
+    }
+
+    revalidatePath("/admin/thoughts");
+    revalidatePath("/");
+    revalidatePath("/thoughts");
+    revalidatePath(`/thoughts/${parsed.value.slug}`);
+
+    return {
+      status: "success",
+      message: intent === "publish" ? "Thought published." : "Draft saved.",
+      fieldErrors: {},
+      activeId,
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "Unable to save thought.",
+      fieldErrors: {},
+      activeId,
+    };
+  }
 }
 
-export async function unpublishThought(formData: FormData) {
-  await ownerOnly();
-  const id = required(formData, "id");
-  await createPrismaContentBoundary<Thought>("thoughts").unpublish(id);
+export async function unpublishThoughtAction(
+  _previousState: ThoughtActionState,
+  formData: FormData
+): Promise<ThoughtActionState> {
+  const id = typeof formData.get("id") === "string" ? String(formData.get("id")) : "";
+
+  if (!(await ownerOnly())) {
+    return {
+      status: "error",
+      message: "You must be signed in to edit thoughts.",
+      fieldErrors: {},
+      activeId: id,
+    };
+  }
+
+  if (!id) {
+    return {
+      status: "error",
+      message: "Missing thought id.",
+      fieldErrors: {},
+      activeId: "",
+    };
+  }
+
+  try {
+    await createPrismaContentBoundary<Thought>("thoughts").unpublish(id);
+    revalidatePath("/admin/thoughts");
+    revalidatePath("/");
+    revalidatePath("/thoughts");
+
+    return {
+      status: "success",
+      message: "Thought unpublished.",
+      fieldErrors: {},
+      activeId: id,
+    };
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "Unable to unpublish thought.",
+      fieldErrors: {},
+      activeId: id,
+    };
+  }
 }
