@@ -27,6 +27,12 @@ export default async function AdminThoughtsPage() {
               <label>Collection order<input name="order" type="number" min="0" defaultValue={thought.order} /></label>
               <label>Featured order<input name="featuredOrder" type="number" min="0" defaultValue={thought.featuredOrder} /></label>
               <label><input name="featured" type="checkbox" defaultChecked={thought.featured} /> Featured</label>
+              <aside className="rounded-md bg-primary/5 p-4">
+                <p className="mb-2 text-sm uppercase tracking-[0.2em] text-secondary">Preview</p>
+                <h2 className="text-xl font-medium text-primary">{thought.title || "Untitled thought"}</h2>
+                <p className="mt-2 text-secondary">{thought.excerpt}</p>
+                <p className="mt-4 whitespace-pre-wrap text-primary">{thought.body}</p>
+              </aside>
               <div className="flex gap-3">
                 <button name="intent" value="draft" type="submit">Save draft</button>
                 <button name="intent" value="publish" type="submit">Publish</button>
