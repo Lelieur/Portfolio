@@ -6,11 +6,15 @@ import { auth } from "@/auth";
 import { createPrismaContentBoundary } from "@/server/content/prismaBoundary";
 import { createPrismaVersionedContentStore } from "@/server/content/boundary";
 import { prisma } from "@/lib/prisma";
-import { asThought, parseThoughtSettingsForm } from "./domain";
+import {
+  asThought,
+  parseThoughtForm,
+  parseThoughtSettingsForm,
+  prepareThoughtForPublish,
+} from "./domain";
 import { getThoughtDocuments } from "./queries";
 import type { ThoughtActionState } from "./actionState";
 import type { Thought } from "./types";
-import { parseThoughtForm } from "./domain";
 
 async function ownerOnly() {
   const session = await auth();
@@ -18,6 +22,8 @@ async function ownerOnly() {
 }
 
 async function assertUniqueSlug(id: string, slug: string) {
+  if (!slug) return;
+
   const documents = await getThoughtDocuments();
   // ponytail: application-level uniqueness; add a slug reservation table if concurrent editors matter.
   const duplicate = documents.some((document) => {
@@ -48,7 +54,10 @@ export async function saveThoughtAction(
     };
   }
 
-  const parsed = parseThoughtForm(formData);
+  const existingDocument = (await getThoughtDocuments()).find((item) => item.id === activeId);
+  const publishedThought = asThought(existingDocument?.published);
+  const currentThought = asThought(existingDocument?.draft) ?? publishedThought;
+  const parsed = parseThoughtForm(formData, currentThought);
   if (!parsed.ok) {
     return {
       status: "error",
@@ -59,12 +68,25 @@ export async function saveThoughtAction(
   }
 
   try {
-    await assertUniqueSlug(activeId, parsed.value.slug);
-
     const boundary = createPrismaContentBoundary<Thought>("thoughts");
-    await boundary.saveDraft(activeId, parsed.value);
-
     const intent = formData.get("intent");
+    const nextDraft =
+      intent === "publish"
+        ? prepareThoughtForPublish(parsed.value, publishedThought)
+        : parsed;
+
+    if (!nextDraft.ok) {
+      return {
+        status: "error",
+        message: "Finish the required fields before publishing.",
+        fieldErrors: nextDraft.errors,
+        activeId,
+      };
+    }
+
+    await assertUniqueSlug(activeId, nextDraft.value.slug);
+    await boundary.saveDraft(activeId, nextDraft.value);
+
     if (intent === "publish") {
       await boundary.publish(activeId);
     }
@@ -72,7 +94,15 @@ export async function saveThoughtAction(
     revalidatePath("/admin/thoughts");
     revalidatePath("/");
     revalidatePath("/thoughts");
-    revalidatePath(`/thoughts/${parsed.value.slug}`);
+    if (currentThought?.slug) {
+      revalidatePath(`/thoughts/${currentThought.slug}`);
+    }
+    if (publishedThought?.slug) {
+      revalidatePath(`/thoughts/${publishedThought.slug}`);
+    }
+    if (nextDraft.value.slug) {
+      revalidatePath(`/thoughts/${nextDraft.value.slug}`);
+    }
 
     return {
       status: "success",
@@ -173,16 +203,39 @@ export async function saveThoughtSettingsAction(
   }
 
   try {
-    await assertUniqueSlug(id, parsed.value.slug);
-    await createPrismaContentBoundary<Thought>("thoughts").saveDraft(id, {
-      ...current,
-      ...parsed.value,
-    });
+    const nextFormData = new FormData();
+    nextFormData.set("document", JSON.stringify(current.document));
+    nextFormData.set("manualSlug", parsed.value.manualSlug ?? "");
+    nextFormData.set("manualExcerpt", parsed.value.manualExcerpt ?? "");
+    nextFormData.set("manualCoverImageUrl", parsed.value.manualCoverImageUrl ?? "");
+    nextFormData.set("publishedDate", parsed.value.publishedDate);
+    nextFormData.set("order", String(current.order));
+    nextFormData.set("featuredOrder", String(current.featuredOrder));
+    nextFormData.set("featured", parsed.value.featured ? "on" : "off");
+
+    const nextDraft = parseThoughtForm(nextFormData, current);
+    if (!nextDraft.ok) {
+      return {
+        status: "error",
+        message: "Fix the highlighted fields and try again.",
+        fieldErrors: nextDraft.errors,
+        activeId: id,
+      };
+    }
+
+    await assertUniqueSlug(id, nextDraft.value.slug);
+    await createPrismaContentBoundary<Thought>("thoughts").saveDraft(id, nextDraft.value);
 
     revalidatePath("/admin/thoughts");
     revalidatePath(`/admin/thoughts/${id}`);
     revalidatePath("/");
     revalidatePath("/thoughts");
+    if (current.slug) {
+      revalidatePath(`/thoughts/${current.slug}`);
+    }
+    if (nextDraft.value.slug) {
+      revalidatePath(`/thoughts/${nextDraft.value.slug}`);
+    }
 
     return {
       status: "success",

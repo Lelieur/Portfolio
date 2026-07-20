@@ -73,6 +73,10 @@ export interface ColorHighlightPopoverProps
    * @default false
    */
   useColorValue?: boolean
+  /**
+   * Optional class name applied to the popover content portal.
+   */
+  contentClassName?: string
 }
 
 export const ColorHighlightPopoverButton = forwardRef<
@@ -191,6 +195,7 @@ export function ColorHighlightPopover({
   hideWhenUnavailable = false,
   useColorValue = false,
   onApplied,
+  contentClassName,
   ...props
 }: ColorHighlightPopoverProps) {
   const { editor } = useTiptapEditor(providedEditor)
@@ -219,7 +224,10 @@ export function ColorHighlightPopover({
           <Icon className="tiptap-button-icon" />
         </ColorHighlightPopoverButton>
       </PopoverTrigger>
-      <PopoverContent aria-label="Highlight colors">
+      <PopoverContent
+        aria-label="Highlight colors"
+        className={contentClassName}
+      >
         <ColorHighlightPopoverContent
           editor={editor}
           colors={colors}

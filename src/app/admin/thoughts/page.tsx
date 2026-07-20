@@ -44,6 +44,7 @@ export default async function AdminThoughtsPage() {
             draftTitle: draftThought?.title,
             draftExcerpt: draftThought?.excerpt,
             slug: settingsThought.slug || documentSummary.slug,
+            coverImageUrl: settingsThought.coverImageUrl,
             publishedDate: settingsThought.publishedDate,
             featured: settingsThought.featured,
             meta: `${documentSummary.updatedAtLabel} · /thoughts/${publishedThought?.slug ?? thought.slug ?? documentSummary.slug}`,

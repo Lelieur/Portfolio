@@ -40,20 +40,23 @@ export default async function ThoughtPage({ params }: Params) {
           </div>
         )}
         <ThoughtDetailsList details={{ date: publishedDate }} />
-        <figure className="mt-8 flex flex-col gap-4">
-          <Image
-            src={coverImageUrl}
-            alt={title}
-            width="1280"
-            height="1600"
-            priority
-            className="size-full rounded-md border border-primary/15"
-          />
-          <figcaption className="pb-2 text-xs leading-normal text-secondary">{`Figure 1: ${title}`}</figcaption>
-        </figure>
-        {
-          <p className="prose prose-neutral max-w-none whitespace-pre-wrap">{body}</p>
-        }
+        {coverImageUrl ? (
+          <figure className="mt-8 flex flex-col gap-4">
+            <Image
+              src={coverImageUrl}
+              alt={title}
+              width="1280"
+              height="1600"
+              priority
+              className="size-full rounded-md border border-primary/15"
+            />
+            <figcaption className="pb-2 text-xs leading-normal text-secondary">{`Figure 1: ${title}`}</figcaption>
+          </figure>
+        ) : null}
+        <div
+          className="prose prose-neutral max-w-none"
+          dangerouslySetInnerHTML={{ __html: body }}
+        />
       </article>
     </main>
   );

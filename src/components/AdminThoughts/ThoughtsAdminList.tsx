@@ -14,6 +14,7 @@ export type ThoughtListItem = {
   title: string;
   excerpt: string;
   slug: string;
+  coverImageUrl: string;
   publishedDate: string;
   featured: boolean;
   status: "draft" | "published" | "draft+published";
@@ -186,8 +187,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             Slug
             <input
               key={selected?.id}
-              name="slug"
-              required
+              name="manualSlug"
               defaultValue={selected?.slug ?? ""}
               className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
             />
@@ -197,8 +197,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             Excerpt
             <textarea
               key={`${selected?.id}-excerpt`}
-              name="excerpt"
-              required
+              name="manualExcerpt"
               rows={3}
               defaultValue={selected?.excerpt ?? ""}
               className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
@@ -206,12 +205,24 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             {saveState.fieldErrors.excerpt ? <span className="text-red-600">{saveState.fieldErrors.excerpt}</span> : null}
           </label>
           <label className="grid gap-2 text-sm text-primary">
+            Cover image URL
+            <input
+              key={`${selected?.id}-cover`}
+              name="manualCoverImageUrl"
+              type="text"
+              defaultValue={selected?.coverImageUrl ?? ""}
+              className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
+            />
+            {saveState.fieldErrors.coverImageUrl ? (
+              <span className="text-red-600">{saveState.fieldErrors.coverImageUrl}</span>
+            ) : null}
+          </label>
+          <label className="grid gap-2 text-sm text-primary">
             Publication date
             <input
               key={`${selected?.id}-date`}
               name="publishedDate"
               type="date"
-              required
               defaultValue={selected?.publishedDate.slice(0, 10) ?? ""}
               className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
             />

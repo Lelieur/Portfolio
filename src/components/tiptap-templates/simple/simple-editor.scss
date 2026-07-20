@@ -1,82 +1,170 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-
-body {
+.simple-editor-wrapper {
+  --editor-background: #ffffff;
+  --editor-primary: #111110;
+  --editor-secondary: #272727;
+  --editor-surface: #ffffff;
+  --editor-surface-raised: color-mix(in srgb, var(--editor-primary) 5%, var(--editor-background));
+  --editor-border: color-mix(in srgb, var(--editor-primary) 15%, transparent);
+  --editor-focus: var(--editor-primary);
   --tt-toolbar-height: 44px;
-  --tt-theme-text: var(--tt-gray-light-900);
+  --tt-theme-text: var(--editor-primary);
+  --tt-bg-color: var(--editor-surface);
+  --tt-sidebar-bg-color: var(--editor-surface-raised);
+  --tt-scrollbar-color: color-mix(in srgb, var(--editor-primary) 18%, transparent);
+  --tt-cursor-color: var(--editor-focus);
+  --tt-selection-color: color-mix(in srgb, var(--editor-primary) 16%, transparent);
+  --tt-card-bg-color: var(--editor-surface);
+  --tt-card-border-color: var(--editor-border);
+  --tt-border-color: var(--editor-border);
+  --tt-border-color-tint: color-mix(in srgb, var(--editor-primary) 8%, transparent);
+  --tt-toolbar-bg-color: var(--editor-surface);
+  --tt-toolbar-border-color: var(--editor-border);
+  --tt-shadow-elevated-md:
+    0px 16px 48px 0px color-mix(in srgb, var(--editor-primary) 8%, transparent),
+    0px 12px 24px 0px color-mix(in srgb, var(--editor-primary) 6%, transparent),
+    0px 6px 8px 0px color-mix(in srgb, var(--editor-primary) 4%, transparent),
+    0px 2px 3px 0px color-mix(in srgb, var(--editor-primary) 4%, transparent);
 
-  .dark & {
-    --tt-theme-text: var(--tt-gray-dark-900);
+  --tt-gray-light-a-50: color-mix(in srgb, var(--editor-primary) 3%, transparent);
+  --tt-gray-light-a-100: color-mix(in srgb, var(--editor-primary) 6%, transparent);
+  --tt-gray-light-a-200: color-mix(in srgb, var(--editor-primary) 10%, transparent);
+  --tt-gray-light-a-300: color-mix(in srgb, var(--editor-primary) 16%, transparent);
+  --tt-gray-light-a-400: color-mix(in srgb, var(--editor-primary) 32%, transparent);
+  --tt-gray-light-a-500: color-mix(in srgb, var(--editor-primary) 52%, transparent);
+  --tt-gray-light-a-600: color-mix(in srgb, var(--editor-primary) 68%, transparent);
+  --tt-gray-light-a-700: color-mix(in srgb, var(--editor-primary) 82%, transparent);
+  --tt-gray-light-a-800: color-mix(in srgb, var(--editor-primary) 90%, transparent);
+  --tt-gray-light-a-900: color-mix(in srgb, var(--editor-primary) 96%, transparent);
+
+  --tt-gray-light-50: var(--editor-surface);
+  --tt-gray-light-100: var(--editor-surface-raised);
+  --tt-gray-light-200: color-mix(in srgb, var(--editor-background) 90%, var(--editor-primary));
+  --tt-gray-light-300: color-mix(in srgb, var(--editor-background) 82%, var(--editor-primary));
+  --tt-gray-light-400: color-mix(in srgb, var(--editor-background) 66%, var(--editor-primary));
+  --tt-gray-light-500: var(--editor-secondary);
+  --tt-gray-light-600: color-mix(in srgb, var(--editor-background) 36%, var(--editor-primary));
+  --tt-gray-light-700: color-mix(in srgb, var(--editor-background) 24%, var(--editor-primary));
+  --tt-gray-light-800: color-mix(in srgb, var(--editor-background) 12%, var(--editor-primary));
+  --tt-gray-light-900: var(--editor-primary);
+
+  --tt-gray-dark-a-50: color-mix(in srgb, var(--editor-primary) 3%, transparent);
+  --tt-gray-dark-a-100: color-mix(in srgb, var(--editor-primary) 7%, transparent);
+  --tt-gray-dark-a-200: color-mix(in srgb, var(--editor-primary) 11%, transparent);
+  --tt-gray-dark-a-300: color-mix(in srgb, var(--editor-primary) 18%, transparent);
+  --tt-gray-dark-a-400: color-mix(in srgb, var(--editor-primary) 34%, transparent);
+  --tt-gray-dark-a-500: color-mix(in srgb, var(--editor-primary) 54%, transparent);
+  --tt-gray-dark-a-600: color-mix(in srgb, var(--editor-primary) 70%, transparent);
+  --tt-gray-dark-a-700: color-mix(in srgb, var(--editor-primary) 84%, transparent);
+  --tt-gray-dark-a-800: color-mix(in srgb, var(--editor-primary) 90%, transparent);
+  --tt-gray-dark-a-900: color-mix(in srgb, var(--editor-primary) 96%, transparent);
+
+  --tt-gray-dark-50: var(--editor-surface);
+  --tt-gray-dark-100: var(--editor-surface-raised);
+  --tt-gray-dark-200: color-mix(in srgb, var(--editor-background) 88%, var(--editor-primary));
+  --tt-gray-dark-300: color-mix(in srgb, var(--editor-background) 80%, var(--editor-primary));
+  --tt-gray-dark-400: color-mix(in srgb, var(--editor-background) 64%, var(--editor-primary));
+  --tt-gray-dark-500: var(--editor-secondary);
+  --tt-gray-dark-600: color-mix(in srgb, var(--editor-background) 34%, var(--editor-primary));
+  --tt-gray-dark-700: color-mix(in srgb, var(--editor-background) 22%, var(--editor-primary));
+  --tt-gray-dark-800: color-mix(in srgb, var(--editor-background) 10%, var(--editor-primary));
+  --tt-gray-dark-900: var(--editor-primary);
+
+  --tt-brand-color-50: color-mix(in srgb, var(--editor-focus) 10%, var(--editor-background));
+  --tt-brand-color-100: color-mix(in srgb, var(--editor-focus) 18%, var(--editor-background));
+  --tt-brand-color-200: color-mix(in srgb, var(--editor-focus) 28%, var(--editor-background));
+  --tt-brand-color-300: color-mix(in srgb, var(--editor-focus) 38%, var(--editor-background));
+  --tt-brand-color-400: color-mix(in srgb, var(--editor-focus) 72%, var(--editor-background));
+  --tt-brand-color-500: var(--editor-focus);
+  --tt-brand-color-600: color-mix(in srgb, var(--editor-focus) 88%, var(--editor-primary));
+  --tt-brand-color-700: color-mix(in srgb, var(--editor-focus) 82%, var(--editor-primary));
+  --tt-brand-color-800: color-mix(in srgb, var(--editor-focus) 72%, var(--editor-primary));
+  --tt-brand-color-900: color-mix(in srgb, var(--editor-focus) 54%, var(--editor-primary));
+
+  width: 100%;
+  min-height: 28rem;
+  overflow: hidden;
+  color: var(--editor-primary);
+  background: var(--editor-surface);
+  font-family: var(--font-inter);
+
+  .tiptap.ProseMirror {
+    font-family: var(--font-inter);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--tt-scrollbar-color) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.25rem;
+    height: 0.25rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--tt-scrollbar-color);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
   }
 }
 
-body {
-  font-family: "Inter", sans-serif;
-  color: var(--tt-theme-text);
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  padding: 0;
-  overscroll-behavior-y: none;
-}
-
-html,
-body {
-  overscroll-behavior-x: none;
-}
-
-html,
-body,
-#root,
-#app {
-  height: 100%;
-  background-color: var(--tt-bg-color);
-}
-
-::-webkit-scrollbar {
-  width: 0.25rem;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--tt-scrollbar-color) transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--tt-scrollbar-color);
-  border-radius: 9999px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.tiptap.ProseMirror {
-  font-family: "DM Sans", sans-serif;
-}
-
-.simple-editor-wrapper {
-  width: 100vw;
-  height: 100vh;
-  overflow: auto;
+.simple-editor-wrapper[data-theme="dark"] {
+  --editor-background: #111110;
+  --editor-primary: #ededed;
+  --editor-secondary: #b3b3b3;
+  --editor-surface: #111110;
+  --editor-surface-raised: color-mix(in srgb, var(--editor-primary) 5%, var(--editor-background));
+  --editor-border: color-mix(in srgb, var(--editor-primary) 15%, transparent);
+  --editor-focus: var(--editor-primary);
 }
 
 .simple-editor-content {
-  max-width: 648px;
   width: 100%;
-  margin: 0 auto;
-  height: 100%;
+  max-width: 100%;
+  min-height: 28rem;
   display: flex;
   flex-direction: column;
-  flex: 1;
+  background: var(--editor-surface);
 }
 
 .simple-editor-content .tiptap.ProseMirror.simple-editor {
   flex: 1;
-  padding: 3rem 3rem 30vh;
+  width: 100%;
+  min-height: 24rem;
+  padding: 2rem 2rem 10rem;
+  background: var(--editor-surface);
+  color: var(--editor-primary);
+  caret-color: var(--editor-primary);
+}
+
+.simple-editor-toolbar-main {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 auto;
+  flex: 0 1 auto;
+}
+
+.simple-editor-toolbar-toggle {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  visibility: hidden;
+}
+
+.simple-editor-toolbar-toggle > * {
+  visibility: visible;
 }
 
 @media screen and (max-width: 480px) {
   .simple-editor-content .tiptap.ProseMirror.simple-editor {
-    padding: 1rem 1.5rem 30vh;
+    padding: 1rem 1rem 8rem;
+  }
+
+  .simple-editor-toolbar-main {
+    margin: 0;
   }
 }

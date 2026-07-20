@@ -51,23 +51,30 @@ export function ThoughtRead({
             <span className="uppercase tracking-[0.2em]">Excerpt</span>
             <span className="text-primary">{thought.excerpt || "Missing"}</span>
           </div>
+          <div className="grid gap-1 text-sm text-secondary">
+            <span className="uppercase tracking-[0.2em]">Last public update</span>
+            <span className="text-primary">{thought.lastPublicUpdate || "Not published yet"}</span>
+          </div>
         </>
       }
       canvas={
         <article className="flex flex-col gap-10 text-justify">
           <ThoughtDetailsList details={{ date: thought.publishedDate }} />
-          <figure className="flex flex-col gap-4">
-            <Image
-              src={thought.coverImageUrl}
-              alt={thought.title}
-              width={1280}
-              height={1600}
-              className="size-full rounded-md border border-primary/15"
-            />
-          </figure>
-          <p className="prose prose-neutral max-w-none whitespace-pre-wrap">
-            {thought.body}
-          </p>
+          {thought.coverImageUrl ? (
+            <figure className="flex flex-col gap-4">
+              <Image
+                src={thought.coverImageUrl}
+                alt={thought.title}
+                width={1280}
+                height={1600}
+                className="size-full rounded-md border border-primary/15"
+              />
+            </figure>
+          ) : null}
+          <div
+            className="prose prose-neutral max-w-none"
+            dangerouslySetInnerHTML={{ __html: thought.body }}
+          />
         </article>
       }
     />

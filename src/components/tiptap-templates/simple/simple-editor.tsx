@@ -1,5 +1,6 @@
 "use client"
 
+import type { JSONContent } from "@tiptap/core"
 import { useEffect, useRef, useState } from "react"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 
@@ -17,6 +18,15 @@ import { Selection } from "@tiptap/extensions"
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { Spacer } from "@/components/tiptap-ui-primitive/spacer"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/tiptap-ui-primitive/dropdown-menu"
 import {
   Toolbar,
   ToolbarGroup,
@@ -40,23 +50,15 @@ import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
 import { ListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu"
 import { BlockquoteButton } from "@/components/tiptap-ui/blockquote-button"
 import { CodeBlockButton } from "@/components/tiptap-ui/code-block-button"
-import {
-  ColorHighlightPopover,
-  ColorHighlightPopoverContent,
-  ColorHighlightPopoverButton,
-} from "@/components/tiptap-ui/color-highlight-popover"
-import {
-  LinkPopover,
-  LinkContent,
-  LinkButton,
-} from "@/components/tiptap-ui/link-popover"
+import { ColorHighlightPopover } from "@/components/tiptap-ui/color-highlight-popover"
+import { LinkPopover, LinkContent } from "@/components/tiptap-ui/link-popover"
 import { MarkButton } from "@/components/tiptap-ui/mark-button"
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button"
 import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button"
 
 // --- Icons ---
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon"
-import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
+import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
 import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 
 // --- Hooks ---
@@ -65,7 +67,11 @@ import { useWindowSize } from "@/hooks/use-window-size"
 import { useCursorVisibility } from "@/hooks/use-cursor-visibility"
 
 // --- Components ---
-import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
+import {
+  ThemeToggle,
+  getSystemTheme,
+  type ThemeMode,
+} from "@/components/tiptap-templates/simple/theme-toggle"
 
 // --- Lib ---
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
@@ -73,122 +79,187 @@ import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
 
-import content from "@/components/tiptap-templates/simple/data/content.json"
+import defaultContent from "@/components/tiptap-templates/simple/data/content.json"
+
+function resolveDefaultTheme(): ThemeMode {
+  const rootTheme = document.documentElement.dataset.theme
+
+  if (rootTheme === "light" || rootTheme === "dark") {
+    return rootTheme
+  }
+
+  return getSystemTheme()
+}
+
+const MoreToolbarMenu = ({ theme }: { theme: ThemeMode }) => (
+  <DropdownMenu modal={false}>
+    <DropdownMenuTrigger asChild>
+      <Button
+        variant="ghost"
+        size="small"
+        aria-label="More formatting options"
+        tooltip="More"
+      >
+        <span className="tiptap-button-text">More</span>
+        <ChevronDownIcon className="tiptap-button-dropdown-small" />
+      </Button>
+    </DropdownMenuTrigger>
+
+    <DropdownMenuContent
+      align="end"
+      className={theme === "dark" ? "dark" : undefined}
+    >
+      <DropdownMenuLabel>Formatting</DropdownMenuLabel>
+      <DropdownMenuGroup>
+        <DropdownMenuItem asChild>
+          <BlockquoteButton text="Blockquote" showTooltip={false} />
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <CodeBlockButton text="Code block" showTooltip={false} />
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <MarkButton type="strike" text="Strike" showTooltip={false} />
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <MarkButton type="code" text="Inline code" showTooltip={false} />
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <MarkButton type="underline" text="Underline" showTooltip={false} />
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>Highlight</DropdownMenuLabel>
+      <div className="px-1 py-1">
+        <ColorHighlightPopover
+          showTooltip={false}
+          contentClassName={theme === "dark" ? "dark" : undefined}
+        />
+      </div>
+
+      <DropdownMenuSeparator />
+      <DropdownMenuLabel>Layout</DropdownMenuLabel>
+      <DropdownMenuGroup>
+        <DropdownMenuItem asChild>
+          <MarkButton type="superscript" text="Superscript" showTooltip={false} />
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <MarkButton type="subscript" text="Subscript" showTooltip={false} />
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+
+    </DropdownMenuContent>
+  </DropdownMenu>
+)
 
 const MainToolbarContent = ({
-  onHighlighterClick,
-  onLinkClick,
-  isMobile,
+  hideThemeToggle,
+  theme,
+  onToggleTheme,
 }: {
-  onHighlighterClick: () => void
-  onLinkClick: () => void
-  isMobile: boolean
+  hideThemeToggle: boolean
+  theme: ThemeMode
+  onToggleTheme: () => void
 }) => {
   return (
     <>
-      <Spacer />
+      <div></div>
 
-      <ToolbarGroup>
-        <UndoRedoButton action="undo" />
-        <UndoRedoButton action="redo" />
-      </ToolbarGroup>
+      <div className="simple-editor-toolbar-main">
+        <ToolbarGroup>
+          <UndoRedoButton action="undo" size="small" />
+          <UndoRedoButton action="redo" size="small" />
+        </ToolbarGroup>
 
-      <ToolbarSeparator />
+        <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <HeadingDropdownMenu modal={false} levels={[1, 2, 3, 4]} />
-        <ListDropdownMenu
-          modal={false}
-          types={["bulletList", "orderedList", "taskList"]}
-        />
-        <BlockquoteButton />
-        <CodeBlockButton />
-      </ToolbarGroup>
+        <ToolbarGroup>
+          <HeadingDropdownMenu modal={false} levels={[1, 2, 3, 4]} size="small" />
+          <ListDropdownMenu
+            modal={false}
+            types={['bulletList', 'orderedList', 'taskList']}
+            size="small"
+          />
+        </ToolbarGroup>
 
-      <ToolbarSeparator />
+        <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <MarkButton type="bold" />
-        <MarkButton type="italic" />
-        <MarkButton type="strike" />
-        <MarkButton type="code" />
-        <MarkButton type="underline" />
-        {!isMobile ? (
-          <ColorHighlightPopover />
-        ) : (
-          <ColorHighlightPopoverButton onClick={onHighlighterClick} />
-        )}
-        {!isMobile ? <LinkPopover /> : <LinkButton onClick={onLinkClick} />}
-      </ToolbarGroup>
+        <ToolbarGroup>
+          <MarkButton type="bold" size="small" />
+          <MarkButton type="italic" size="small" />
+          <LinkPopover size="small" />
+        </ToolbarGroup>
 
-      <ToolbarSeparator />
+        <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <MarkButton type="superscript" />
-        <MarkButton type="subscript" />
-      </ToolbarGroup>
+        <ToolbarGroup>
+          <TextAlignButton align="left" size="small" />
+          <TextAlignButton align="center" size="small" />
+          <TextAlignButton align="right" size="small" />
+          <TextAlignButton align="justify" size="small" />
+        </ToolbarGroup>
 
-      <ToolbarSeparator />
+        <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <TextAlignButton align="left" />
-        <TextAlignButton align="center" />
-        <TextAlignButton align="right" />
-        <TextAlignButton align="justify" />
-      </ToolbarGroup>
+        <ToolbarGroup>
+          <ImageUploadButton size="small" />
+        </ToolbarGroup>
 
-      <ToolbarSeparator />
+        <ToolbarSeparator />
 
-      <ToolbarGroup>
-        <ImageUploadButton text="Add" />
-      </ToolbarGroup>
+        <ToolbarGroup>
+          <MoreToolbarMenu theme={theme} />
+        </ToolbarGroup>
+      </div>
 
-      <Spacer />
-
-      {isMobile && <ToolbarSeparator />}
-
-      <ToolbarGroup>
-        <ThemeToggle />
-      </ToolbarGroup>
+      {!hideThemeToggle ? (
+        <div className="simple-editor-toolbar-toggle">
+          <ToolbarGroup>
+            <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+          </ToolbarGroup>
+        </div>
+      ) : null}
     </>
-  )
+  );
 }
 
 const MobileToolbarContent = ({
   type,
   onBack,
 }: {
-  type: "highlighter" | "link"
+  type: "link"
   onBack: () => void
 }) => (
   <>
     <ToolbarGroup>
       <Button variant="ghost" onClick={onBack}>
         <ArrowLeftIcon className="tiptap-button-icon" />
-        {type === "highlighter" ? (
-          <HighlighterIcon className="tiptap-button-icon" />
-        ) : (
-          <LinkIcon className="tiptap-button-icon" />
-        )}
+        <LinkIcon className="tiptap-button-icon" />
       </Button>
     </ToolbarGroup>
 
     <ToolbarSeparator />
 
-    {type === "highlighter" ? (
-      <ColorHighlightPopoverContent />
-    ) : (
-      <LinkContent />
-    )}
+    <LinkContent />
   </>
 )
 
-export function SimpleEditor() {
+export function SimpleEditor({
+  content = defaultContent as JSONContent,
+  onChange,
+  hideThemeToggle = false,
+  className = "",
+}: {
+  content?: JSONContent
+  onChange?: (value: JSONContent) => void
+  hideThemeToggle?: boolean
+  className?: string
+}) {
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
-  const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
-    "main"
-  )
+  const [mobileView, setMobileView] = useState<"main" | "link">("main")
+  const [theme, setTheme] = useState<ThemeMode>("light")
+  const [hasLocalThemeOverride, setHasLocalThemeOverride] = useState(false)
   const toolbarRef = useRef<HTMLDivElement>(null)
 
   const editor = useEditor({
@@ -229,6 +300,9 @@ export function SimpleEditor() {
       }),
     ],
     content,
+    onUpdate: ({ editor: currentEditor }) => {
+      onChange?.(currentEditor.getJSON())
+    },
   })
 
   const rect = useCursorVisibility({
@@ -242,8 +316,53 @@ export function SimpleEditor() {
     }
   }, [isMobile, mobileView])
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
+    const root = document.documentElement
+
+    const syncThemeFromApp = () => {
+      if (hasLocalThemeOverride) return
+      setTheme(resolveDefaultTheme())
+    }
+
+    syncThemeFromApp()
+
+    const mediaHandler = () => syncThemeFromApp()
+    const observer = new MutationObserver(syncThemeFromApp)
+
+    mediaQuery.addEventListener("change", mediaHandler)
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["data-theme", "class"],
+    })
+
+    return () => {
+      mediaQuery.removeEventListener("change", mediaHandler)
+      observer.disconnect()
+    }
+  }, [hasLocalThemeOverride])
+
+  useEffect(() => {
+    if (!editor) return
+
+    const next = JSON.stringify(content)
+    const current = JSON.stringify(editor.getJSON())
+
+    if (next !== current) {
+      editor.commands.setContent(content, { emitUpdate: false })
+    }
+  }, [content, editor])
+
+  const toggleTheme = () => {
+    setHasLocalThemeOverride(true)
+    setTheme((currentTheme) => (currentTheme === "dark" ? "light" : "dark"))
+  }
+
   return (
-    <div className="simple-editor-wrapper">
+    <div
+      className={`simple-editor-wrapper ${theme === "dark" ? "dark" : ""} ${className}`.trim()}
+      data-theme={theme}
+    >
       <EditorContext.Provider value={{ editor }}>
         <Toolbar
           ref={toolbarRef}
@@ -257,13 +376,13 @@ export function SimpleEditor() {
         >
           {mobileView === "main" ? (
             <MainToolbarContent
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              isMobile={isMobile}
+              hideThemeToggle={hideThemeToggle}
+              theme={theme}
+              onToggleTheme={toggleTheme}
             />
           ) : (
             <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
+              type="link"
               onBack={() => setMobileView("main")}
             />
           )}
