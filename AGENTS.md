@@ -33,6 +33,10 @@ Recent history follows short Conventional Commit messages such as `feat: expand 
 - If the issue is not fully closed, report what is already done and what still remains before the issue can be considered complete.
 - When the issue can be resolved in one commit, prefer one commit instead of atomizing the history unnecessarily.
 - Once all planned commits are done, perform one final issue review and confirm that the full issue is closed end to end.
+- Before every `push`, update the affected GitHub issue or issues so their state matches exactly what the pushed commit set has closed so far.
+- If a pushed commit closes only part of an issue, leave the issue open and add a comment stating what was covered by the pushed work and what still remains.
+- If a pushed commit closes an entire issue, close the issue and update any related issue state in the repo workflow so the visible issue map stays accurate.
+- Do the GitHub issue update before the `push`, not after it, so the tracker always reflects the state of the branch being pushed.
 
 ## Security & Configuration Tips
 Set `MONGODB_URI` locally before running database-backed pages or API routes. Do not commit secrets. External images are currently expected from Cloudinary and Medium, so update `next.config.ts` if new image hosts are introduced.

@@ -45,6 +45,16 @@ When implementing work from an issue:
 - If the implementation only closes part of the issue, report the closed part and the remaining work explicitly before proposing the commit.
 - After the last planned commit, run one final issue review and confirm that the issue is fully closed.
 
+## Push Sync
+
+Before every `push` tied to issue work:
+
+- Re-check the affected issue or issues against the commits that are about to be pushed.
+- Update GitHub first so the issue tracker matches the exact scope already closed on the branch.
+- If the pushed work closes only part of an issue, keep the issue open and comment with what is now done and what still remains.
+- If the pushed work closes the issue completely, close it and update any related issue state that should move with it.
+- Treat this issue update as a required pre-push step, not optional cleanup afterwards.
+
 ## Wayfinding operations
 
 Used by `/wayfinder`. The **map** is a single issue with **child** issues as tickets.
