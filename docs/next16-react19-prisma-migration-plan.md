@@ -237,13 +237,26 @@ Possible patterns:
 - Use Tailwind CSS 4 and HeroUI 3 as the shared visual layer for application UI.
 - Keep the existing portfolio palette and typography through semantic CSS tokens. Add a Header selector for System, Light, and Dark, persisted in local storage and shared by admin and public pages.
 - Apply the shared content list pattern to every editable collection: Published and Draft filters, card overflow Settings, and drag ordering for published content.
-- Keep editorial settings limited to slug, excerpt, publication date, and homepage featured state. Collection order and featured order are drag-only operations in their corresponding list.
+- Keep editorial settings limited to slug, excerpt, cover image, publication date, and homepage featured state. Collection order and featured order are drag-only operations in their corresponding list.
 - Introduce TipTap progressively per content domain. Store editable JSON as the source, generate safe HTML for public rendering, and require missing editorial settings after the first canvas save.
 - Add owner-only image uploads for cover and inline images, then use HeroUI feedback primitives for save, publish, upload, and error states.
 - Migrate Thoughts first; Projects, Experiments, About, and Now adopt the same shell only after their domain-specific editors are defined.
 
 ### Pending Editorial Experience
-- The current Thoughts creation and editing routes are transitional. They must not be considered the final product until title, images, and previewed content are authored through TipTap; first-save required settings are enforced; and safe rich-text rendering and uploads are complete.
+- The current Thoughts creation and editing routes are transitional. They must not be considered the final product until the shared editorial shell is in place; TipTap stores a rich document; the document title comes from the first `H1`; inline images are inserted from the canvas; cover image defaults from the first document image until manual override; first-save required settings are enforced; and safe rich-text rendering and uploads are complete.
+
+### Agreed Implementation Order For The Editorial Redesign
+- Use GitHub Issues as the execution map for this phase.
+- Implement in this order:
+  1. `#14` Build shared editorial shell for admin read/edit flows
+  2. `#13` Migrate Thoughts to a rich TipTap document model with derived metadata
+  3. `#10` Add Cloudinary inline image uploads to the Thought editor
+  4. `#11` Render public Thoughts from safe HTML and preserve slug redirects
+  5. `#12` Implement the admin list, read, publish, and delete flow for Thoughts
+- This order is dependency-driven, not numeric. `#14` unblocks `#13`; `#13` unblocks the remaining Thought-specific work; `#12` should land last because it consumes the shared shell, the rich document model, and the final publish rules.
+- Parent issue map:
+  - `#9` owns the reusable editorial foundation and is currently represented by sub-issue `#14`.
+  - `#3` owns the Thoughts migration and is currently represented by sub-issues `#13`, `#10`, `#11`, and `#12`.
 
 ## Suggested Folder Direction After Refactor
 ```txt
@@ -310,7 +323,7 @@ prisma/
 ## Continuity Prompt For Smaller/Older Models
 Use this prompt at the start of a future session:
 
-> Read `AGENTS.md` and `docs/next16-react19-prisma-migration-plan.md` first. Use the migration plan as the source of truth. We are modernizing this portfolio to Next.js 16.1.6, React 19.2.4, Prisma, and PostgreSQL with server-first rendering. Do not re-propose the architecture from scratch. Continue from the current phase, preserve existing UI behavior unless explicitly changing it, and avoid internal server-to-server HTTP fetches.
+> Read `AGENTS.md`, `docs/next16-react19-prisma-migration-plan.md`, `CONTEXT.md`, and `docs/adr/0003-editorial-ui-foundation.md` first. Use them as the source of truth. We are modernizing this portfolio to Next.js 16.1.6, React 19.2.4, Prisma, and PostgreSQL with server-first rendering. Do not re-propose the architecture from scratch. Continue from the current phase, preserve existing UI behavior unless explicitly changing it, and avoid internal server-to-server HTTP fetches. If continuing the editorial redesign, follow the agreed GitHub issue order `#14 -> #13 -> #10 -> #11 -> #12` unless dependencies have changed.
 
 ## First Practical Iteration Recommended
 The best next coding task is not the database migration itself. It is this:

@@ -24,6 +24,14 @@ _Avoid_: autosave, preview version
 The live version of a content item that the public site reads. Published content stays unchanged while a newer draft is being edited.
 _Avoid_: current draft, latest edit
 
+**Unpublished changes**:
+The editorial state where a content item has live published content and also a newer draft that is not yet public.
+_Avoid_: draft+published, dual state
+
+**Last public update**:
+The timestamp of the most recent publish that changed the live version of a content item after its first publication. It does not change when only a draft is edited.
+_Avoid_: last edit, updated draft date
+
 **Derived homepage content**:
 Homepage and navigation content that is generated from other content domains rather than authored separately. Changes to Projects, Thoughts, About, Now, and Experiments update these derived views.
 _Avoid_: homepage CMS, nav CMS
@@ -33,8 +41,24 @@ Published collection content selected to appear on homepage sections. Featured c
 _Avoid_: homepage page data, promoted feed item
 
 **Editorial settings**:
-The non-body metadata of a content item: slug, excerpt, publication date, and whether it is featured on the homepage. Editorial settings are edited from Settings, never from the content canvas.
+The non-canvas metadata of a content item: slug, excerpt, cover image, publication date, and whether it is featured on the homepage. Editorial settings are edited from Settings, never from the content canvas.
 _Avoid_: body metadata, editor fields
+
+**Document title**:
+The primary title of a rich content item, authored as the first `H1` block in the content canvas rather than as a separate form field.
+_Avoid_: title input, heading field
+
+**Cover image**:
+The representative image used for cards and social previews. It is selected from Settings, defaults to the first image uploaded into the content canvas when one exists, and keeps following that first document image until an editor explicitly overrides it. After a manual override is saved, the cover image stays fixed until edited manually again.
+_Avoid_: hero field, thumbnail URL input
+
+**Editorial override**:
+A manual value saved in Settings for a derived editorial field such as slug, excerpt, or cover image. Automatic generation applies only until the first saved override; afterwards the field stays manual until edited manually again.
+_Avoid_: reset to auto, sync toggle
+
+**Slug redirect**:
+The permanent forwarding from an older published slug to the current published slug of the same content item after a slug change is republished.
+_Avoid_: broken old URL, alias without redirect
 
 **Editorial order**:
 The manual order of published collection content or of its featured subset. It is changed by dragging items in the relevant admin list, not through a settings field.
