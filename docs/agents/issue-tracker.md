@@ -33,6 +33,18 @@ Create a GitHub issue.
 
 Run `gh issue view <number> --comments`.
 
+## Implementation Loop
+
+When implementing work from an issue:
+
+- Read the issue again before coding and capture a short implementation plan.
+- Decide up front whether the issue should land in one commit or in multiple coherent commits.
+- If multiple commits are needed, define what each commit is supposed to close and what should remain open after it.
+- After finishing each planned commit, re-read the issue and verify that the implemented diff closes the intended slice before committing.
+- Do not treat an issue as closed only because the code builds; confirm it against the issue text.
+- If the implementation only closes part of the issue, report the closed part and the remaining work explicitly before proposing the commit.
+- After the last planned commit, run one final issue review and confirm that the issue is fully closed.
+
 ## Wayfinding operations
 
 Used by `/wayfinder`. The **map** is a single issue with **child** issues as tickets.

@@ -22,6 +22,18 @@ There is no automated test suite configured yet. Until one is added, use `npm ru
 ## Commit & Pull Request Guidelines
 Recent history follows short Conventional Commit messages such as `feat: expand thoughts system` and `feat(projects): add dynamic category filtering`. Keep that format: `type(scope): summary` when scope helps. PRs should include a concise description, note any environment or schema changes, link the relevant issue when available, and attach screenshots for UI changes.
 
+## Issue Implementation Workflow
+- Before implementing a new issue, read the issue and write a short implementation plan.
+- The plan must say whether the issue should land in one commit or in multiple coherent commits.
+- Only split an issue into multiple commits when each commit closes a clear, reviewable part of the issue.
+- Before starting each planned commit, state what part of the issue that commit is meant to close and what will remain open afterwards.
+- After implementing a planned commit, re-read the issue and verify that the commit closes exactly the part it was supposed to close.
+- Do not propose a commit until that verification is done.
+- After each implementation pass, report explicitly whether the issue is fully closed.
+- If the issue is not fully closed, report what is already done and what still remains before the issue can be considered complete.
+- When the issue can be resolved in one commit, prefer one commit instead of atomizing the history unnecessarily.
+- Once all planned commits are done, perform one final issue review and confirm that the full issue is closed end to end.
+
 ## Security & Configuration Tips
 Set `MONGODB_URI` locally before running database-backed pages or API routes. Do not commit secrets. External images are currently expected from Cloudinary and Medium, so update `next.config.ts` if new image hosts are introduced.
 
