@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState, useTransition } from "react";
-import { Bars3Icon, EllipsisHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
-import { Button, Card, Modal, useOverlayState } from "@heroui/react";
+import { Bars3Icon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
+import { Button, Card, Drawer, useOverlayState } from "@heroui/react";
+import { EditorialSettingsDrawer } from "@/components/Admin/EditorialShell";
 import { emptyThoughtActionState } from "@/server/thoughts/actionState";
 import { reorderThoughtsAction, saveThoughtSettingsAction } from "@/server/thoughts/actions";
 
@@ -43,7 +44,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
   const [selected, setSelected] = useState<ThoughtListItem | null>(null);
   const [reorderError, setReorderError] = useState<string | null>(null);
   const [reordering, startReordering] = useTransition();
-  const modal = useOverlayState();
+  const settings = useOverlayState();
   const [saveState, saveSettings] = useActionState(
     saveThoughtSettingsAction,
     emptyThoughtActionState("")
@@ -54,14 +55,14 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
 
   useEffect(() => {
     if (saveState.status === "success") {
-      modal.close();
+      settings.close();
       router.refresh();
     }
-  }, [modal, router, saveState.status]);
+  }, [router, saveState.status, settings]);
 
   function openSettings(item: ThoughtListItem) {
     setSelected(item);
-    modal.open();
+    settings.open();
   }
 
   function moveBefore(targetId: string) {
@@ -107,10 +108,6 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             Borradores ({drafts.length})
           </button>
         </nav>
-        <Link href="/admin/thoughts/new" className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-background transition hover:opacity-85">
-          <PlusIcon className="size-4" />
-          Nuevo artículo
-        </Link>
       </div>
 
       {reorderError ? <p className="text-sm text-red-600">{reorderError}</p> : null}
@@ -171,70 +168,66 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
         </Card>
       ) : null}
 
-      <Modal state={modal}>
-        <Modal.Backdrop>
-          <Modal.Container>
-            <Modal.Dialog>
-              <form action={saveSettings} className="grid gap-5">
-                <Modal.Header>
-                  <Modal.Heading>Ajustes del artículo</Modal.Heading>
-                </Modal.Header>
-                <Modal.Body className="grid gap-4">
-                  <input type="hidden" name="id" value={selected?.id ?? ""} />
-                  <label className="grid gap-2 text-sm text-primary">
-                    Slug
-                    <input
-                      key={selected?.id}
-                      name="slug"
-                      required
-                      defaultValue={selected?.slug ?? ""}
-                      className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
-                    />
-                    {saveState.fieldErrors.slug ? <span className="text-red-600">{saveState.fieldErrors.slug}</span> : null}
-                  </label>
-                  <label className="grid gap-2 text-sm text-primary">
-                    Excerpt
-                    <textarea
-                      key={`${selected?.id}-excerpt`}
-                      name="excerpt"
-                      required
-                      rows={3}
-                      defaultValue={selected?.excerpt ?? ""}
-                      className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
-                    />
-                    {saveState.fieldErrors.excerpt ? <span className="text-red-600">{saveState.fieldErrors.excerpt}</span> : null}
-                  </label>
-                  <label className="grid gap-2 text-sm text-primary">
-                    Fecha
-                    <input
-                      key={`${selected?.id}-date`}
-                      name="publishedDate"
-                      type="date"
-                      required
-                      defaultValue={selected?.publishedDate.slice(0, 10) ?? ""}
-                      className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
-                    />
-                  </label>
-                  <label className="inline-flex items-center gap-3 text-sm text-primary">
-                    <input
-                      key={`${selected?.id}-featured`}
-                      name="featured"
-                      type="checkbox"
-                      defaultChecked={selected?.featured ?? false}
-                    />
-                    Featured on homepage
-                  </label>
-                  {saveState.status === "error" ? <p className="text-sm text-red-600">{saveState.message}</p> : null}
-                </Modal.Body>
-                <Modal.Footer>
-                  <Modal.CloseTrigger className="button button--ghost">Cancelar</Modal.CloseTrigger>
-                  <Button type="submit" variant="primary">Guardar ajustes</Button>
-                </Modal.Footer>
-              </form>
-            </Modal.Dialog>
-          </Modal.Container>
-        </Modal.Backdrop>
-      </Modal>
+      <EditorialSettingsDrawer
+        state={settings}
+        title="Thought settings"
+        footer={
+          <>
+            <Drawer.CloseTrigger className="button button--ghost">Cancel</Drawer.CloseTrigger>
+            <Button type="submit" form="thought-list-settings" variant="primary">
+              Save settings
+            </Button>
+          </>
+        }
+      >
+        <form id="thought-list-settings" action={saveSettings} className="grid gap-4">
+          <input type="hidden" name="id" value={selected?.id ?? ""} />
+          <label className="grid gap-2 text-sm text-primary">
+            Slug
+            <input
+              key={selected?.id}
+              name="slug"
+              required
+              defaultValue={selected?.slug ?? ""}
+              className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
+            />
+            {saveState.fieldErrors.slug ? <span className="text-red-600">{saveState.fieldErrors.slug}</span> : null}
+          </label>
+          <label className="grid gap-2 text-sm text-primary">
+            Excerpt
+            <textarea
+              key={`${selected?.id}-excerpt`}
+              name="excerpt"
+              required
+              rows={3}
+              defaultValue={selected?.excerpt ?? ""}
+              className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
+            />
+            {saveState.fieldErrors.excerpt ? <span className="text-red-600">{saveState.fieldErrors.excerpt}</span> : null}
+          </label>
+          <label className="grid gap-2 text-sm text-primary">
+            Publication date
+            <input
+              key={`${selected?.id}-date`}
+              name="publishedDate"
+              type="date"
+              required
+              defaultValue={selected?.publishedDate.slice(0, 10) ?? ""}
+              className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
+            />
+          </label>
+          <label className="inline-flex items-center gap-3 text-sm text-primary">
+            <input
+              key={`${selected?.id}-featured`}
+              name="featured"
+              type="checkbox"
+              defaultChecked={selected?.featured ?? false}
+            />
+            Featured on homepage
+          </label>
+          {saveState.status === "error" ? <p className="text-sm text-red-600">{saveState.message}</p> : null}
+        </form>
+      </EditorialSettingsDrawer>
     </section>
   );
 }

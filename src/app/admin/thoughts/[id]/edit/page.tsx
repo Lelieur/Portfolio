@@ -1,3 +1,4 @@
+import { EditorialPageShell } from "@/components/Admin/EditorialShell";
 import { notFound } from "next/navigation";
 import { ThoughtEditor } from "@/components/AdminThoughts/ThoughtEditor";
 import { asThought, summarizeThoughtDocument } from "@/server/thoughts/domain";
@@ -15,17 +16,16 @@ export default async function EditThoughtPage({
   if (!document || !thought) notFound();
 
   return (
-    <main className="flex flex-col gap-8">
-      <header className="flex flex-col gap-2">
-        <p className="text-sm uppercase tracking-[0.2em] text-secondary">Admin</p>
-        <h1 className="text-3xl font-medium text-primary">Editar thought</h1>
-      </header>
+    <EditorialPageShell
+      title="Edit thought"
+      description="Shared edit shell for draft and publish flows."
+    >
       <ThoughtEditor
         documentId={id}
         initialThought={thought}
         hasSavedDocument
         status={summarizeThoughtDocument(document).status}
       />
-    </main>
+    </EditorialPageShell>
   );
 }

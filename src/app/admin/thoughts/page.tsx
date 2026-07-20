@@ -1,22 +1,29 @@
+import { EditorialPageShell } from "@/components/Admin/EditorialShell";
 import { ThoughtsAdminList } from "@/components/AdminThoughts/ThoughtsAdminList";
 import { getThoughtDocuments } from "@/server/thoughts/queries";
 import { asThought, summarizeThoughtDocument } from "@/server/thoughts/domain";
+import Link from "next/link";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 export default async function AdminThoughtsPage() {
   const documents = await getThoughtDocuments();
 
   return (
-    <main className="flex flex-col gap-8">
-      <header className="flex flex-col gap-2">
-        <p className="text-sm uppercase tracking-[0.2em] text-secondary">
-          Admin
-        </p>
-        <h1 className="text-3xl font-medium text-primary">Thoughts</h1>
-        <p className="max-w-3xl text-base text-secondary">
-          Lista de artículos. La edición vive fuera de esta vista.
-        </p>
-      </header>
-
+    <EditorialPageShell
+      title="Thoughts"
+      description="Owner list view for published and draft Thoughts."
+      actions={
+        <Link
+          href="/admin/thoughts/new"
+          className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-background transition hover:opacity-85"
+        >
+          <span className="inline-flex items-center gap-2">
+            <PlusIcon className="size-4" />
+            New article
+          </span>
+        </Link>
+      }
+    >
       <ThoughtsAdminList
         items={documents.flatMap((document) => {
           const documentSummary = summarizeThoughtDocument(document);
@@ -46,6 +53,6 @@ export default async function AdminThoughtsPage() {
           }];
         })}
       />
-    </main>
+    </EditorialPageShell>
   );
 }
