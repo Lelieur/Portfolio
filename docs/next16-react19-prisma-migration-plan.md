@@ -238,12 +238,12 @@ Possible patterns:
 - Keep the existing portfolio palette and typography through semantic CSS tokens. Add a Header selector for System, Light, and Dark, persisted in local storage and shared by admin and public pages.
 - Apply the shared content list pattern to every editable collection: Published and Draft filters, card overflow Settings, and drag ordering for published content.
 - Keep editorial settings limited to slug, excerpt, cover image, publication date, and homepage featured state. Collection order and featured order are drag-only operations in their corresponding list.
-- Introduce TipTap progressively per content domain. Store editable JSON as the source, generate safe HTML for public rendering, and require missing editorial settings after the first canvas save. The editor interaction should be Notion-like: the writing area is the primary control surface, formatting is applied in-canvas, and persistent toolbar chrome is not the target interaction model.
+- Introduce TipTap progressively per content domain. Store editable JSON as the source, generate safe HTML for public rendering, and require missing editorial settings after the first canvas save. The approved baseline is the free official TipTap `Simple Editor` template, adapted as a contained editor inside the shared `Content` panel instead of a full-window experience.
 - Add owner-only image uploads for cover and inline images, then use HeroUI feedback primitives for save, publish, upload, and error states.
 - Migrate Thoughts first; Projects, Experiments, About, and Now adopt the same shell only after their domain-specific editors are defined.
 
 ### Pending Editorial Experience
-- The current Thoughts creation and editing routes are transitional. They must not be considered the final product until the shared editorial shell is in place; TipTap stores a rich document; the document title comes from the first `H1`; the editor feels Notion-like and does not depend on a persistent formatting topbar; inline images are inserted from the canvas; cover image defaults from the first document image until manual override; first-save required settings are enforced; and safe rich-text rendering and uploads are complete.
+- The current Thoughts creation and editing routes are transitional. They must not be considered the final product until the shared editorial shell is in place; TipTap stores a rich document; the document title comes from the first `H1`; the editor uses the official free TipTap `Simple Editor` template within the existing `Content` panel; inline images are inserted from the canvas; cover image defaults from the first document image until manual override; first-save required settings are enforced; and safe rich-text rendering and uploads are complete.
 
 ### Agreed Implementation Order For The Editorial Redesign
 - Use GitHub Issues as the execution map for this phase.

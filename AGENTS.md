@@ -37,6 +37,14 @@ Recent history follows short Conventional Commit messages such as `feat: expand 
 - If a pushed commit closes only part of an issue, leave the issue open and add a comment stating what was covered by the pushed work and what still remains.
 - If a pushed commit closes an entire issue, close the issue and update any related issue state in the repo workflow so the visible issue map stays accurate.
 - Do the GitHub issue update before the `push`, not after it, so the tracker always reflects the state of the branch being pushed.
+- When implementing UI or editor behavior, treat the active GitHub issue plus the referenced docs and ADRs as the source of truth before trusting the current code.
+- If the current implementation appears to be debt from an earlier iteration or does not match the issue/docs, stop and tell the user exactly what does not line up.
+- Before deleting, reverting, or replacing that mismatched implementation, ask the user for confirmation and wait for the answer.
+- After the user confirms, document the updated product or interaction decision in the relevant docs before or alongside the implementation when the behavior was previously ambiguous.
+
+## Editor Research Workflow
+- For Tiptap or editor-interaction work, research the official Tiptap docs first when behavior or available primitives are in question.
+- Capture the findings in a repo doc before implementing if the work depends on product or interaction decisions, especially for editor templates, menus, slash commands, or block controls.
 
 ## Security & Configuration Tips
 Set `MONGODB_URI` locally before running database-backed pages or API routes. Do not commit secrets. External images are currently expected from Cloudinary and Medium, so update `next.config.ts` if new image hosts are introduced.
