@@ -11,7 +11,7 @@ export default function ThoughtDetailCard({ detail }: ThoughtDetailsCardProp) {
   const detailValue = Object.values(detail)[0];
 
   return (
-    <div className="flex flex-col gap-1 md:gap-2">
+    <div className="ui-detail-card">
       <p className="text-xs leading-normal text-secondary">{detailTitle}</p>
       {detailTitle === "Link" && (
         <a

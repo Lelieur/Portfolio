@@ -11,30 +11,28 @@ export default function ThoughtCard({
 }: Thought) {
   return (
     <Link href={`/thoughts/${slug}`}>
-      <div className="relative grid grid-cols-6 items-center gap-3 md:gap-6">
-        <div className="col-span-6 flex flex-row place-content-between md:col-span-2">
+      <div className="ui-content-card">
+        <div className="ui-content-card-media">
           <Image
             width="1200"
             height="600"
             src={coverImageUrl}
             alt={title}
             priority
-            className="h-auto w-full rounded-md border border-primary/15 object-cover"
+            className="ui-content-card-image"
           />
         </div>
-        <div className="col-span-6 flex flex-col gap-0.5 md:gap-2 md:col-span-4">
-          <div className="flex flex-col items-start gap-2 md:flex-row md:items-center md:gap-4">
+        <div className="ui-content-card-body">
+          <div className="ui-content-card-header">
             <p className="text-base leading-normal relative flex flex-col gap-0.5 font-medium text-primary underline decoration-secondary decoration-dotted underline-offset-8">
               {title}
             </p>
-            <div className="hidden flex-auto border-[0.5px] border-secondary/15 md:block"></div>
+            <div className="ui-content-card-divider" />
             <p className="text-sm leading-normal relative text-primary">
               {new Date(publishedDate).toLocaleDateString()}
             </p>
           </div>
-          <div className="text-sm leading-normal line-clamp-1 text-secondary">
-            <p className="text-sm leading-normal line-clamp-1 text-secondary">{excerpt}</p>
-          </div>
+          <p className="ui-content-card-summary">{excerpt}</p>
         </div>
       </div>
     </Link>

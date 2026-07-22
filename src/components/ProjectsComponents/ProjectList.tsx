@@ -7,7 +7,7 @@ interface ProjectListProps {
 
 export default async function ProjectList({ projects }: ProjectListProps) {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="ui-content-list">
       {projects.map((project) => (
         <ProjectCard key={project.slug} {...project} />
       ))}

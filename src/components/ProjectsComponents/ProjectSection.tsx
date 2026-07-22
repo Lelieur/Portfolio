@@ -7,7 +7,7 @@ interface ProjectSectionProps {
 
 export default function ProjectSectionBis({ about }: ProjectSectionProps) {
   return (
-    <section className="flex flex-col first:pt-0 last:pb-0 gap-8 py-8">
+    <section className="ui-content-block">
       <h2 className="text-base leading-normal font-medium text-primary">
         {about.title}
       </h2>

@@ -8,7 +8,7 @@ export default function ThoughtsDetailsList({
   details,
 }: ThoughtsDetailsListProps) {
   return (
-    <section className="grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-4">
+    <section className="ui-detail-grid">
       {Object.entries(details).map(([key, value]) => (
         <ThoughtDetailCard key={key} detail={{ [key]: value.toString() }} />
       ))}

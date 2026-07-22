@@ -4,7 +4,7 @@ export default function LastUpdated() {
   const lastUpdated = getLastUpdatedDate("src/app/about/page.tsx");
 
   return (
-    <span className="flex flex-row items-center gap-1">
+    <span className="ui-updated">
       <p className="text-sm leading-normal italic text-secondary">
         * Last Updated on the
       </p>

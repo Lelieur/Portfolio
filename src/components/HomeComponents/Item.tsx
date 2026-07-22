@@ -11,7 +11,7 @@ export default function Item({ section, item }: ItemProps) {
   return (
     <Link
       href={`/${section.toLowerCase()}/${toSlug(item.title)}`}
-      className="flex flex-col items-start md:flex-row md:items-center gap-1 md:gap-4 duration-300 hover:translate-x-0.5"
+      className="ui-content-row"
     >
       <p className="text-base leading-normal text-primary underline decoration-dotted decoration-secondary underline-offset-8">
         {item.title}
@@ -22,7 +22,7 @@ export default function Item({ section, item }: ItemProps) {
         </p>
       )}
 
-      <div className="flex-auto border-[0.5px] border-secondary/15"></div>
+      <div className="ui-content-row-divider" />
       {item.year && (
         <span className=" md:text-end text-xs leading-normal text-secondary">
           {item.year}

@@ -21,9 +21,9 @@ export default function SocialLinksSection() {
   ];
 
   return (
-    <section className="flex flex-col gap-4 md:gap-8">
+    <section className="ui-social-section">
       <p className="text-secondary text-xs uppercase">Connect with me</p>
-      <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+      <div className="ui-social-links">
         {socialLinks.map((link, id) => (
           <SocialLink key={id} {...link} />
         ))}

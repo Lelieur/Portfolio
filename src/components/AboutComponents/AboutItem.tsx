@@ -8,8 +8,8 @@ export default function AboutItem({
   link,
 }: ItemType) {
   return (
-    <div className="col-span-3 flex flex-col gap-4">
-      <div className="flex flex-col items-start gap-1.5">
+    <div className="ui-about-item-content">
+      <div className="ui-about-item-header">
         <div className="flex items-center gap-2 md:gap-4">
           {link ? (
             <a
@@ -29,7 +29,7 @@ export default function AboutItem({
         </div>
         <p className="text-sm leading-normal block text-secondary">{year}</p>
       </div>
-      <ul className="list-inside list-disc space-y-0.5 text-primary">
+      <ul className="ui-about-item-details list-inside list-disc text-primary">
         {Array.isArray(description) ? (
           description.map((desc, index) => (
             <li key={index}>
