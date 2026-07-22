@@ -32,7 +32,7 @@ export default function ProjectDetailsList({
               {value}
             </p>
           ) : (
-            <ul className="flex flex-row justify-between">
+            <ul className="ui-detail-tags">
               {value.map((elm) => (
                 <li key={elm} className="mr-1 last:mr-0">
                   {elm}

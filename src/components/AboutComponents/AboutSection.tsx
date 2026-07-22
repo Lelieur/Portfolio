@@ -9,7 +9,7 @@ type AboutSectionProps = {
 export default function AboutSection({ title, items }: AboutSectionProps) {
   return (
     <section className="ui-about-section">
-      <div className="flex flex-row place-content-between items-center">
+      <div className="ui-about-section-header">
         <p className="text-xs leading-normal uppercase text-secondary uppercase group-hover:text-primary group-hover:font-medium">
           {title}
         </p>

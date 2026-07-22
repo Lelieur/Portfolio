@@ -49,7 +49,7 @@ export default function About() {
               alt="Lucas Lelieur WebDev"
               width={64}
               height={64}
-              className="rounded-full"
+              className="ui-about-avatar"
             />
             <p className="text-base leading-normal font-medium text-primary">
               <span className="inline-block animate-[wave_1.5s_ease-in-out_infinite] origin-bottom-right mr-2">

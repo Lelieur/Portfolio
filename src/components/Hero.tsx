@@ -11,7 +11,7 @@ export default function Hero() {
         technology.
       </p>
       <div className="ui-section-list ui-hero-links">
-        <Link href="/about" className="w-fit block">
+        <Link href="/about" className="ui-hero-link">
           <span className="group inline text-base">
             <span className="inline underline underline-offset-4 decoration-dotted ">
               Learn more about me
@@ -24,7 +24,7 @@ export default function Hero() {
             </span>
           </span>
         </Link>
-        <Link href="/now" className="w-fit block">
+        <Link href="/now" className="ui-hero-link">
           <span className="group inline text-base">
             <span className="inline underline underline-offset-4 decoration-dotted ">
               What I&#39;m to now

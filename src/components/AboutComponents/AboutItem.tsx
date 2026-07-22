@@ -10,7 +10,7 @@ export default function AboutItem({
   return (
     <div className="ui-about-item-content">
       <div className="ui-about-item-header">
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="ui-about-item-title">
           {link ? (
             <a
               href={link}

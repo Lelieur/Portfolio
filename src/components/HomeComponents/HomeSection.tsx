@@ -17,7 +17,7 @@ export default function HomeSection({
   return (
     <section className="ui-home-section">
       <Link href={link}>
-        <div className="ui-home-section-header group hover:cursor-pointer">
+        <div className="ui-home-section-header group">
           <p className="text-xs leading-normal text-secondary uppercase group-hover:text-primary group-hover:font-medium">
             {section}
           </p>
