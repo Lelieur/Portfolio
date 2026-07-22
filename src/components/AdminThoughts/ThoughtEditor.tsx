@@ -141,7 +141,7 @@ export function ThoughtEditor({
   }, [initialThought]);
 
   return (
-    <form id="thought-editor" action={saveAction} className="grid gap-6">
+    <form id="thought-editor" action={saveAction} className="ui-form">
       <input type="hidden" name="id" value={documentId} />
       <input type="hidden" name="manualSlug" value={draft.manualSlug ?? ""} />
       <input type="hidden" name="manualExcerpt" value={draft.manualExcerpt ?? ""} />
@@ -227,7 +227,7 @@ export function ThoughtEditor({
         }
         settingsContent={
           <>
-            <label className="grid gap-2 text-sm text-primary">
+            <label className="ui-form-field">
               Slug
               <input
                 value={draft.manualSlug ?? draft.slug}
@@ -239,14 +239,14 @@ export function ThoughtEditor({
                   }))
                 }
                 aria-invalid={Boolean(saveState.fieldErrors.slug)}
-                className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
+                className="ui-input"
               />
               <p className="text-xs text-secondary">
                 Leave it untouched to keep following the document title.
               </p>
               <FieldError id="slug-error" message={saveState.fieldErrors.slug} />
             </label>
-            <label className="grid gap-2 text-sm text-primary">
+            <label className="ui-form-field">
               Excerpt
               <textarea
                 rows={3}
@@ -259,14 +259,14 @@ export function ThoughtEditor({
                   }))
                 }
                 aria-invalid={Boolean(saveState.fieldErrors.excerpt)}
-                className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
+                className="ui-input"
               />
               <p className="text-xs text-secondary">
                 Leave it untouched to keep following the document content.
               </p>
               <FieldError id="excerpt-error" message={saveState.fieldErrors.excerpt} />
             </label>
-            <label className="grid gap-2 text-sm text-primary">
+            <label className="ui-form-field">
               Cover image URL
               <input
                 type="text"
@@ -279,7 +279,7 @@ export function ThoughtEditor({
                   }))
                 }
                 aria-invalid={Boolean(saveState.fieldErrors.coverImageUrl)}
-                className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
+                className="ui-input"
               />
               <p className="text-xs text-secondary">
                 Leave it untouched to keep following the first document image.
@@ -289,7 +289,7 @@ export function ThoughtEditor({
                 message={saveState.fieldErrors.coverImageUrl}
               />
             </label>
-            <label className="grid gap-2 text-sm text-primary">
+            <label className="ui-form-field">
               Publication date
               <input
                 type="date"
@@ -300,7 +300,7 @@ export function ThoughtEditor({
                     publishedDate: event.currentTarget.value,
                   }))
                 }
-                className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base outline-none"
+                className="ui-input"
               />
               <p className="text-xs text-secondary">
                 Leave empty to auto-fill the first time this is published.

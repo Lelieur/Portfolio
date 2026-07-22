@@ -90,13 +90,13 @@ export function ThoughtRead({
         </article>
       }
     />
-      <dialog ref={changesDialog} className="m-auto w-[min(92vw,28rem)] rounded-xl border border-primary/15 bg-background p-0 text-primary backdrop:bg-black/40">
-        <div className="grid gap-5 p-6">
+      <dialog ref={changesDialog} className="ui-dialog">
+        <div className="ui-dialog-content">
           <div className="grid gap-2">
             <h2 className="text-lg font-medium">Hay cambios sin publicar</h2>
             <p className="text-sm text-secondary">La versión publicada se muestra aquí. Puedes continuar editando el borrador.</p>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="ui-dialog-actions">
             <Button type="button" className="ui-control" onPress={() => changesDialog.current?.close()}>Cerrar</Button>
             <Link href={`/admin/thoughts/${documentId}/edit`} className="ui-control bg-primary text-background">Seguir editando</Link>
           </div>

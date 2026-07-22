@@ -132,34 +132,32 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
   }
 
   return (
-    <section className="grid gap-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <nav className="flex items-center gap-4" aria-label="Filtrar thoughts">
-          <button
+    <section className="ui-list">
+      <div className="ui-list-toolbar">
+        <nav className="ui-filter" aria-label="Filtrar thoughts">
+          <Button
             type="button"
-            className={`text-sm transition ${
-              filter === "published" ? "font-medium text-primary" : "text-secondary/70 hover:text-primary"
-            }`}
-            onClick={() => setFilter("published")}
+            className="ui-filter-button"
+            data-active={filter === "published"}
+            onPress={() => setFilter("published")}
           >
             Publicadas ({publishedItems.length})
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
-            className={`text-sm transition ${
-              filter === "draft" ? "font-medium text-primary" : "text-secondary/70 hover:text-primary"
-            }`}
-            onClick={() => setFilter("draft")}
+            className="ui-filter-button"
+            data-active={filter === "draft"}
+            onPress={() => setFilter("draft")}
           >
             Borradores ({drafts.length})
-          </button>
+          </Button>
         </nav>
       </div>
 
       {reorderError ? <p className="text-sm text-danger">{reorderError}</p> : null}
       {reordering ? <p className="text-sm text-secondary">Guardando orden...</p> : null}
 
-      <div className="grid gap-3">
+      <div className="ui-list-items">
         {visibleItems.map((item) => (
           <Card
             key={item.id}
@@ -192,6 +190,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                 isIconOnly
                 variant="ghost"
                 size="sm"
+                className="ui-control ui-control--icon"
                 aria-label={`Ajustes de ${item.title}`}
                 onPress={() => openSettings(item)}
               >
@@ -258,41 +257,41 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
           </>
         }
       >
-        <form id="thought-list-settings" action={saveSettings} className="grid gap-4">
+        <form id="thought-list-settings" action={saveSettings} className="ui-form">
           <input type="hidden" name="id" value={selected?.id ?? ""} />
-          <label className="grid gap-2 text-sm text-primary">
+          <label className="ui-form-field">
             Slug
             <input
               key={selected?.id}
               name="manualSlug"
               defaultValue={selected?.slug ?? ""}
-              className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
+              className="ui-input"
             />
             {saveState.fieldErrors.slug ?? publishState.fieldErrors.slug ? (
               <span className="text-danger">{saveState.fieldErrors.slug ?? publishState.fieldErrors.slug}</span>
             ) : null}
           </label>
-          <label className="grid gap-2 text-sm text-primary">
+          <label className="ui-form-field">
             Excerpt
             <textarea
               key={`${selected?.id}-excerpt`}
               name="manualExcerpt"
               rows={3}
               defaultValue={selected?.excerpt ?? ""}
-              className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
+              className="ui-input"
             />
             {saveState.fieldErrors.excerpt ?? publishState.fieldErrors.excerpt ? (
               <span className="text-danger">{saveState.fieldErrors.excerpt ?? publishState.fieldErrors.excerpt}</span>
             ) : null}
           </label>
-          <label className="grid gap-2 text-sm text-primary">
+          <label className="ui-form-field">
             Cover image URL
             <input
               key={`${selected?.id}-cover`}
               name="manualCoverImageUrl"
               type="text"
               defaultValue={selected?.coverImageUrl ?? ""}
-              className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
+              className="ui-input"
             />
             {saveState.fieldErrors.coverImageUrl ?? publishState.fieldErrors.coverImageUrl ? (
               <span className="text-danger">
@@ -300,14 +299,14 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
               </span>
             ) : null}
           </label>
-          <label className="grid gap-2 text-sm text-primary">
+          <label className="ui-form-field">
             Publication date
             <input
               key={`${selected?.id}-date`}
               name="publishedDate"
               type="date"
               defaultValue={selected?.publishedDate.slice(0, 10) ?? ""}
-              className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
+              className="ui-input"
             />
           </label>
           <label className="inline-flex items-center gap-3 text-sm text-primary">
@@ -324,13 +323,13 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
         </form>
       </EditorialSettingsDrawer>
 
-      <dialog ref={deleteDialog} className="m-auto w-[min(92vw,28rem)] rounded-xl border border-primary/15 bg-background p-0 text-primary backdrop:bg-black/40">
-        <div className="grid gap-5 p-6">
+      <dialog ref={deleteDialog} className="ui-dialog">
+        <div className="ui-dialog-content">
           <div className="grid gap-2">
             <h2 className="text-lg font-medium">¿Borrar “{deleteTarget?.title || "Untitled thought"}”?</h2>
             <p className="text-sm text-secondary">Esta acción elimina el borrador y la versión publicada.</p>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="ui-dialog-actions">
             <Button type="button" className="ui-control" onPress={closeDelete}>Cancelar</Button>
             <Button type="button" className="ui-control ui-control--danger" onPress={confirmDelete} isDisabled={deleting}>
               {deleting ? "Borrando..." : "Borrar"}
