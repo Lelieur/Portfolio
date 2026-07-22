@@ -563,7 +563,9 @@ export function summarizeThoughtDocument(document: {
   const draft = asThought(document.draft);
   const published = asThought(document.published);
   const thought = draft ?? published ?? EMPTY_THOUGHT;
-  const status = draft && published ? "draft+published" : draft ? "draft" : "published";
+  const hasUnpublishedChanges =
+    Boolean(draft && published && JSON.stringify(draft) !== JSON.stringify(published));
+  const status = hasUnpublishedChanges ? "draft+published" : draft ? "draft" : "published";
 
   return {
     title: thought.title || "Untitled thought",

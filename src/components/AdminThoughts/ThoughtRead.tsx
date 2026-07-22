@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useOverlayState } from "@heroui/react";
+import Link from "next/link";
+import { Button, useOverlayState } from "@heroui/react";
+import { useEffect, useRef } from "react";
 import { EditorialReadShell } from "@/components/Admin/EditorialShell";
 import ThoughtDetailsList from "@/components/ThougthsComponents/ThoughtDetailsList";
 import type { Thought } from "@/server/thoughts/types";
@@ -16,14 +18,22 @@ export function ThoughtRead({
   documentId,
   thought,
   status,
+  hasUnpublishedChanges,
 }: {
   documentId: string;
   thought: Thought;
   status: "draft" | "published" | "draft+published";
+  hasUnpublishedChanges: boolean;
 }) {
   const settings = useOverlayState();
+  const changesDialog = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (hasUnpublishedChanges) changesDialog.current?.showModal();
+  }, [hasUnpublishedChanges]);
 
   return (
+    <>
     <EditorialReadShell
       title={thought.title}
       description="Owner-only read surface for reviewing the current draft or live version."
@@ -31,6 +41,8 @@ export function ThoughtRead({
       statusLabel={statusLabel[status]}
       backHref="/admin/thoughts"
       editHref={`/admin/thoughts/${documentId}/edit`}
+      publicHref={status === "draft" ? undefined : `/thoughts/${thought.slug}`}
+      publicLabel="Ver público"
       settings={settings}
       settingsTitle="Thought settings"
       settingsContent={
@@ -78,5 +90,18 @@ export function ThoughtRead({
         </article>
       }
     />
+      <dialog ref={changesDialog} className="m-auto w-[min(92vw,28rem)] rounded-xl border border-primary/15 bg-background p-0 text-primary backdrop:bg-black/40">
+        <div className="grid gap-5 p-6">
+          <div className="grid gap-2">
+            <h2 className="text-lg font-medium">Hay cambios sin publicar</h2>
+            <p className="text-sm text-secondary">La versión publicada se muestra aquí. Puedes continuar editando el borrador.</p>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button type="button" className="editorial-control" onPress={() => changesDialog.current?.close()}>Cerrar</Button>
+            <Link href={`/admin/thoughts/${documentId}/edit`} className="editorial-control bg-primary text-background">Seguir editando</Link>
+          </div>
+        </div>
+      </dialog>
+    </>
   );
 }

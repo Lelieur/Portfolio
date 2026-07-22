@@ -1,7 +1,7 @@
 import { EditorialPageShell } from "@/components/Admin/EditorialShell";
 import { ThoughtsAdminList } from "@/components/AdminThoughts/ThoughtsAdminList";
 import { getThoughtDocuments } from "@/server/thoughts/queries";
-import { asThought, summarizeThoughtDocument } from "@/server/thoughts/domain";
+import { asThought, prepareThoughtForPublish, summarizeThoughtDocument } from "@/server/thoughts/domain";
 import Link from "next/link";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
@@ -15,7 +15,7 @@ export default async function AdminThoughtsPage() {
       actions={
         <Link
           href="/admin/thoughts/new"
-          className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-background transition hover:opacity-85"
+          className="editorial-control bg-primary text-background"
         >
           <span className="inline-flex items-center gap-2">
             <PlusIcon className="size-4" />
@@ -25,6 +25,7 @@ export default async function AdminThoughtsPage() {
       }
     >
       <ThoughtsAdminList
+        key={documents.map((document) => `${document.id}:${document.updatedAt.getTime()}`).join("|")}
         items={documents.flatMap((document) => {
           const documentSummary = summarizeThoughtDocument(document);
           const draftThought = asThought(document.draft);
@@ -38,7 +39,10 @@ export default async function AdminThoughtsPage() {
           return [{
             id: document.id,
             href,
-            draftHref: `/admin/thoughts/${document.id}`,
+            editHref: `/admin/thoughts/${document.id}/edit`,
+            publishable: Boolean(
+              prepareThoughtForPublish(settingsThought, publishedThought).ok
+            ),
             title: thought.title || documentSummary.title,
             excerpt: thought.excerpt || documentSummary.excerpt,
             draftTitle: draftThought?.title,

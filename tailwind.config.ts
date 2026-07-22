@@ -10,6 +10,7 @@ const config: Config = {
         primary: "var(--primary)",
         secondary: "var(--secondary)",
         emerald: "var(--emerald)",
+        danger: "var(--danger)",
         gray: "var(--gray)",
         surface: "var(--surface)",
         "surface-raised": "var(--surface-raised)",

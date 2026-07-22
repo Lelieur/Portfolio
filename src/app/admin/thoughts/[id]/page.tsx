@@ -12,7 +12,9 @@ export default async function AdminThoughtPreviewPage({
 }) {
   const { id } = await params;
   const document = (await getThoughtDocuments()).find((item) => item.id === id);
-  const thought = document && (asThought(document.draft) ?? asThought(document.published));
+  const publishedThought = asThought(document?.published);
+  const draftThought = asThought(document?.draft);
+  const thought = publishedThought ?? draftThought;
 
   if (!document || !thought) notFound();
 
@@ -25,6 +27,11 @@ export default async function AdminThoughtPreviewPage({
         documentId={id}
         thought={thought}
         status={summarizeThoughtDocument(document).status}
+        hasUnpublishedChanges={Boolean(
+          publishedThought &&
+            draftThought &&
+            JSON.stringify(publishedThought) !== JSON.stringify(draftThought)
+        )}
       />
     </EditorialPageShell>
   );

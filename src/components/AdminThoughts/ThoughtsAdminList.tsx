@@ -2,12 +2,17 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState, useTransition } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { Bars3Icon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { Button, Card, Drawer, useOverlayState } from "@heroui/react";
 import { EditorialSettingsDrawer } from "@/components/Admin/EditorialShell";
 import { emptyThoughtActionState } from "@/server/thoughts/actionState";
-import { reorderThoughtsAction, saveThoughtSettingsAction } from "@/server/thoughts/actions";
+import {
+  deleteThoughtAction,
+  publishThoughtFromListAction,
+  reorderThoughtsAction,
+  saveThoughtSettingsAction,
+} from "@/server/thoughts/actions";
 
 export type ThoughtListItem = {
   id: string;
@@ -20,7 +25,8 @@ export type ThoughtListItem = {
   status: "draft" | "published" | "draft+published";
   meta: string;
   href: string;
-  draftHref: string;
+  editHref: string;
+  publishable: boolean;
   draftTitle?: string;
   draftExcerpt?: string;
   order: number;
@@ -43,6 +49,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
   );
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [selected, setSelected] = useState<ThoughtListItem | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<ThoughtListItem | null>(null);
   const [reorderError, setReorderError] = useState<string | null>(null);
   const [reordering, startReordering] = useTransition();
   const settings = useOverlayState();
@@ -50,9 +57,21 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
     saveThoughtSettingsAction,
     emptyThoughtActionState("")
   );
+  const [publishState, publishAction, publishPending] = useActionState(
+    async (_state: ReturnType<typeof emptyThoughtActionState>, formData: FormData) =>
+      publishThoughtFromListAction(String(formData.get("id") ?? "")),
+    emptyThoughtActionState("")
+  );
+  const [deleting, startDeleting] = useTransition();
+  const deleteDialog = useRef<HTMLDialogElement>(null);
 
   const drafts = items.filter((item) => item.status !== "published");
   const visibleItems = filter === "published" ? publishedItems : drafts;
+
+  function openSettings(item: ThoughtListItem) {
+    setSelected(item);
+    settings.open();
+  }
 
   useEffect(() => {
     if (saveState.status === "success") {
@@ -61,9 +80,35 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
     }
   }, [router, saveState.status, settings]);
 
-  function openSettings(item: ThoughtListItem) {
-    setSelected(item);
-    settings.open();
+  useEffect(() => {
+    if (publishState.status === "success") {
+      settings.close();
+      router.refresh();
+    }
+  }, [publishState.status, router, settings]);
+
+  function openDelete(item: ThoughtListItem) {
+    setDeleteTarget(item);
+    deleteDialog.current?.showModal();
+  }
+
+  function closeDelete() {
+    deleteDialog.current?.close();
+    setDeleteTarget(null);
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget) return;
+    const id = deleteTarget.id;
+    startDeleting(async () => {
+      try {
+        await deleteThoughtAction(id);
+        closeDelete();
+        router.refresh();
+      } catch (error) {
+        setReorderError(error instanceof Error ? error.message : "No se pudo borrar el artículo.");
+      }
+    });
   }
 
   function moveBefore(targetId: string) {
@@ -111,7 +156,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
         </nav>
       </div>
 
-      {reorderError ? <p className="text-sm text-red-600">{reorderError}</p> : null}
+      {reorderError ? <p className="text-sm text-danger">{reorderError}</p> : null}
       {reordering ? <p className="text-sm text-secondary">Guardando orden...</p> : null}
 
       <div className="grid gap-3">
@@ -127,7 +172,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                 <button
                   type="button"
                   draggable
-                  className="button button--ghost button--sm button--icon-only"
+                  className="editorial-control editorial-control--icon"
                   aria-label={`Reordenar ${item.title}`}
                   onDragStart={() => setDraggedId(item.id)}
                   onDragEnd={() => setDraggedId(null)}
@@ -135,7 +180,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                   <Bars3Icon className="size-5" />
                 </button>
               ) : null}
-              <Link href={filter === "draft" ? item.draftHref : item.href} className="min-w-0 flex-1">
+              <Link href={filter === "draft" ? item.editHref : item.href} className="min-w-0 flex-1">
                 <Card.Title className="truncate">
                   {filter === "draft" ? item.draftTitle ?? item.title : item.title}
                 </Card.Title>
@@ -155,7 +200,36 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             </Card.Header>
             <Card.Footer className="justify-between gap-3 text-sm text-secondary">
               <span className="truncate">{item.meta}</span>
-              <span className="shrink-0">{statusLabel[item.status]}</span>
+              <div className="flex flex-wrap items-center justify-end gap-2">
+                {filter === "published" ? (
+                  <>
+                    <Link href={item.href} className="editorial-control">Ver</Link>
+                    <Link href={item.editHref} className="editorial-control">
+                      {item.status === "draft+published" ? "Seguir editando" : "Editar"}
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <form
+                      action={publishAction}
+                      onSubmit={(event) => {
+                        if (!item.publishable) {
+                          event.preventDefault();
+                          openSettings(item);
+                        }
+                      }}
+                    >
+                      <input type="hidden" name="id" value={item.id} />
+                      <Button type="submit" className="editorial-control bg-primary text-background" isDisabled={publishPending}>Publicar</Button>
+                    </form>
+                    <Link href={item.editHref} className="editorial-control">Seguir editando</Link>
+                  </>
+                )}
+                <Button type="button" className="editorial-control editorial-control--danger" onPress={() => openDelete(item)}>
+                  Borrar
+                </Button>
+                <span className="sr-only">{statusLabel[item.status]}</span>
+              </div>
             </Card.Footer>
           </Card>
         ))}
@@ -174,9 +248,12 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
         title="Thought settings"
         footer={
           <>
-            <Drawer.CloseTrigger className="button button--ghost">Cancel</Drawer.CloseTrigger>
-            <Button type="submit" form="thought-list-settings" variant="primary">
+            <Drawer.CloseTrigger className="editorial-control">Cancel</Drawer.CloseTrigger>
+            <Button type="submit" form="thought-list-settings" className="editorial-control">
               Save settings
+            </Button>
+            <Button type="submit" name="intent" value="publish" form="thought-list-settings" className="editorial-control bg-primary text-background">
+              Save and publish
             </Button>
           </>
         }
@@ -191,7 +268,9 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
               defaultValue={selected?.slug ?? ""}
               className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
             />
-            {saveState.fieldErrors.slug ? <span className="text-red-600">{saveState.fieldErrors.slug}</span> : null}
+            {saveState.fieldErrors.slug ?? publishState.fieldErrors.slug ? (
+              <span className="text-danger">{saveState.fieldErrors.slug ?? publishState.fieldErrors.slug}</span>
+            ) : null}
           </label>
           <label className="grid gap-2 text-sm text-primary">
             Excerpt
@@ -202,7 +281,9 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
               defaultValue={selected?.excerpt ?? ""}
               className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
             />
-            {saveState.fieldErrors.excerpt ? <span className="text-red-600">{saveState.fieldErrors.excerpt}</span> : null}
+            {saveState.fieldErrors.excerpt ?? publishState.fieldErrors.excerpt ? (
+              <span className="text-danger">{saveState.fieldErrors.excerpt ?? publishState.fieldErrors.excerpt}</span>
+            ) : null}
           </label>
           <label className="grid gap-2 text-sm text-primary">
             Cover image URL
@@ -213,8 +294,10 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
               defaultValue={selected?.coverImageUrl ?? ""}
               className="rounded-lg border border-primary/15 bg-transparent px-3 py-2"
             />
-            {saveState.fieldErrors.coverImageUrl ? (
-              <span className="text-red-600">{saveState.fieldErrors.coverImageUrl}</span>
+            {saveState.fieldErrors.coverImageUrl ?? publishState.fieldErrors.coverImageUrl ? (
+              <span className="text-danger">
+                {saveState.fieldErrors.coverImageUrl ?? publishState.fieldErrors.coverImageUrl}
+              </span>
             ) : null}
           </label>
           <label className="grid gap-2 text-sm text-primary">
@@ -236,9 +319,25 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             />
             Featured on homepage
           </label>
-          {saveState.status === "error" ? <p className="text-sm text-red-600">{saveState.message}</p> : null}
+          {saveState.status === "error" ? <p className="text-sm text-danger">{saveState.message}</p> : null}
+          {publishState.status === "error" ? <p className="text-sm text-danger">{publishState.message}</p> : null}
         </form>
       </EditorialSettingsDrawer>
+
+      <dialog ref={deleteDialog} className="m-auto w-[min(92vw,28rem)] rounded-xl border border-primary/15 bg-background p-0 text-primary backdrop:bg-black/40">
+        <div className="grid gap-5 p-6">
+          <div className="grid gap-2">
+            <h2 className="text-lg font-medium">¿Borrar “{deleteTarget?.title || "Untitled thought"}”?</h2>
+            <p className="text-sm text-secondary">Esta acción elimina el borrador y la versión publicada.</p>
+          </div>
+          <div className="flex justify-end gap-2">
+            <Button type="button" className="editorial-control" onPress={closeDelete}>Cancelar</Button>
+            <Button type="button" className="editorial-control editorial-control--danger" onPress={confirmDelete} isDisabled={deleting}>
+              {deleting ? "Borrando..." : "Borrar"}
+            </Button>
+          </div>
+        </div>
+      </dialog>
     </section>
   );
 }

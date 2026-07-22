@@ -166,6 +166,56 @@ export async function unpublishThoughtAction(
   }
 }
 
+export async function publishThoughtFromListAction(id: string): Promise<ThoughtActionState> {
+  if (!(await ownerOnly())) {
+    return { status: "error", message: "You must be signed in to publish thoughts.", fieldErrors: {}, activeId: id };
+  }
+
+  const document = (await getThoughtDocuments()).find((item) => item.id === id);
+  const draft = asThought(document?.draft);
+  const published = asThought(document?.published);
+  if (!draft) {
+    return { status: "error", message: "Thought draft not found.", fieldErrors: {}, activeId: id };
+  }
+
+  const prepared = prepareThoughtForPublish(draft, published);
+  if (!prepared.ok) {
+    return {
+      status: "error",
+      message: "Complete the required settings before publishing.",
+      fieldErrors: prepared.errors,
+      activeId: id,
+    };
+  }
+
+  try {
+    await assertUniqueSlug(id, prepared.value.slug);
+    const boundary = createPrismaContentBoundary<Thought>("thoughts");
+    await boundary.saveDraft(id, prepared.value);
+    await boundary.publish(id);
+    revalidatePath("/admin/thoughts");
+    revalidatePath(`/admin/thoughts/${id}`);
+    revalidatePath("/");
+    revalidatePath("/thoughts");
+    return { status: "success", message: "Thought published.", fieldErrors: {}, activeId: id };
+  } catch (error) {
+    return {
+      status: "error",
+      message: error instanceof Error ? error.message : "Unable to publish thought.",
+      fieldErrors: {},
+      activeId: id,
+    };
+  }
+}
+
+export async function deleteThoughtAction(id: string) {
+  if (!(await ownerOnly())) throw new Error("You must be signed in to delete thoughts.");
+  await prisma.contentDocument.delete({ where: { domain_contentKey: { domain: "thoughts", contentKey: id } } });
+  revalidatePath("/admin/thoughts");
+  revalidatePath("/");
+  revalidatePath("/thoughts");
+}
+
 export async function saveThoughtSettingsAction(
   _previousState: ThoughtActionState,
   formData: FormData
@@ -223,8 +273,24 @@ export async function saveThoughtSettingsAction(
       };
     }
 
-    await assertUniqueSlug(id, nextDraft.value.slug);
-    await createPrismaContentBoundary<Thought>("thoughts").saveDraft(id, nextDraft.value);
+    const boundary = createPrismaContentBoundary<Thought>("thoughts");
+    const intent = formData.get("intent");
+    const nextValue =
+      intent === "publish"
+        ? prepareThoughtForPublish(nextDraft.value, asThought(document.published))
+        : nextDraft;
+    if (!nextValue.ok) {
+      return {
+        status: "error",
+        message: "Complete the required settings before publishing.",
+        fieldErrors: nextValue.errors,
+        activeId: id,
+      };
+    }
+
+    await assertUniqueSlug(id, nextValue.value.slug);
+    await boundary.saveDraft(id, nextValue.value);
+    if (intent === "publish") await boundary.publish(id);
 
     revalidatePath("/admin/thoughts");
     revalidatePath(`/admin/thoughts/${id}`);
@@ -239,7 +305,7 @@ export async function saveThoughtSettingsAction(
 
     return {
       status: "success",
-      message: "Settings saved as a draft.",
+      message: intent === "publish" ? "Thought published." : "Settings saved as a draft.",
       fieldErrors: {},
       activeId: id,
     };

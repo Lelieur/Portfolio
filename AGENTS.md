@@ -14,6 +14,8 @@ Run commands from the repository root: `npm run dev`.
 ## Coding Style & Naming Conventions
 Use TypeScript for app code and keep imports on the `@/*` alias when referencing `src/` modules. Follow the existing component style: PascalCase for React components and model files (`ProjectCard.tsx`, `Project.model.ts`), camelCase for helpers (`fetchProjects.ts`, `formatDate.ts`), and lowercase route folders in `src/app`. Prefer functional React components, Tailwind utility classes for styling, and keep page-specific CSS next to the route only when utilities are not enough.
 
+Visual changes must respect the application’s global styles and semantic tokens, including both light and dark themes. Reuse global UI patterns instead of introducing one-off visual styles.
+
 Use 2-space indentation only if the file already does; otherwise preserve the repository’s current formatting pattern. Run `npm run lint` before opening a PR.
 
 ## Testing Guidelines
@@ -53,6 +55,9 @@ Set `MONGODB_URI` locally before running database-backed pages or API routes. Do
 If the task is related to the planned modernization of this repository, read [docs/next16-react19-prisma-migration-plan.md](/Users/lucas/Desktop/WebDev/Portfolio/portfolio/docs/next16-react19-prisma-migration-plan.md) before making changes. It contains the confirmed version baseline, target architecture, migration phases, and continuity prompt for future GPT sessions.
 
 ## Agent skills
+
+When consulting repository issues, always use `gh issue` from the repository root.
+Never create a Git commit unless the user explicitly asks for it.
 
 ### Issue tracker
 

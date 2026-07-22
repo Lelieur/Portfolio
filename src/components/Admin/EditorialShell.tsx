@@ -23,7 +23,7 @@ export function EditorialStatusBadge({
 }) {
   return (
     <span
-      className={`rounded-full border px-3 py-1 text-xs uppercase tracking-[0.2em] ${statusTone(status)}`}
+      className={`editorial-control ${statusTone(status)}`}
     >
       {label ?? status}
     </span>
@@ -129,6 +129,7 @@ export function EditorialEditorShell({
                 isIconOnly
                 variant="ghost"
                 size="sm"
+                className="editorial-control editorial-control--icon"
                 aria-label="Open settings"
                 onPress={settings.open}
               >
@@ -163,6 +164,8 @@ export function EditorialReadShell({
   statusLabel,
   backHref,
   editHref,
+  publicHref,
+  publicLabel = "View public",
   canvas,
   settings,
   settingsTitle,
@@ -174,6 +177,8 @@ export function EditorialReadShell({
   statusLabel?: string;
   backHref: string;
   editHref: string;
+  publicHref?: string;
+  publicLabel?: string;
   canvas: ReactNode;
   settings: OverlayState;
   settingsTitle?: string;
@@ -190,19 +195,25 @@ export function EditorialReadShell({
               {description ? <div className="text-sm text-secondary">{description}</div> : null}
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <Link href={backHref} className="button button--ghost button--sm">
+              <Link href={backHref} className="editorial-control">
                 Back to list
               </Link>
               <Link
                 href={editHref}
-                className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-background transition hover:opacity-85"
+                className="editorial-control bg-primary text-background"
               >
                 Edit
               </Link>
+              {publicHref ? (
+                <Link href={publicHref} className="editorial-control">
+                  {publicLabel}
+                </Link>
+              ) : null}
               <Button
                 isIconOnly
                 variant="ghost"
                 size="sm"
+                className="editorial-control editorial-control--icon"
                 aria-label="Open settings"
                 onPress={settings.open}
               >

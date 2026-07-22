@@ -130,9 +130,7 @@ export function ThoughtEditor({
     setSavedDraft(draft);
     settings.close();
 
-    if (saveState.activeId !== documentId) {
-      router.replace(`/admin/thoughts/${saveState.activeId}/edit`);
-    }
+    router.replace(`/admin/thoughts/${saveState.activeId}`);
 
     router.refresh();
   }, [documentId, draft, router, saveState.activeId, saveState.status, settings]);
@@ -176,6 +174,7 @@ export function ThoughtEditor({
               name="intent"
               value="draft"
               variant="secondary"
+              className="editorial-control"
               isDisabled={disabled}
               onPress={() => setPendingIntent("draft")}
             >
@@ -186,6 +185,7 @@ export function ThoughtEditor({
               name="intent"
               value="publish"
               variant="primary"
+              className="editorial-control bg-primary text-background"
               isDisabled={disabled}
               onPress={() => setPendingIntent("publish")}
             >
@@ -197,7 +197,7 @@ export function ThoughtEditor({
                 type="submit"
                 disabled={disabled}
                 onClick={() => setPendingIntent("unpublish")}
-                className="rounded-md border border-red-600/20 px-4 py-2 text-sm font-medium text-red-600 disabled:opacity-60 dark:text-red-400"
+                className="editorial-control editorial-control--danger"
               >
                 {unpublishPending && pendingIntent === "unpublish"
                   ? "Unpublishing..."
@@ -330,8 +330,8 @@ export function ThoughtEditor({
         }
         settingsFooter={
           <>
-            <Drawer.CloseTrigger className="button button--ghost">Cancel</Drawer.CloseTrigger>
-            <Button type="submit" form="thought-editor" variant="primary">
+            <Drawer.CloseTrigger className="editorial-control">Cancel</Drawer.CloseTrigger>
+            <Button type="submit" form="thought-editor" className="editorial-control bg-primary text-background">
               Save settings
             </Button>
           </>
