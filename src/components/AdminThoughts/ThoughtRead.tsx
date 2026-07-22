@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Button, useOverlayState } from "@heroui/react";
+import { Button, useOverlayState } from "@/components/ui";
 import { useEffect, useRef } from "react";
 import { EditorialReadShell } from "@/components/Admin/EditorialShell";
 import ThoughtDetailsList from "@/components/ThougthsComponents/ThoughtDetailsList";
@@ -97,8 +97,8 @@ export function ThoughtRead({
             <p className="text-sm text-secondary">La versión publicada se muestra aquí. Puedes continuar editando el borrador.</p>
           </div>
           <div className="flex justify-end gap-2">
-            <Button type="button" className="editorial-control" onPress={() => changesDialog.current?.close()}>Cerrar</Button>
-            <Link href={`/admin/thoughts/${documentId}/edit`} className="editorial-control bg-primary text-background">Seguir editando</Link>
+            <Button type="button" className="ui-control" onPress={() => changesDialog.current?.close()}>Cerrar</Button>
+            <Link href={`/admin/thoughts/${documentId}/edit`} className="ui-control bg-primary text-background">Seguir editando</Link>
           </div>
         </div>
       </dialog>

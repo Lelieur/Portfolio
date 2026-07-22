@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { Bars3Icon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { Button, Card, Drawer, useOverlayState } from "@heroui/react";
+import { Button, Card, Drawer, useOverlayState } from "@/components/ui";
 import { EditorialSettingsDrawer } from "@/components/Admin/EditorialShell";
 import { emptyThoughtActionState } from "@/server/thoughts/actionState";
 import {
@@ -172,7 +172,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                 <button
                   type="button"
                   draggable
-                  className="editorial-control editorial-control--icon"
+                  className="ui-control ui-control--icon"
                   aria-label={`Reordenar ${item.title}`}
                   onDragStart={() => setDraggedId(item.id)}
                   onDragEnd={() => setDraggedId(null)}
@@ -203,8 +203,8 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
               <div className="flex flex-wrap items-center justify-end gap-2">
                 {filter === "published" ? (
                   <>
-                    <Link href={item.href} className="editorial-control">Ver</Link>
-                    <Link href={item.editHref} className="editorial-control">
+                    <Link href={item.href} className="ui-control">Ver</Link>
+                    <Link href={item.editHref} className="ui-control">
                       {item.status === "draft+published" ? "Seguir editando" : "Editar"}
                     </Link>
                   </>
@@ -220,12 +220,12 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                       }}
                     >
                       <input type="hidden" name="id" value={item.id} />
-                      <Button type="submit" className="editorial-control bg-primary text-background" isDisabled={publishPending}>Publicar</Button>
+                      <Button type="submit" className="ui-control bg-primary text-background" isDisabled={publishPending}>Publicar</Button>
                     </form>
-                    <Link href={item.editHref} className="editorial-control">Seguir editando</Link>
+                    <Link href={item.editHref} className="ui-control">Seguir editando</Link>
                   </>
                 )}
-                <Button type="button" className="editorial-control editorial-control--danger" onPress={() => openDelete(item)}>
+                <Button type="button" className="ui-control ui-control--danger" onPress={() => openDelete(item)}>
                   Borrar
                 </Button>
                 <span className="sr-only">{statusLabel[item.status]}</span>
@@ -248,11 +248,11 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
         title="Thought settings"
         footer={
           <>
-            <Drawer.CloseTrigger className="editorial-control">Cancel</Drawer.CloseTrigger>
-            <Button type="submit" form="thought-list-settings" className="editorial-control">
+            <Drawer.CloseTrigger className="ui-control">Cancel</Drawer.CloseTrigger>
+            <Button type="submit" form="thought-list-settings" className="ui-control">
               Save settings
             </Button>
-            <Button type="submit" name="intent" value="publish" form="thought-list-settings" className="editorial-control bg-primary text-background">
+            <Button type="submit" name="intent" value="publish" form="thought-list-settings" className="ui-control bg-primary text-background">
               Save and publish
             </Button>
           </>
@@ -331,8 +331,8 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             <p className="text-sm text-secondary">Esta acción elimina el borrador y la versión publicada.</p>
           </div>
           <div className="flex justify-end gap-2">
-            <Button type="button" className="editorial-control" onPress={closeDelete}>Cancelar</Button>
-            <Button type="button" className="editorial-control editorial-control--danger" onPress={confirmDelete} isDisabled={deleting}>
+            <Button type="button" className="ui-control" onPress={closeDelete}>Cancelar</Button>
+            <Button type="button" className="ui-control ui-control--danger" onPress={confirmDelete} isDisabled={deleting}>
               {deleting ? "Borrando..." : "Borrar"}
             </Button>
           </div>

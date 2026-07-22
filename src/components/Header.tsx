@@ -11,7 +11,7 @@ export default function Header() {
   const breadcrumbs = pathname.split("/").slice(1);
 
   return (
-    <section className="flex items-center gap-2.5 text-sm">
+    <section className="ui-header">
       <Link href="/" className="group flex flex-row items-center gap-3">
         {pathname !== "/" && (
           <ArrowUturnLeftIcon className="size-4 text-secondary group-hover:text-primary" />

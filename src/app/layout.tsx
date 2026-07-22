@@ -58,9 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className="antialiased max-w-screen-sm mx-auto w-full px-4 py-12 md:px-0 md:py-16 space-y-24"
-      >
+      <body className="ui-shell antialiased">
         <Header />
         <NuqsAdapter>{children}</NuqsAdapter>
         <Footer />

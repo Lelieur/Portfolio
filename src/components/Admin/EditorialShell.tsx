@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import { Button, Drawer, useOverlayState } from "@heroui/react";
+import { Button, Drawer, useOverlayState } from "@/components/ui";
 import { useUnsavedChangesWarning } from "./useUnsavedChangesWarning";
 
 type OverlayState = ReturnType<typeof useOverlayState>;
@@ -23,7 +23,7 @@ export function EditorialStatusBadge({
 }) {
   return (
     <span
-      className={`editorial-control ${statusTone(status)}`}
+      className={`ui-control ${statusTone(status)}`}
     >
       {label ?? status}
     </span>
@@ -42,14 +42,14 @@ export function EditorialPageShell({
   children: ReactNode;
 }) {
   return (
-    <main className="flex flex-col gap-8">
-      <header className="flex flex-col gap-4 border-b border-primary/10 pb-6 sm:flex-row sm:items-start sm:justify-between">
-        <div className="flex max-w-3xl flex-col gap-2">
+    <main className="ui-page">
+      <header className="ui-page-header">
+        <div className="ui-page-header-content">
           <p className="text-sm uppercase tracking-[0.2em] text-secondary">Admin</p>
           <h1 className="text-3xl font-medium text-primary">{title}</h1>
           {description ? <div className="text-base text-secondary">{description}</div> : null}
         </div>
-        {actions ? <div className="flex shrink-0 flex-wrap items-center gap-3">{actions}</div> : null}
+        {actions ? <div className="ui-page-actions shrink-0">{actions}</div> : null}
       </header>
       {children}
     </main>
@@ -115,33 +115,31 @@ export function EditorialEditorShell({
 
   return (
     <>
-      <section className="grid gap-6">
-        <div className="flex flex-col gap-4 rounded-md border border-primary/15 p-5">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-            <div className="flex min-w-0 flex-col gap-2">
-              <p className="text-sm uppercase tracking-[0.2em] text-secondary">Edit</p>
-              <h2 className="text-2xl font-medium text-primary">{title}</h2>
-              {description ? <div className="text-sm text-secondary">{description}</div> : null}
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              {actions}
-              <Button
-                isIconOnly
-                variant="ghost"
-                size="sm"
-                className="editorial-control editorial-control--icon"
-                aria-label="Open settings"
-                onPress={settings.open}
-              >
-                <Cog6ToothIcon className="size-5" />
-              </Button>
-              <EditorialStatusBadge status={status} label={statusLabel} />
-            </div>
+      <section className="ui-editor">
+        <div className="ui-editor-header">
+          <div className="ui-editor-header-content">
+            <p className="text-sm uppercase tracking-[0.2em] text-secondary">Edit</p>
+            <h2 className="text-2xl font-medium text-primary">{title}</h2>
+            {description ? <div className="text-sm text-secondary">{description}</div> : null}
           </div>
-          {message ? <div aria-live="polite" className="text-sm text-secondary">{message}</div> : null}
+          <div className="ui-editor-actions">
+            {actions}
+            <Button
+              isIconOnly
+              variant="ghost"
+              size="sm"
+              className="ui-control ui-control--icon"
+              aria-label="Open settings"
+              onPress={settings.open}
+            >
+              <Cog6ToothIcon className="size-5" />
+            </Button>
+            <EditorialStatusBadge status={status} label={statusLabel} />
+          </div>
         </div>
+        {message ? <div aria-live="polite" className="text-sm text-secondary">{message}</div> : null}
 
-        <section className="min-w-0 rounded-md border border-primary/15 p-5">
+        <section className="ui-card ui-editor-canvas">
           {canvas}
         </section>
       </section>
@@ -186,45 +184,32 @@ export function EditorialReadShell({
 }) {
   return (
     <>
-      <section className="grid gap-6">
-        <div className="flex flex-col gap-4 rounded-md border border-primary/15 p-5">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex min-w-0 flex-col gap-2">
-              <p className="text-sm uppercase tracking-[0.2em] text-secondary">Read</p>
-              <h2 className="text-2xl font-medium text-primary">{title}</h2>
-              {description ? <div className="text-sm text-secondary">{description}</div> : null}
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Link href={backHref} className="editorial-control">
-                Back to list
-              </Link>
-              <Link
-                href={editHref}
-                className="editorial-control bg-primary text-background"
-              >
-                Edit
-              </Link>
-              {publicHref ? (
-                <Link href={publicHref} className="editorial-control">
-                  {publicLabel}
-                </Link>
-              ) : null}
-              <Button
-                isIconOnly
-                variant="ghost"
-                size="sm"
-                className="editorial-control editorial-control--icon"
-                aria-label="Open settings"
-                onPress={settings.open}
-              >
-                <Cog6ToothIcon className="size-5" />
-              </Button>
-              <EditorialStatusBadge status={status} label={statusLabel} />
-            </div>
+      <section className="ui-editor">
+        <div className="ui-editor-header">
+          <div className="ui-editor-header-content">
+            <p className="text-sm uppercase tracking-[0.2em] text-secondary">Read</p>
+            <h2 className="text-2xl font-medium text-primary">{title}</h2>
+            {description ? <div className="text-sm text-secondary">{description}</div> : null}
+          </div>
+          <div className="ui-editor-actions">
+            <Link href={backHref} className="ui-control">Back to list</Link>
+            <Link href={editHref} className="ui-control bg-primary text-background">Edit</Link>
+            {publicHref ? <Link href={publicHref} className="ui-control">{publicLabel}</Link> : null}
+            <Button
+              isIconOnly
+              variant="ghost"
+              size="sm"
+              className="ui-control ui-control--icon"
+              aria-label="Open settings"
+              onPress={settings.open}
+            >
+              <Cog6ToothIcon className="size-5" />
+            </Button>
+            <EditorialStatusBadge status={status} label={statusLabel} />
           </div>
         </div>
 
-        <section className="rounded-md border border-primary/15 p-5">
+        <section className="ui-card ui-editor-canvas">
           {canvas}
         </section>
       </section>

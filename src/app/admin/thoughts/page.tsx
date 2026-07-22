@@ -15,7 +15,7 @@ export default async function AdminThoughtsPage() {
       actions={
         <Link
           href="/admin/thoughts/new"
-          className="editorial-control bg-primary text-background"
+          className="ui-control bg-primary text-background"
         >
           <span className="inline-flex items-center gap-2">
             <PlusIcon className="size-4" />

@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Drawer, useOverlayState } from "@heroui/react";
+import { Button, Drawer, useOverlayState } from "@/components/ui";
 import type { JSONContent } from "@tiptap/core";
 import { toSlug } from "@/lib/toSlug";
 import { EditorialEditorShell } from "@/components/Admin/EditorialShell";
@@ -174,7 +174,7 @@ export function ThoughtEditor({
               name="intent"
               value="draft"
               variant="secondary"
-              className="editorial-control"
+              className="ui-control"
               isDisabled={disabled}
               onPress={() => setPendingIntent("draft")}
             >
@@ -185,7 +185,7 @@ export function ThoughtEditor({
               name="intent"
               value="publish"
               variant="primary"
-              className="editorial-control bg-primary text-background"
+              className="ui-control bg-primary text-background"
               isDisabled={disabled}
               onPress={() => setPendingIntent("publish")}
             >
@@ -197,7 +197,7 @@ export function ThoughtEditor({
                 type="submit"
                 disabled={disabled}
                 onClick={() => setPendingIntent("unpublish")}
-                className="editorial-control editorial-control--danger"
+                className="ui-control ui-control--danger"
               >
                 {unpublishPending && pendingIntent === "unpublish"
                   ? "Unpublishing..."
@@ -330,8 +330,8 @@ export function ThoughtEditor({
         }
         settingsFooter={
           <>
-            <Drawer.CloseTrigger className="editorial-control">Cancel</Drawer.CloseTrigger>
-            <Button type="submit" form="thought-editor" className="editorial-control bg-primary text-background">
+            <Drawer.CloseTrigger className="ui-control">Cancel</Drawer.CloseTrigger>
+            <Button type="submit" form="thought-editor" className="ui-control bg-primary text-background">
               Save settings
             </Button>
           </>

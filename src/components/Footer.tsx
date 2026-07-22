@@ -11,9 +11,9 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="w-full text-sm">
-      <nav className="space-y-8">
-        <ul className="flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-6">
+    <footer className="ui-footer">
+      <nav className="ui-footer-nav">
+        <ul className="ui-footer-links">
           {links.map((link) => (
             <li key={link.label}>
               <Link

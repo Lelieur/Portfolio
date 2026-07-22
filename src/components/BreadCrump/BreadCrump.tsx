@@ -7,7 +7,7 @@ type BreadcrumpProps = {
 
 export default function Breadcrump({ items }: BreadcrumpProps) {
   return (
-    <nav className="flex-grow overflow-hidden">
+    <nav className="ui-breadcrumb flex-grow overflow-hidden">
       <ul className="flex flex-row flex-wrap items-center gap-2 md:gap-3">
         <span className="text-sm leading-normal text-secondary">/</span>
         {items.map((item, index) => {

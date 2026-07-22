@@ -56,7 +56,7 @@ body {
   outline-offset: 3px;
 }
 
-.editorial-control {
+.ui-control {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -72,20 +72,132 @@ body {
   transition: background-color 150ms ease, opacity 150ms ease;
 }
 
-.editorial-control:hover:not(:disabled) {
+.ui-control:hover:not(:disabled) {
   background: color-mix(in srgb, var(--primary) 6%, transparent);
 }
 
-.editorial-control:disabled {
+.ui-control:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-.editorial-control--icon {
+.ui-control--icon {
   min-width: 2rem;
   padding: 0.375rem;
 }
 
-.editorial-control--danger {
+.ui-control--danger {
   color: var(--danger);
+}
+
+.ui-shell {
+  max-width: 36rem;
+  width: 100%;
+  margin-inline: auto;
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6rem;
+}
+
+.ui-header,
+.ui-footer {
+  width: 100%;
+  font-size: 0.875rem;
+}
+
+.ui-header {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.ui-footer-nav {
+  display: grid;
+  gap: 2rem;
+}
+
+.ui-footer-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.ui-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.ui-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--primary) 10%, transparent);
+  padding-bottom: 1.5rem;
+}
+
+.ui-page-header-content,
+.ui-editor-header-content {
+  display: flex;
+  max-width: 48rem;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ui-page-actions,
+.ui-editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ui-editor {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.ui-editor-header,
+.ui-card {
+  border: 1px solid color-mix(in srgb, var(--primary) 15%, transparent);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
+}
+
+.ui-editor-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ui-editor-canvas {
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .ui-shell {
+    padding-block: 4rem;
+  }
+
+  .ui-footer-links {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .ui-page-header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+
+  .ui-editor-header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
 }
