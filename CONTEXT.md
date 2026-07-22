@@ -75,3 +75,39 @@ _Avoid_: details object, metadata map
 **Project section kind**:
 The rendering shape of a Project section. In this portfolio, the allowed Project section kinds are `text`, `list`, `tags-grouped`, and `text-with-links`.
 _Avoid_: arbitrary block, freeform section type
+
+**Public UI surface**:
+The visual system used by visitors on the public portfolio, including its navigation, content views, and public interaction elements.
+_Avoid_: shared UI, frontend UI
+
+**Admin UI surface**:
+The content-maintenance surface used by the owner to manage portfolio content and editorial workflows, using the same UI system as the Public UI surface.
+_Avoid_: dashboard UI, backend UI
+
+**Shared UI system**:
+The repository-wide visual and interactive vocabulary used by both the Public UI surface and the Admin UI surface.
+_Avoid_: public design system, admin design system
+
+**TipTap specialized control**:
+A toolbar, menu, popover, or other interaction that belongs to the TipTap editing experience and is governed by the editor's specialized primitives rather than the public or admin component vocabulary.
+_Avoid_: generic editor button, block control
+
+**Interactive UI element**:
+A user-operated control such as a button, link, input, menu, popover, or toggle that is exposed as a React component with an explicit visual variant and is based on HeroUI.
+_Avoid_: utility button, styled element
+
+**UI customization**:
+The repository-owned visual or behavioral adjustment applied to a HeroUI component so the same adjusted component is used consistently throughout the application.
+_Avoid_: local override, page-specific component
+
+**UI component API**:
+The repository-owned React interface consumed by application code for interactive elements; it encapsulates HeroUI rather than exposing HeroUI as the application's direct dependency.
+_Avoid_: HeroUI API, raw component usage
+
+**System UI class**:
+A centrally defined semantic CSS class for composing a Visual UI structure. System UI classes are the default in pages and shared UI; a narrowly scoped one-off may use a local style when no system concept exists yet.
+_Avoid_: Tailwind cluster, block class
+
+**Visual UI structure**:
+A non-interactive arrangement such as a page shell, section, stack, grid, card frame, or content grouping that is expressed through a semantic CSS class.
+_Avoid_: content block class, utility cluster
