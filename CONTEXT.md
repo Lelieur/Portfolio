@@ -65,7 +65,7 @@ The manual order of published collection content or of its featured subset. It i
 _Avoid_: order input, position metadata
 
 **Theme preference**:
-The global visual mode selected as System, Light, or Dark. System follows the device preference; an explicit selection applies to both public and admin views.
+The global visual mode selected as System, Light, or Dark. System follows the device preference; an explicit selection applies to both public and admin views. TipTap specialized controls follow the active mode while translating it into their own editor tokens.
 _Avoid_: admin theme, page theme
 
 **Project detail field**:
@@ -107,6 +107,10 @@ _Avoid_: HeroUI API, raw component usage
 **System UI class**:
 A centrally defined semantic CSS class for composing a Visual UI structure. System UI classes are the default in pages and shared UI; a narrowly scoped one-off may use a local style when no system concept exists yet.
 _Avoid_: Tailwind cluster, block class
+
+**Shared visual token system**:
+The semantic color, typography, spacing, radius, focus, and state vocabulary used by the Public UI surface and Admin UI surface. TipTap specialized controls are an explicit exception and keep their own editor token system.
+_Avoid_: universal editor theme, page-local tokens
 
 **Visual UI structure**:
 A non-interactive arrangement such as a page shell, section, stack, grid, card frame, or content grouping that is expressed through a semantic CSS class.
