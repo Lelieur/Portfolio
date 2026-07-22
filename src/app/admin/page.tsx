@@ -7,9 +7,9 @@ export default async function AdminPage() {
   const session = await auth();
 
   return (
-    <main className="flex flex-col gap-10">
-      <section className="flex items-start justify-between gap-6">
-        <div className="flex flex-col gap-2">
+    <main className="ui-page">
+      <section className="ui-admin-header">
+        <div className="ui-admin-header-content">
           <p className="text-sm uppercase tracking-[0.2em] text-secondary">
             Admin
           </p>
@@ -24,25 +24,25 @@ export default async function AdminPage() {
         <SignOutButton />
       </section>
 
-      <section className="grid gap-4">
+      <section className="ui-domain-grid">
         {CONTENT_DOMAINS.map((domain) => (
           <article
             key={domain.key}
-            className="rounded-md border border-primary/15 p-4"
+            className="ui-domain-card"
           >
-            <div className="flex items-center justify-between gap-4">
-              <div>
+            <div className="ui-domain-card-header">
+              <div className="ui-admin-domain-content">
                 <h2 className="text-lg font-medium text-primary">
                   {domain.label}
                 </h2>
                 <p className="text-sm text-secondary">{domain.description}</p>
               </div>
-              <span className="rounded-full border border-primary/15 px-3 py-1 text-xs uppercase tracking-[0.2em] text-secondary">
+              <span className="ui-badge">
                 {domain.kind}
               </span>
             </div>
             {domain.key === "thoughts" && (
-              <Link href="/admin/thoughts" className="mt-4 inline-block underline">
+              <Link href="/admin/thoughts" className="ui-domain-link">
                 Manage Thoughts
               </Link>
             )}

@@ -2,22 +2,23 @@
 
 import { useTransition } from "react";
 import { signOut } from "next-auth/react";
+import { Button } from "@/components/ui";
 
 export function SignOutButton() {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <button
+    <Button
       type="button"
-      onClick={() => {
+      onPress={() => {
         startTransition(async () => {
           await signOut({ callbackUrl: "/sign-in" });
         });
       }}
-      disabled={isPending}
-      className="rounded-md border border-primary/15 px-3 py-2 text-sm text-primary disabled:opacity-60"
+      isDisabled={isPending}
+      className="ui-control"
     >
       {isPending ? "Signing out..." : "Sign out"}
-    </button>
+    </Button>
   );
 }

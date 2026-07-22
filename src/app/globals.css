@@ -130,6 +130,110 @@ body {
   gap: 2.5rem;
 }
 
+.ui-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.ui-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ui-section--divided > * + * {
+  border-top: 1px solid color-mix(in srgb, var(--secondary) 15%, transparent);
+}
+
+.ui-section-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.ui-page-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.ui-sign-in {
+  min-height: 50vh;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.ui-home-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ui-home-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ui-home-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ui-hero-links {
+  gap: 0.5rem;
+}
+
+.ui-domain-link {
+  display: inline-block;
+  margin-top: 1rem;
+  text-decoration: underline;
+}
+
+.ui-admin-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.ui-admin-header-content,
+.ui-admin-domain-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ui-domain-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.ui-domain-card {
+  border: 1px solid color-mix(in srgb, var(--primary) 15%, transparent);
+  border-radius: var(--radius-card);
+  padding: 1rem;
+}
+
+.ui-domain-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ui-badge {
+  border: 1px solid color-mix(in srgb, var(--primary) 15%, transparent);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  color: var(--secondary);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
 .ui-page-header {
   display: flex;
   flex-direction: column;
@@ -268,6 +372,10 @@ body {
     flex-direction: row;
     align-items: center;
     gap: 1.5rem;
+  }
+
+  .ui-hero-links {
+    gap: 1rem;
   }
 }
 

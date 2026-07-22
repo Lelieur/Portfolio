@@ -5,7 +5,7 @@ type PageTitleProps = {
 
 export default function PageTitle({ title, description }: PageTitleProps) {
   return (
-    <header className="flex flex-col gap-0.5">
+    <header className="ui-page-title">
       <h1 className="text-lg font-medium leading-relaxed text-primary">
         {title}
       </h1>

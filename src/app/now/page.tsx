@@ -4,9 +4,9 @@ import PageTitle from "@/components/PageTitle";
 
 export default function Now() {
   return (
-    <main className="flex flex-col gap-16">
+    <main className="ui-main">
       <PageTitle title="Now" description="What I&#39;m doing now?" />
-      <section className="flex flex-col divide-y divide-secondary/15">
+      <section className="ui-section ui-section--divided">
         <NowBlock
           title="🚶🏽‍♂️ Stepping into the dev world!"
           lines={[

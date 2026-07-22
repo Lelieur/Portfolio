@@ -40,10 +40,10 @@ export default function About() {
     },
   ];
   return (
-    <main className="flex flex-col gap-16">
-      <section className="flex flex-col gap-4 md:gap-8">
-        <article className="flex flex-col gap-4 md:gap-8">
-          <div className="flex flex-col gap-4 md:gap-8">
+    <main className="ui-main">
+      <section className="ui-section">
+        <article className="ui-section">
+          <div className="ui-section">
             <Image
               src="/lucas-lelieur-webdev.png"
               alt="Lucas Lelieur WebDev"

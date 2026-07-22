@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { Button } from "@/components/ui";
 import { signInWithCredentials } from "./actions";
 
 const initialState = {
@@ -14,38 +15,38 @@ export function SignInForm() {
   );
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
-      <label className="flex flex-col gap-2 text-sm text-primary">
+    <form action={formAction} className="ui-form">
+      <label className="ui-form-field">
         Email
         <input
           required
           type="email"
           name="email"
-          className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base text-primary outline-none placeholder:text-secondary/70"
+          className="ui-input placeholder:text-secondary/70"
           placeholder="owner@example.com"
         />
       </label>
-      <label className="flex flex-col gap-2 text-sm text-primary">
+      <label className="ui-form-field">
         Password
         <input
           required
           minLength={8}
           type="password"
           name="password"
-          className="rounded-md border border-primary/15 bg-transparent px-3 py-2 text-base text-primary outline-none placeholder:text-secondary/70"
+          className="ui-input placeholder:text-secondary/70"
           placeholder="Your owner password"
         />
       </label>
       {state.error ? (
         <p className="text-sm text-red-600">{state.error}</p>
       ) : null}
-      <button
+      <Button
         type="submit"
-        disabled={isPending}
-        className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-background disabled:opacity-60"
+        isDisabled={isPending}
+        className="ui-control bg-primary text-background"
       >
         {isPending ? "Signing in..." : "Sign in"}
-      </button>
+      </Button>
     </form>
   );
 }

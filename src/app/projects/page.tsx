@@ -14,14 +14,14 @@ export default async function Projects({
   const projectCategories = projects.map((project) => project.details.category);
 
   return (
-    <main className="flex flex-col gap-16">
-      <section className="flex flex-col gap-0.5">
+    <main className="ui-main">
+      <section className="ui-section">
         <PageTitle
           title="Projects"
           description="Some of my recent professional work and personal projects."
         />
       </section>
-      <section className="flex flex-col gap-8 md:gap-12">
+      <section className="ui-section-list">
         <ProjectsFilterBar projectCategories={projectCategories} />
         <ProjectList projects={projects} />
       </section>

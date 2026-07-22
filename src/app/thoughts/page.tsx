@@ -8,14 +8,14 @@ export default async function Thoughts() {
   const thoughts = await getPublishedThoughts();
 
   return (
-    <main className="flex flex-col gap-16">
-      <section className="flex flex-col gap-0.5">
+    <main className="ui-main">
+      <section className="ui-section">
         <PageTitle
           title="Thoughts"
           description="Personal posts, web development articles, and other topics that interest me."
         />
       </section>
-      <section className="flex flex-col gap-8 md:gap-12">
+      <section className="ui-section-list">
         <ThoughtsList thougths={thoughts} />
       </section>
     </main>

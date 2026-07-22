@@ -10,8 +10,8 @@ export default async function SignInPage() {
   }
 
   return (
-    <main className="flex min-h-[50vh] flex-col justify-center gap-8">
-      <section className="flex flex-col gap-2">
+    <main className="ui-page ui-sign-in">
+      <section className="ui-admin-header-content">
         <p className="text-sm uppercase tracking-[0.2em] text-secondary">
           Admin access
         </p>

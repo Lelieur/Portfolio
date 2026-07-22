@@ -12,7 +12,7 @@ export default async function Home() {
   const thoughts = await getFeaturedThoughts();
 
   return (
-    <main className="flex flex-col gap-16">
+    <main className="ui-main">
       <Hero />
       <SocialLinks />
       <HomeSection section="Projects" link="/projects" items={projects} />

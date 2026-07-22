@@ -3,14 +3,14 @@ import { ArrowRightIcon } from "@heroicons/react/16/solid";
 
 export default function Hero() {
   return (
-    <section className="flex flex-col gap-4 md:gap-8">
+    <section className="ui-section ui-hero">
       <p className="text-primary text-base leading-relaxed">
         In professional transition to the world of web development after more
         than three years of experience in agencies and digital marketing
         consultancies as a Project Manager, driven by a constant interest in
         technology.
       </p>
-      <div className="flex flex-col gap-2 md:gap-4">
+      <div className="ui-section-list ui-hero-links">
         <Link href="/about" className="w-fit block">
           <span className="group inline text-base">
             <span className="inline underline underline-offset-4 decoration-dotted ">
