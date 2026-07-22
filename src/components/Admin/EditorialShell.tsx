@@ -9,9 +9,9 @@ import { useUnsavedChangesWarning } from "./useUnsavedChangesWarning";
 type OverlayState = ReturnType<typeof useOverlayState>;
 
 function statusTone(status: "draft" | "published" | "draft+published") {
-  if (status === "published") return "border-emerald-600/20 text-emerald-700 dark:text-emerald-300";
-  if (status === "draft+published") return "border-amber-600/20 text-amber-700 dark:text-amber-300";
-  return "border-primary/15 text-secondary";
+  if (status === "published") return "ui-status--published";
+  if (status === "draft+published") return "ui-status--draft-published";
+  return "ui-status--draft";
 }
 
 export function EditorialStatusBadge({
@@ -70,12 +70,12 @@ export function EditorialSettingsDrawer({
   return (
     <Drawer state={state}>
       <Drawer.Backdrop>
-        <Drawer.Content placement="right" className="w-full sm:max-w-md">
+          <Drawer.Content placement="right" className="ui-drawer-content">
           <Drawer.Dialog>
             <Drawer.Header>
               <Drawer.Heading>{title}</Drawer.Heading>
             </Drawer.Header>
-            <Drawer.Body className="grid gap-4">{children}</Drawer.Body>
+            <Drawer.Body className="ui-drawer-body">{children}</Drawer.Body>
             {footer ? <Drawer.Footer>{footer}</Drawer.Footer> : null}
           </Drawer.Dialog>
         </Drawer.Content>
@@ -193,7 +193,7 @@ export function EditorialReadShell({
           </div>
           <div className="ui-editor-actions">
             <Link href={backHref} className="ui-control">Back to list</Link>
-            <Link href={editHref} className="ui-control bg-primary text-background">Edit</Link>
+            <Link href={editHref} className="ui-control ui-control--primary">Edit</Link>
             {publicHref ? <Link href={publicHref} className="ui-control">{publicLabel}</Link> : null}
             <Button
               isIconOnly

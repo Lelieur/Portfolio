@@ -43,7 +43,7 @@ export function SignInForm() {
       <Button
         type="submit"
         isDisabled={isPending}
-        className="ui-control bg-primary text-background"
+        className="ui-control ui-control--primary"
       >
         {isPending ? "Signing in..." : "Sign in"}
       </Button>

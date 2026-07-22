@@ -165,7 +165,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             onDragOver={filter === "published" ? (event) => event.preventDefault() : undefined}
             onDrop={filter === "published" ? () => moveBefore(item.id) : undefined}
           >
-            <Card.Header className="items-start gap-3">
+            <Card.Header className="ui-list-card-header">
               {filter === "published" ? (
                 <button
                   type="button"
@@ -178,11 +178,11 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                   <Bars3Icon className="size-5" />
                 </button>
               ) : null}
-              <Link href={filter === "draft" ? item.editHref : item.href} className="min-w-0 flex-1">
+              <Link href={filter === "draft" ? item.editHref : item.href} className="ui-list-card-link">
                 <Card.Title className="truncate">
                   {filter === "draft" ? item.draftTitle ?? item.title : item.title}
                 </Card.Title>
-                <Card.Description className="mt-1 line-clamp-2">
+                <Card.Description className="ui-list-card-description">
                   {filter === "draft" ? item.draftExcerpt ?? item.excerpt : item.excerpt}
                 </Card.Description>
               </Link>
@@ -197,9 +197,9 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                 <EllipsisHorizontalIcon className="size-5" />
               </Button>
             </Card.Header>
-            <Card.Footer className="justify-between gap-3 text-sm text-secondary">
+            <Card.Footer className="ui-list-card-footer">
               <span className="truncate">{item.meta}</span>
-              <div className="flex flex-wrap items-center justify-end gap-2">
+              <div className="ui-list-card-actions">
                 {filter === "published" ? (
                   <>
                     <Link href={item.href} className="ui-control">Ver</Link>
@@ -219,7 +219,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                       }}
                     >
                       <input type="hidden" name="id" value={item.id} />
-                      <Button type="submit" className="ui-control bg-primary text-background" isDisabled={publishPending}>Publicar</Button>
+                      <Button type="submit" className="ui-control ui-control--primary" isDisabled={publishPending}>Publicar</Button>
                     </form>
                     <Link href={item.editHref} className="ui-control">Seguir editando</Link>
                   </>
@@ -236,7 +236,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
 
       {visibleItems.length === 0 ? (
         <Card variant="transparent">
-          <Card.Content className="text-sm text-secondary">
+          <Card.Content className="ui-empty-card">
             No hay artículos {filter === "published" ? "publicados" : "en borrador"}.
           </Card.Content>
         </Card>
@@ -251,7 +251,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             <Button type="submit" form="thought-list-settings" className="ui-control">
               Save settings
             </Button>
-            <Button type="submit" name="intent" value="publish" form="thought-list-settings" className="ui-control bg-primary text-background">
+            <Button type="submit" name="intent" value="publish" form="thought-list-settings" className="ui-control ui-control--primary">
               Save and publish
             </Button>
           </>
@@ -309,7 +309,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
               className="ui-input"
             />
           </label>
-          <label className="inline-flex items-center gap-3 text-sm text-primary">
+          <label className="ui-checkbox-field">
             <input
               key={`${selected?.id}-featured`}
               name="featured"
@@ -325,7 +325,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
 
       <dialog ref={deleteDialog} className="ui-dialog">
         <div className="ui-dialog-content">
-          <div className="grid gap-2">
+          <div className="ui-dialog-heading">
             <h2 className="text-lg font-medium">¿Borrar “{deleteTarget?.title || "Untitled thought"}”?</h2>
             <p className="text-sm text-secondary">Esta acción elimina el borrador y la versión publicada.</p>
           </div>

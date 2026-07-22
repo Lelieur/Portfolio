@@ -90,6 +90,11 @@ body {
   color: var(--danger);
 }
 
+.ui-control--primary {
+  background: var(--action-background);
+  color: var(--action-foreground);
+}
+
 .ui-shell {
   max-width: 36rem;
   width: 100%;
@@ -110,6 +115,40 @@ body {
   display: flex;
   align-items: center;
   gap: 0.625rem;
+}
+
+.ui-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ui-brand-indicator {
+  position: relative;
+  display: flex;
+  width: 0.625rem;
+  height: 0.625rem;
+}
+
+.ui-brand-pulse,
+.ui-brand-dot {
+  display: inline-flex;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: var(--emerald);
+}
+
+.ui-brand-pulse {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  opacity: 0.75;
+}
+
+.ui-brand-dot {
+  position: relative;
 }
 
 .ui-footer-nav {
@@ -572,6 +611,100 @@ body {
   min-width: 0;
 }
 
+.ui-drawer-content {
+  width: 100%;
+}
+
+.ui-drawer-body {
+  display: grid;
+  gap: 1rem;
+}
+
+.ui-list-card-header {
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.ui-list-card-link {
+  min-width: 0;
+  flex: 1;
+}
+
+.ui-list-card-description {
+  display: -webkit-box;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ui-list-card-footer {
+  justify-content: space-between;
+  gap: 0.75rem;
+  color: var(--secondary);
+  font-size: 0.875rem;
+}
+
+.ui-list-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.ui-empty-card {
+  color: var(--secondary);
+  font-size: 0.875rem;
+}
+
+.ui-dialog-heading {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.ui-checkbox-field {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--primary);
+  font-size: 0.875rem;
+}
+
+.ui-footer-link {
+  color: var(--secondary);
+}
+
+.ui-footer-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.ui-status--published {
+  border-color: color-mix(in srgb, #059669 20%, transparent);
+  color: #047857;
+}
+
+.ui-status--draft-published {
+  border-color: color-mix(in srgb, #d97706 20%, transparent);
+  color: #b45309;
+}
+
+@media (prefers-color-scheme: dark) {
+  .ui-status--published {
+    color: #a7f3d0;
+  }
+
+  .ui-status--draft-published {
+    color: #fcd34d;
+  }
+}
+
+.ui-status--draft {
+  border-color: color-mix(in srgb, var(--primary) 15%, transparent);
+  color: var(--secondary);
+}
+
 .ui-list,
 .ui-form {
   display: grid;
@@ -753,6 +886,10 @@ body {
 }
 
 @media (min-width: 640px) {
+  .ui-drawer-content {
+    max-width: 28rem;
+  }
+
   .ui-about-item {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;

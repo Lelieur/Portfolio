@@ -18,7 +18,7 @@ export default function Footer() {
             <li key={link.label}>
               <Link
                 href={link.href}
-                className="text-secondary hover:text-primary hover:underline"
+                className="ui-footer-link"
               >
                 {link.label}
               </Link>
