@@ -21,24 +21,24 @@ export default async function ProjectPage({ params }: Params) {
   const { title, year, description, details, image, about } = project;
 
   return (
-    <main className="flex flex-col gap-16">
-      <article className="flex flex-col gap-16">
+    <main className="ui-detail-page">
+      <article className="ui-detail-article">
         <PageTitle title={title} description={`Published on ${year}`} />
         <ProjectDetailsList details={details} />
-        <section className="text-primary [&>p]:leading-relaxed">
-          <p className="text-base leading-normal mt-8 text-secondary first:mt-0">
+        <section className="ui-detail-copy">
+          <p className="ui-detail-description">
             {description}
           </p>
-          <figure className="mt-8 flex flex-col gap-4">
+          <figure className="ui-detail-figure">
             <Image
               src={image}
               alt={title}
               width="1280"
               height="1600"
               priority
-              className="size-full rounded-md border border-primary/15"
+              className="ui-detail-image"
             />
-            <figcaption className="pb-2 text-xs leading-normal text-secondary">{`Figure 1: ${title}`}</figcaption>
+            <figcaption className="ui-detail-caption">{`Figure 1: ${title}`}</figcaption>
           </figure>
           {about.map((section, index) => (
             <ProjectSection key={index} about={section} />

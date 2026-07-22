@@ -23,13 +23,10 @@ export default function ProjectsFilterBar({
   );
 
   return (
-    <div className="flex flex-row items-center gap-3 overflow-auto md:gap-6">
+    <div className="ui-filter-bar">
       <button
-        className={`${
-          category === null
-            ? "text-primary underline underline-offset-4"
-            : "text-secondary"
-        } flex flex-row items-center gap-1.5 p-1.5 cursor-pointer`}
+        className="ui-filter-option"
+        data-active={category === null}
         onClick={() => setCategory(null)}
       >
         <span className="text-sm leading-normal">All</span>
@@ -39,11 +36,8 @@ export default function ProjectsFilterBar({
         return (
           <button
             key={`${categoryFilter.value}-${index}`}
-            className={`${
-              category === categoryFilter.value
-                ? "text-primary underline underline-offset-4"
-                : "text-secondary"
-            } flex flex-row items-center gap-1.5 p-1.5 cursor-pointer`}
+            className="ui-filter-option"
+            data-active={category === categoryFilter.value}
             onClick={() => setCategory(categoryFilter.value)}
           >
             <span className="text-sm leading-normal">

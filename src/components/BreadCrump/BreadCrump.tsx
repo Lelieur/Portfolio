@@ -8,14 +8,14 @@ type BreadcrumpProps = {
 export default function Breadcrump({ items }: BreadcrumpProps) {
   return (
     <nav className="ui-breadcrumb flex-grow overflow-hidden">
-      <ul className="flex flex-row flex-wrap items-center gap-2 md:gap-3">
+      <ul className="ui-breadcrumb-list">
         <span className="text-sm leading-normal text-secondary">/</span>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           return !isLast ? (
             <li
               key={item}
-              className="flex flex-row gap-2 overflow-hidden text-ellipsis animate-[fade-in-right_0.5s_ease-out_forwards]"
+              className="ui-breadcrumb-item animate-[fade-in-right_0.5s_ease-out_forwards]"
             >
               <Link
                 href={`/${item}`}

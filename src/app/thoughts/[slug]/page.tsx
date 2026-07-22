@@ -23,17 +23,17 @@ export default async function ThoughtPage({ params }: Params) {
   const { title, body, publishedDate, coverImageUrl } = thought;
 
   return (
-    <main className="flex flex-col gap-16 text-justify">
-      <article className="flex flex-col gap-16">
+    <main className="ui-detail-page ui-detail-page--thought">
+      <article className="ui-detail-article">
         <PageTitle
           title={title}
           description={thought.excerpt}
         />
         {session?.user && publishedDocument && (
-          <div>
+          <div className="ui-detail-actions">
             <Link
               href={`/admin/thoughts/${publishedDocument.id}`}
-              className="inline-flex rounded-md border border-primary/15 px-3 py-2 text-sm text-primary transition hover:border-primary/30 hover:bg-primary/5"
+              className="ui-control"
             >
               Editar
             </Link>
@@ -41,20 +41,20 @@ export default async function ThoughtPage({ params }: Params) {
         )}
         <ThoughtDetailsList details={{ date: publishedDate }} />
         {coverImageUrl ? (
-          <figure className="mt-8 flex flex-col gap-4">
+          <figure className="ui-detail-figure">
             <Image
               src={coverImageUrl}
               alt={title}
               width="1280"
               height="1600"
               priority
-              className="size-full rounded-md border border-primary/15"
+              className="ui-detail-image"
             />
-            <figcaption className="pb-2 text-xs leading-normal text-secondary">{`Figure 1: ${title}`}</figcaption>
+            <figcaption className="ui-detail-caption">{`Figure 1: ${title}`}</figcaption>
           </figure>
         ) : null}
         <div
-          className="prose prose-neutral max-w-none"
+          className="ui-detail-rich-text prose prose-neutral max-w-none"
           dangerouslySetInnerHTML={{ __html: body }}
         />
       </article>
