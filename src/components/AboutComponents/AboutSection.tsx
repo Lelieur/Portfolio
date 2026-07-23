@@ -10,7 +10,7 @@ export default function AboutSection({ title, items }: AboutSectionProps) {
   return (
     <section className="ui-about-section">
       <div className="ui-about-section-header">
-        <p className="text-xs leading-normal uppercase text-secondary uppercase group-hover:text-primary group-hover:font-medium">
+        <p className="ui-about-section-title">
           {title}
         </p>
       </div>
@@ -24,8 +24,8 @@ export default function AboutSection({ title, items }: AboutSectionProps) {
               <AboutItem {...item} />
             </li>
           ) : (
-            <li key={item.title} className="first:mt-0 mt-2">
-              <p className="text-base leading-normal text-primary">
+            <li key={item.title} className="ui-about-item--plain">
+              <p className="ui-about-item-title-text">
                 {item.title}
               </p>
             </li>

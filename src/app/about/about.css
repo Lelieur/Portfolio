@@ -19,3 +19,10 @@
     transform: rotate(10deg);
   }
 }
+
+.ui-about-wave {
+  display: inline-block;
+  margin-right: 0.5rem;
+  transform-origin: bottom right;
+  animation: wave 1.5s ease-in-out infinite;
+}

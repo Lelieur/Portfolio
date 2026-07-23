@@ -14,32 +14,32 @@ export default function AboutItem({
           {link ? (
             <a
               href={link}
-              className="inline underline decoration-secondary decoration-dotted underline-offset-4 text-primary"
+              className="ui-inline-link ui-about-item-link"
             >
-              <span className="group inline text-base">
-                <span className="inline">{title}</span>
-                <span className="ml-1 inline-flex aspect-square size-4 align-text-bottom duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+              <span className="ui-about-item-link-content">
+                <span>{title}</span>
+                <span className="ui-external-link-icon">
                   <ArrowUpRightIcon />
                 </span>
               </span>
             </a>
           ) : (
-            <span className="inline text-base">{title}</span>
+            <span className="ui-about-item-title-text">{title}</span>
           )}
         </div>
-        <p className="text-sm leading-normal block text-secondary">{year}</p>
+        <p className="ui-about-item-year">{year}</p>
       </div>
-      <ul className="ui-about-item-details list-inside list-disc text-primary">
+      <ul className="ui-about-item-details ui-about-item-details--bulleted">
         {Array.isArray(description) ? (
           description.map((desc, index) => (
             <li key={index}>
-              <p className="text-sm inline leading-relaxed text-primary">
+              <p className="ui-about-item-description">
                 {desc}
               </p>
             </li>
           ))
         ) : (
-          <p className="text-sm inline leading-relaxed text-primary">
+          <p className="ui-about-item-description">
             {description}
           </p>
         )}

@@ -577,6 +577,65 @@ body {
   justify-content: space-between;
 }
 
+.ui-about-greeting {
+  color: var(--primary);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.ui-about-copy,
+.ui-now-copy {
+  color: var(--primary);
+  font-size: 1rem;
+  line-height: 1.625;
+}
+
+.ui-about-section-title {
+  color: var(--secondary);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.ui-about-item-link-content {
+  display: inline;
+  font-size: 1rem;
+}
+
+.ui-about-item-title-text {
+  color: var(--primary);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.ui-about-item-year {
+  display: block;
+  color: var(--secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.ui-about-item-details--bulleted {
+  list-style: inside disc;
+  color: var(--primary);
+}
+
+.ui-about-item-description {
+  display: inline;
+  color: var(--primary);
+  font-size: 0.875rem;
+  line-height: 1.625;
+}
+
+.ui-about-item--plain {
+  margin-top: 0.5rem;
+}
+
+.ui-about-item--plain:first-child {
+  margin-top: 0;
+}
+
 .ui-about-avatar {
   border-radius: 9999px;
 }

@@ -51,27 +51,27 @@ export default function About() {
               height={64}
               className="ui-about-avatar"
             />
-            <p className="text-base leading-normal font-medium text-primary">
-              <span className="inline-block animate-[wave_1.5s_ease-in-out_infinite] origin-bottom-right mr-2">
+            <p className="ui-about-greeting">
+              <span className="ui-about-wave">
                 👋🏼
               </span>
               Welcome to my byteverse
             </p>
           </div>
-          <p className="text-base leading-relaxed text-primary">
+          <p className="ui-about-copy">
             You may have guessed it by now, my name is Lucas Lelieur and I&#39;m
             currently transitioning into the web development field after more
             than three years of experience as a Project Manager in digital
             marketing agencies and consultancies.
           </p>
-          <p className="text-base leading-relaxed text-primary">
+          <p className="ui-about-copy">
             Driven by a strong interest in technology, I recently completed a
             Full Stack Developer Bootcamp at{" "}
             <a
               href="https://www.ironhack.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-dotted underline-offset-4"
+              className="ui-inline-link"
             >
               Ironhack
             </a>
@@ -79,7 +79,7 @@ export default function About() {
             that you can see in{" "}
             <Link
               href="/projects"
-              className="underline decoration-dotted underline-offset-4"
+              className="ui-inline-link"
             >
               Projects
             </Link>
