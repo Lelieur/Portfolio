@@ -1,4 +1,4 @@
-import { Button } from "@heroui/react";
+import { Button } from "./Button";
 
 export type ListFilterOption = {
   value: string | null;

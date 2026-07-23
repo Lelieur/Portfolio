@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { DragEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { Bars3Icon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
@@ -153,8 +154,8 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
         {visibleItems.map((item) => (
           <Card
             key={item.id}
-            variant="secondary"
-            onDragOver={filter === "published" ? (event) => event.preventDefault() : undefined}
+            variant="default"
+            onDragOver={filter === "published" ? (event: DragEvent<HTMLDivElement>) => event.preventDefault() : undefined}
             onDrop={filter === "published" ? () => moveBefore(item.id) : undefined}
           >
             <Card.Header className="ui-list-card-header">
