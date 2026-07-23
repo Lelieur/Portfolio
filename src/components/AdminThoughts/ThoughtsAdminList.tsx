@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { Bars3Icon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 import { Button, Card, Drawer, useOverlayState } from "@/components/ui";
+import { ListFilter } from "@/components/ui/ListFilter";
 import { EditorialSettingsDrawer } from "@/components/Admin/EditorialShell";
 import { emptyThoughtActionState } from "@/server/thoughts/actionState";
 import {
@@ -134,24 +135,15 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
   return (
     <section className="ui-list">
       <div className="ui-list-toolbar">
-        <nav className="ui-filter" aria-label="Filtrar thoughts">
-          <Button
-            type="button"
-            className="ui-filter-button"
-            data-active={filter === "published"}
-            onPress={() => setFilter("published")}
-          >
-            Publicadas ({publishedItems.length})
-          </Button>
-          <Button
-            type="button"
-            className="ui-filter-button"
-            data-active={filter === "draft"}
-            onPress={() => setFilter("draft")}
-          >
-            Borradores ({drafts.length})
-          </Button>
-        </nav>
+        <ListFilter
+          ariaLabel="Filtrar thoughts"
+          value={filter}
+          onChange={(value) => setFilter(value === "draft" ? "draft" : "published")}
+          options={[
+            { value: "published", label: "Publicadas", count: publishedItems.length },
+            { value: "draft", label: "Borradores", count: drafts.length },
+          ]}
+        />
       </div>
 
       {reorderError ? <p className="text-sm text-danger">{reorderError}</p> : null}
@@ -190,7 +182,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
                 isIconOnly
                 variant="ghost"
                 size="sm"
-                className="ui-control ui-control--icon"
+                className="ui-control ui-control--icon ui-list-card-settings"
                 aria-label={`Ajustes de ${item.title}`}
                 onPress={() => openSettings(item)}
               >

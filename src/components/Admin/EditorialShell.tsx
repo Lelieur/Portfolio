@@ -23,7 +23,7 @@ export function EditorialStatusBadge({
 }) {
   return (
     <span
-      className={`ui-control ${statusTone(status)}`}
+      className={`ui-control ui-status-badge ${statusTone(status)}`}
     >
       {label ?? status}
     </span>
@@ -122,19 +122,21 @@ export function EditorialEditorShell({
             <h2 className="text-2xl font-medium text-primary">{title}</h2>
             {description ? <div className="text-sm text-secondary">{description}</div> : null}
           </div>
-          <div className="ui-editor-actions">
-            {actions}
+          <div className="ui-editor-header-meta">
+            <EditorialStatusBadge status={status} label={statusLabel} />
             <Button
               isIconOnly
               variant="ghost"
               size="sm"
-              className="ui-control ui-control--icon"
+              className="ui-control ui-control--icon ui-editor-settings"
               aria-label="Open settings"
               onPress={settings.open}
             >
               <Cog6ToothIcon className="size-5" />
             </Button>
-            <EditorialStatusBadge status={status} label={statusLabel} />
+          </div>
+          <div className="ui-editor-actions">
+            {actions}
           </div>
         </div>
         {message ? <div aria-live="polite" className="text-sm text-secondary">{message}</div> : null}

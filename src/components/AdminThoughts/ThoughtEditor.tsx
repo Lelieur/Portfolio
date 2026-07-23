@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Drawer, useOverlayState } from "@/components/ui";
+import { Button, Checkbox, Drawer, Input, Textarea, useOverlayState } from "@/components/ui";
 import type { JSONContent } from "@tiptap/core";
 import { toSlug } from "@/lib/toSlug";
 import { EditorialEditorShell } from "@/components/Admin/EditorialShell";
@@ -23,15 +23,15 @@ type PendingIntent = "draft" | "publish" | "unpublish" | null;
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
   return (
-    <p id={id} className="text-sm text-red-600">
+    <p id={id} className="text-sm text-danger">
       {message}
     </p>
   );
 }
 
 function statusLabel(state: ThoughtActionState) {
-  if (state.status === "success") return "text-emerald-700 dark:text-emerald-300";
-  if (state.status === "error") return "text-red-600 dark:text-red-400";
+  if (state.status === "success") return "text-success";
+  if (state.status === "error") return "text-danger";
   return "text-secondary";
 }
 
@@ -185,7 +185,7 @@ export function ThoughtEditor({
               name="intent"
               value="publish"
               variant="primary"
-              className="ui-control bg-primary text-background"
+              className="ui-control ui-control--primary"
               isDisabled={disabled}
               onPress={() => setPendingIntent("publish")}
             >
@@ -239,6 +239,7 @@ export function ThoughtEditor({
                   }))
                 }
                 aria-invalid={Boolean(saveState.fieldErrors.slug)}
+                aria-describedby={saveState.fieldErrors.slug ? "slug-error" : undefined}
                 className="ui-input"
               />
               <p className="text-xs text-secondary">
@@ -248,7 +249,7 @@ export function ThoughtEditor({
             </label>
             <label className="ui-form-field">
               Excerpt
-              <textarea
+              <Textarea
                 rows={3}
                 value={draft.manualExcerpt ?? draft.excerpt}
                 onChange={(event) =>
@@ -259,6 +260,7 @@ export function ThoughtEditor({
                   }))
                 }
                 aria-invalid={Boolean(saveState.fieldErrors.excerpt)}
+                aria-describedby={saveState.fieldErrors.excerpt ? "excerpt-error" : undefined}
                 className="ui-input"
               />
               <p className="text-xs text-secondary">
@@ -279,6 +281,7 @@ export function ThoughtEditor({
                   }))
                 }
                 aria-invalid={Boolean(saveState.fieldErrors.coverImageUrl)}
+                aria-describedby={saveState.fieldErrors.coverImageUrl ? "coverImageUrl-error" : undefined}
                 className="ui-input"
               />
               <p className="text-xs text-secondary">
@@ -291,7 +294,7 @@ export function ThoughtEditor({
             </label>
             <label className="ui-form-field">
               Publication date
-              <input
+              <Input
                 type="date"
                 value={draft.publishedDate.slice(0, 10)}
                 onChange={(event) =>
@@ -311,7 +314,7 @@ export function ThoughtEditor({
               />
             </label>
             <label className="inline-flex items-center gap-3 text-sm text-primary">
-              <input
+              <Checkbox
                 type="checkbox"
                 checked={draft.featured}
                 onChange={(event) =>
@@ -331,7 +334,7 @@ export function ThoughtEditor({
         settingsFooter={
           <>
             <Drawer.CloseTrigger className="ui-control">Cancel</Drawer.CloseTrigger>
-            <Button type="submit" form="thought-editor" className="ui-control bg-primary text-background">
+            <Button type="submit" form="thought-editor" className="ui-control ui-control--primary">
               Save settings
             </Button>
           </>
