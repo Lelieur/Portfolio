@@ -54,7 +54,7 @@ export default async function ThoughtPage({ params }: Params) {
           </figure>
         ) : null}
         <div
-          className="ui-detail-rich-text prose prose-neutral max-w-none"
+          className="ui-detail-rich-text"
           dangerouslySetInnerHTML={{ __html: body }}
         />
       </article>

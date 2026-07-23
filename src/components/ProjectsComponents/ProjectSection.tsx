@@ -8,26 +8,26 @@ interface ProjectSectionProps {
 export default function ProjectSectionBis({ about }: ProjectSectionProps) {
   return (
     <section className="ui-content-block">
-      <h2 className="text-base leading-normal font-medium text-primary">
+      <h2 className="ui-content-block-title">
         {about.title}
       </h2>
       {about.type === "text" && typeof about.content === "string" ? (
         about.content.split(/\r?\n/).map((line, index) => (
           <p
             key={`${line}-${index}`}
-            className="text-base leading-normal text-secondary"
+            className="ui-copy"
           >
             {line}
           </p>
         ))
       ) : about.type === "list" && Array.isArray(about.content) ? (
-        <ul className="list-disc pl-5">
+        <ul className="ui-content-list-disc">
           {about.content.map(
             (paragraph, index) =>
               typeof paragraph === "string" && (
                 <li
                   key={index}
-                  className="text-base leading-normal text-secondary"
+                  className="ui-copy"
                 >
                   {paragraph}
                 </li>
@@ -35,7 +35,7 @@ export default function ProjectSectionBis({ about }: ProjectSectionProps) {
           )}
         </ul>
       ) : about.type === "tags-grouped" ? (
-        <ul className="list-disc pl-5">
+        <ul className="ui-content-list-disc">
           {Object.entries(about.content).map(([key, value]) => (
             <li key={key}>
               <strong>{capitalizeFirstLetter(key)}:</strong>{" "}
@@ -43,14 +43,14 @@ export default function ProjectSectionBis({ about }: ProjectSectionProps) {
                 value.map((item, index) => (
                   <span
                     key={index}
-                    className="text-base leading-normal text-secondary"
+                    className="ui-copy"
                   >
                     {item}
                     {index < value.length - 1 && ", "}
                   </span>
                 ))
               ) : (
-                <span className="text-base leading-normal text-secondary">
+                <span className="ui-copy">
                   {typeof value === "string" && value}
                 </span>
               )}
@@ -59,13 +59,13 @@ export default function ProjectSectionBis({ about }: ProjectSectionProps) {
         </ul>
       ) : (
         about.type === "text-with-links" && (
-          <p className="text-base leading-normal text-secondary">
+          <p className="ui-copy">
             Developed by{" "}
             <a
               href={about.links && about.links[0].url}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-secondary decoration-dotted underline-offset-4 text-primary"
+              className="ui-inline-link"
             >
               {about.links && about.links[0].label}
             </a>{" "}
@@ -74,7 +74,7 @@ export default function ProjectSectionBis({ about }: ProjectSectionProps) {
               href={about.links && about.links[1].url}
               target="_blank"
               rel="noopener noreferrer"
-              className="underline decoration-secondary decoration-dotted underline-offset-4 text-primary "
+              className="ui-inline-link"
             >
               {about.links && about.links[1].label}
             </a>

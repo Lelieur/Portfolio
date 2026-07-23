@@ -24,11 +24,11 @@ export default function ThoughtCard({
         </div>
         <div className="ui-content-card-body">
           <div className="ui-content-card-header">
-            <p className="text-base leading-normal relative flex flex-col gap-0.5 font-medium text-primary underline decoration-secondary decoration-dotted underline-offset-8">
+            <p className="ui-content-card-title">
               {title}
             </p>
             <div className="ui-content-card-divider" />
-            <p className="text-sm leading-normal relative text-primary">
+            <p className="ui-content-card-meta">
               {new Date(publishedDate).toLocaleDateString()}
             </p>
           </div>

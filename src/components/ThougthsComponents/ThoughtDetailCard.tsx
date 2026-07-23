@@ -12,26 +12,26 @@ export default function ThoughtDetailCard({ detail }: ThoughtDetailsCardProp) {
 
   return (
     <div className="ui-detail-card">
-      <p className="text-xs leading-normal text-secondary">{detailTitle}</p>
+      <p className="ui-detail-label">{detailTitle}</p>
       {detailTitle === "Link" && (
         <a
           href={detailValue}
           target="_blank"
           rel="noopener noreferrer"
-          className="underline decoration-secondary decoration-dotted underline-offset-4 block w-fit text-primary hover:text-secondary"
+          className="ui-inline-link ui-detail-link"
         >
-          <span className="group inline text-base">
-            <span className="inline">
+          <span className="ui-detail-link-content">
+            <span>
               {detailValue.match(/^https:\/\/([^/]+)/)?.[1] || detailValue}
             </span>
-            <span className="inline-flex whitespace-nowrap">
-              <ArrowUpRightIcon className="ml-1 inline-flex aspect-square size-4 align-text-bottom duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+            <span className="ui-external-link-icon">
+              <ArrowUpRightIcon />
             </span>
           </span>
         </a>
       )}
       {detailTitle === "Date" && (
-        <p className="text-base leading-normal text-primary">
+        <p className="ui-detail-value">
           {formatDate(new Date(detailValue))}
         </p>
       )}

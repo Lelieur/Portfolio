@@ -11,7 +11,7 @@ export default function ProjectDetailsCard({ detail, children }: ProjectDetailsC
 
   return (
     <div className="ui-detail-card">
-      <p className="text-xs leading-normal text-secondary">{detailTitle}</p>
+      <p className="ui-detail-label">{detailTitle}</p>
       {children}
     </div>
   );
