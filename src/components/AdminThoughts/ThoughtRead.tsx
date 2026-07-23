@@ -98,7 +98,7 @@ export function ThoughtRead({
           </div>
           <div className="ui-dialog-actions">
             <Button type="button" className="ui-control" onPress={() => changesDialog.current?.close()}>Cerrar</Button>
-            <Link href={`/admin/thoughts/${documentId}/edit`} className="ui-control bg-primary text-background">Seguir editando</Link>
+            <Link href={`/admin/thoughts/${documentId}/edit`} className="ui-control ui-control--primary">Seguir editando</Link>
           </div>
         </div>
       </dialog>
