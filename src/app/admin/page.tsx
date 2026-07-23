@@ -10,13 +10,13 @@ export default async function AdminPage() {
     <main className="ui-page">
       <section className="ui-admin-header">
         <div className="ui-admin-header-content">
-          <p className="text-sm uppercase tracking-[0.2em] text-secondary">
+          <p className="ui-eyebrow">
             Admin
           </p>
-          <h1 className="text-3xl font-medium text-primary">
+          <h1 className="ui-heading-xl">
             Foundation ready
           </h1>
-          <p className="text-base text-secondary">
+          <p className="ui-copy">
             Signed in as {session?.user?.email}. Future content CRUD will plug
             into the shared server content boundary below.
           </p>
@@ -32,10 +32,10 @@ export default async function AdminPage() {
           >
             <div className="ui-domain-card-header">
               <div className="ui-admin-domain-content">
-                <h2 className="text-lg font-medium text-primary">
+                <h2 className="ui-heading-md">
                   {domain.label}
                 </h2>
-                <p className="text-sm text-secondary">{domain.description}</p>
+                <p className="ui-copy-sm">{domain.description}</p>
               </div>
               <span className="ui-badge">
                 {domain.kind}

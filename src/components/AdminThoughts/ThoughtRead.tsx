@@ -47,25 +47,25 @@ export function ThoughtRead({
       settingsTitle="Thought settings"
       settingsContent={
         <>
-          <div className="grid gap-1 text-sm text-secondary">
-            <span className="uppercase tracking-[0.2em]">Slug</span>
-            <span className="text-primary">/thoughts/{thought.slug}</span>
+          <div className="ui-meta-group">
+            <span className="ui-meta-label">Slug</span>
+            <span className="ui-meta-value">/thoughts/{thought.slug}</span>
           </div>
-          <div className="grid gap-1 text-sm text-secondary">
-            <span className="uppercase tracking-[0.2em]">Publication date</span>
-            <span className="text-primary">{thought.publishedDate || "Missing"}</span>
+          <div className="ui-meta-group">
+            <span className="ui-meta-label">Publication date</span>
+            <span className="ui-meta-value">{thought.publishedDate || "Missing"}</span>
           </div>
-          <div className="grid gap-1 text-sm text-secondary">
-            <span className="uppercase tracking-[0.2em]">Featured</span>
-            <span className="text-primary">{thought.featured ? "Yes" : "No"}</span>
+          <div className="ui-meta-group">
+            <span className="ui-meta-label">Featured</span>
+            <span className="ui-meta-value">{thought.featured ? "Yes" : "No"}</span>
           </div>
-          <div className="grid gap-1 text-sm text-secondary">
-            <span className="uppercase tracking-[0.2em]">Excerpt</span>
-            <span className="text-primary">{thought.excerpt || "Missing"}</span>
+          <div className="ui-meta-group">
+            <span className="ui-meta-label">Excerpt</span>
+            <span className="ui-meta-value">{thought.excerpt || "Missing"}</span>
           </div>
-          <div className="grid gap-1 text-sm text-secondary">
-            <span className="uppercase tracking-[0.2em]">Last public update</span>
-            <span className="text-primary">{thought.lastPublicUpdate || "Not published yet"}</span>
+          <div className="ui-meta-group">
+            <span className="ui-meta-label">Last public update</span>
+            <span className="ui-meta-value">{thought.lastPublicUpdate || "Not published yet"}</span>
           </div>
         </>
       }
@@ -79,7 +79,7 @@ export function ThoughtRead({
                 alt={thought.title}
                 width={1280}
                 height={1600}
-                className="size-full rounded-md border border-primary/15"
+                className="ui-admin-cover"
               />
             </figure>
           ) : null}
@@ -93,8 +93,8 @@ export function ThoughtRead({
       <dialog ref={changesDialog} className="ui-dialog">
         <div className="ui-dialog-content">
           <div className="grid gap-2">
-            <h2 className="text-lg font-medium">Hay cambios sin publicar</h2>
-            <p className="text-sm text-secondary">La versión publicada se muestra aquí. Puedes continuar editando el borrador.</p>
+            <h2 className="ui-dialog-title">Hay cambios sin publicar</h2>
+            <p className="ui-dialog-description">La versión publicada se muestra aquí. Puedes continuar editando el borrador.</p>
           </div>
           <div className="ui-dialog-actions">
             <Button type="button" className="ui-control" onPress={() => changesDialog.current?.close()}>Cerrar</Button>

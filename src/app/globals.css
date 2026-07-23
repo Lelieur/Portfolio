@@ -601,6 +601,68 @@ body {
   gap: 0.5rem;
 }
 
+.ui-eyebrow {
+  color: var(--secondary);
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.ui-heading-xl,
+.ui-heading-lg,
+.ui-heading-md {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.ui-heading-xl {
+  font-size: 1.875rem;
+}
+
+.ui-heading-lg {
+  font-size: 1.5rem;
+}
+
+.ui-heading-md {
+  font-size: 1.125rem;
+}
+
+.ui-copy,
+.ui-copy-sm {
+  color: var(--secondary);
+}
+
+.ui-copy {
+  font-size: 1rem;
+}
+
+.ui-copy-sm {
+  font-size: 0.875rem;
+}
+
+.ui-meta-group {
+  display: grid;
+  gap: 0.25rem;
+  color: var(--secondary);
+  font-size: 0.875rem;
+}
+
+.ui-meta-label {
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.ui-meta-value {
+  color: var(--primary);
+}
+
+.ui-admin-cover {
+  height: auto;
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+}
+
 .ui-domain-grid {
   display: grid;
   gap: 1rem;
@@ -749,6 +811,17 @@ body {
 .ui-dialog-heading {
   display: grid;
   gap: 0.5rem;
+}
+
+.ui-dialog-title {
+  color: var(--primary);
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.ui-dialog-description {
+  color: var(--secondary);
+  font-size: 0.875rem;
 }
 
 .ui-checkbox-field {

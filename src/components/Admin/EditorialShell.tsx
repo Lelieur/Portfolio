@@ -45,9 +45,9 @@ export function EditorialPageShell({
     <main className="ui-page">
       <header className="ui-page-header">
         <div className="ui-page-header-content">
-          <p className="text-sm uppercase tracking-[0.2em] text-secondary">Admin</p>
-          <h1 className="text-3xl font-medium text-primary">{title}</h1>
-          {description ? <div className="text-base text-secondary">{description}</div> : null}
+          <p className="ui-eyebrow">Admin</p>
+          <h1 className="ui-heading-xl">{title}</h1>
+          {description ? <div className="ui-copy">{description}</div> : null}
         </div>
         {actions ? <div className="ui-page-actions shrink-0">{actions}</div> : null}
       </header>
@@ -118,9 +118,9 @@ export function EditorialEditorShell({
       <section className="ui-editor">
         <div className="ui-editor-header">
           <div className="ui-editor-header-content">
-            <p className="text-sm uppercase tracking-[0.2em] text-secondary">Edit</p>
-            <h2 className="text-2xl font-medium text-primary">{title}</h2>
-            {description ? <div className="text-sm text-secondary">{description}</div> : null}
+            <p className="ui-eyebrow">Edit</p>
+            <h2 className="ui-heading-lg">{title}</h2>
+            {description ? <div className="ui-copy-sm">{description}</div> : null}
           </div>
           <div className="ui-editor-header-meta">
             <EditorialStatusBadge status={status} label={statusLabel} />
@@ -139,7 +139,7 @@ export function EditorialEditorShell({
             {actions}
           </div>
         </div>
-        {message ? <div aria-live="polite" className="text-sm text-secondary">{message}</div> : null}
+        {message ? <div aria-live="polite" className="ui-copy-sm">{message}</div> : null}
 
         <section className="ui-card ui-editor-canvas">
           {canvas}
@@ -189,9 +189,9 @@ export function EditorialReadShell({
       <section className="ui-editor">
         <div className="ui-editor-header">
           <div className="ui-editor-header-content">
-            <p className="text-sm uppercase tracking-[0.2em] text-secondary">Read</p>
-            <h2 className="text-2xl font-medium text-primary">{title}</h2>
-            {description ? <div className="text-sm text-secondary">{description}</div> : null}
+            <p className="ui-eyebrow">Read</p>
+            <h2 className="ui-heading-lg">{title}</h2>
+            {description ? <div className="ui-copy-sm">{description}</div> : null}
           </div>
           <div className="ui-editor-actions">
             <Link href={backHref} className="ui-control">Back to list</Link>

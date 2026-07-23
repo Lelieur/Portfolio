@@ -5,7 +5,7 @@ import type { DragEvent } from "react";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { Bars3Icon, EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
-import { Button, Card, Drawer, useOverlayState } from "@/components/ui";
+import { Button, Card, Checkbox, Drawer, Input, Textarea, useOverlayState } from "@/components/ui";
 import { ListFilter } from "@/components/ui/ListFilter";
 import { EditorialSettingsDrawer } from "@/components/Admin/EditorialShell";
 import { emptyThoughtActionState } from "@/server/thoughts/actionState";
@@ -254,7 +254,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
           <input type="hidden" name="id" value={selected?.id ?? ""} />
           <label className="ui-form-field">
             Slug
-            <input
+            <Input
               key={selected?.id}
               name="manualSlug"
               defaultValue={selected?.slug ?? ""}
@@ -266,7 +266,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
           </label>
           <label className="ui-form-field">
             Excerpt
-            <textarea
+            <Textarea
               key={`${selected?.id}-excerpt`}
               name="manualExcerpt"
               rows={3}
@@ -279,7 +279,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
           </label>
           <label className="ui-form-field">
             Cover image URL
-            <input
+            <Input
               key={`${selected?.id}-cover`}
               name="manualCoverImageUrl"
               type="text"
@@ -294,7 +294,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
           </label>
           <label className="ui-form-field">
             Publication date
-            <input
+            <Input
               key={`${selected?.id}-date`}
               name="publishedDate"
               type="date"
@@ -303,7 +303,7 @@ export function ThoughtsAdminList({ items }: { items: ThoughtListItem[] }) {
             />
           </label>
           <label className="ui-checkbox-field">
-            <input
+            <Checkbox
               key={`${selected?.id}-featured`}
               name="featured"
               type="checkbox"
