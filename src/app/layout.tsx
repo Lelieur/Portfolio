@@ -58,6 +58,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => { const key = "portfolio-theme"; const preference = localStorage.getItem(key); const dark = preference === "dark" || (preference !== "light" && matchMedia("(prefers-color-scheme: dark)").matches); document.documentElement.dataset.theme = dark ? "dark" : "light"; })()`,
+          }}
+        />
+      </head>
       <body className="ui-shell antialiased">
         <Header />
         <NuqsAdapter>{children}</NuqsAdapter>

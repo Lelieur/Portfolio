@@ -5,6 +5,7 @@ import Breadcrump from "./BreadCrump/BreadCrump";
 
 import { usePathname } from "next/navigation";
 import { ArrowUturnLeftIcon } from "@heroicons/react/16/solid";
+import { ThemePreference } from "@/components/ui";
 
 export default function Header() {
   const pathname = usePathname();
@@ -29,6 +30,7 @@ export default function Header() {
         </p>
       </Link>
       <Breadcrump items={breadcrumbs} />
+      <ThemePreference />
     </section>
   );
 }

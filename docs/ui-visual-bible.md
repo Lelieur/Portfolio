@@ -10,6 +10,8 @@ Pages consume semantic System UI classes and shared interactive components. Tail
 
 The application has one global `Theme preference`: `System`, `Light`, or `Dark`. Public and Admin UI use the same active mode. TipTap translates the active mode into its own token system.
 
+The shared `ThemePreference` control lives in the global header as a sliding light/dark toggle. It shows both Heroicons at once, follows the user's system preference by default, and persists an explicit selection in local storage. There is no separate theme dropdown.
+
 ## Confirmed tokens
 
 | Token | Light | Dark | Use |
@@ -77,6 +79,12 @@ The migration is intentionally deferred until the visual system implementation p
 - Cards expose only `default` and `transparent` variants. `default` uses `surface-raised`, `border`, and `radius-card`; neither variant uses a shadow.
 - Editorial status badges map `published` to `success`, `draft+published` to `warning`, and `draft` to `secondary`.
 - Status surfaces and borders derive from their semantic token with `color-mix`; do not add status-specific token families.
+
+### List filters
+
+`ListFilter` is the shared filter component for list views such as Projects and Thoughts. It accepts labeled options with counts, marks the selected option with `data-active`, and uses the `ui-filter-bar`/`ui-filter-option` vocabulary. Counts render as superscript metadata; list-specific data loading and selection state remain in the consuming route.
+
+`ThemePreference` and `ListFilter` are exported from `src/components/ui` and are the shared API for these interactions; routes should not recreate their markup or interaction states.
 
 ## Accessibility and responsive behavior
 
