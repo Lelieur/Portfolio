@@ -61,7 +61,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(() => { const key = "portfolio-theme"; const preference = localStorage.getItem(key); const dark = preference === "dark" || (preference !== "light" && matchMedia("(prefers-color-scheme: dark)").matches); document.documentElement.dataset.theme = dark ? "dark" : "light"; })()`,
+            __html: `(() => { const preference = localStorage.getItem("portfolio-theme"); const theme = preference === "light" || preference === "dark" ? preference : (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"); document.documentElement.dataset.theme = theme; })()`,
           }}
         />
       </head>
