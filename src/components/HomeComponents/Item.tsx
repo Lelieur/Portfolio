@@ -13,23 +13,23 @@ export default function Item({ section, item }: ItemProps) {
       href={`/${section.toLowerCase()}/${toSlug(item.title)}`}
       className="ui-content-row"
     >
-      <p className="text-base leading-normal text-primary underline decoration-dotted decoration-secondary underline-offset-8">
+      <p className="ui-text-primary ui-inline-link">
         {item.title}
       </p>
       {item.description && (
-        <p className="text-sm leading-normal text-secondary">
+        <p className="ui-text-sm">
           {item.description}
         </p>
       )}
 
       <div className="ui-content-row-divider" />
       {item.year && (
-        <span className=" md:text-end text-xs leading-normal text-secondary">
+        <span className="ui-text-xs md:text-end">
           {item.year}
         </span>
       )}
       {item.date && (
-        <span className="md:text-end text-xs leading-normal text-secondary">
+        <span className="ui-text-xs md:text-end">
           {new Date(item.date).toLocaleDateString("es-ES")}
         </span>
       )}

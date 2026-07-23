@@ -5,10 +5,10 @@ export default function LastUpdated() {
 
   return (
     <span className="ui-updated">
-      <p className="text-sm leading-normal italic text-secondary">
+      <p className="ui-text-sm italic">
         * Last Updated on the
       </p>
-      <p className="text-sm leading-normal text-secondary">{lastUpdated}</p>
+      <p className="ui-text-sm">{lastUpdated}</p>
     </span>
   );
 }

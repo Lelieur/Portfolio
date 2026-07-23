@@ -18,7 +18,7 @@ export default function HomeSection({
     <section className="ui-home-section">
       <Link href={link}>
         <div className="ui-home-section-header group">
-          <p className="text-xs leading-normal text-secondary uppercase group-hover:text-primary group-hover:font-medium">
+          <p className="ui-eyebrow">
             {section}
           </p>
           <ChevronRightIcon className="size-8 rounded-full p-1.5 transition-colors duration-300 group-hover:bg-hover-background" />

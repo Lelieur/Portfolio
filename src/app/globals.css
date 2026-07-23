@@ -608,6 +608,12 @@ body {
   text-transform: uppercase;
 }
 
+.ui-home-section-header:hover .ui-eyebrow,
+.ui-home-section-header:focus-within .ui-eyebrow {
+  color: var(--primary);
+  font-weight: 500;
+}
+
 .ui-heading-xl,
 .ui-heading-lg,
 .ui-heading-md {
@@ -638,6 +644,40 @@ body {
 
 .ui-copy-sm {
   font-size: 0.875rem;
+}
+
+.ui-text-primary,
+.ui-text-secondary {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.ui-text-primary {
+  color: var(--primary);
+}
+
+.ui-text-secondary {
+  color: var(--secondary);
+}
+
+.ui-text-sm {
+  color: var(--secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.ui-text-xs {
+  color: var(--secondary);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.ui-inline-link {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-color: var(--secondary);
+  text-decoration-style: dotted;
+  text-underline-offset: 0.25rem;
 }
 
 .ui-meta-group {
