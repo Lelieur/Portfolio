@@ -14,7 +14,7 @@ export function TipTapEditor({ value, onChange, error }: TipTapEditorProps) {
     <div className="grid gap-2">
       <input type="hidden" name="document" value={JSON.stringify(value)} />
       <SimpleEditor content={value} onChange={onChange} />
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="text-sm text-danger">{error}</p> : null}
     </div>
   );
 }

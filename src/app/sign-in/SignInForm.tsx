@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { Button } from "@/components/ui";
+import { Button, Input } from "@/components/ui";
 import { signInWithCredentials } from "./actions";
 
 const initialState = {
@@ -18,27 +18,27 @@ export function SignInForm() {
     <form action={formAction} className="ui-form">
       <label className="ui-form-field">
         Email
-        <input
+        <Input
           required
           type="email"
           name="email"
-          className="ui-input placeholder:text-secondary/70"
+          className="placeholder:text-secondary/70"
           placeholder="owner@example.com"
         />
       </label>
       <label className="ui-form-field">
         Password
-        <input
+        <Input
           required
           minLength={8}
           type="password"
           name="password"
-          className="ui-input placeholder:text-secondary/70"
+          className="placeholder:text-secondary/70"
           placeholder="Your owner password"
         />
       </label>
       {state.error ? (
-        <p className="text-sm text-red-600">{state.error}</p>
+        <p className="text-sm text-danger">{state.error}</p>
       ) : null}
       <Button
         type="submit"

@@ -21,7 +21,7 @@ export default function HomeSection({
           <p className="text-xs leading-normal text-secondary uppercase group-hover:text-primary group-hover:font-medium">
             {section}
           </p>
-          <ChevronRightIcon className="size-8 rounded-full p-1.5 transition-colors duration-300 group-hover:bg-gray" />
+          <ChevronRightIcon className="size-8 rounded-full p-1.5 transition-colors duration-300 group-hover:bg-hover-background" />
         </div>
       </Link>
       <div className="ui-home-items">
