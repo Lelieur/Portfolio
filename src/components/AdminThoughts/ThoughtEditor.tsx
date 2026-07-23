@@ -192,17 +192,17 @@ export function ThoughtEditor({
               {savePending && pendingIntent === "publish" ? "Publishing..." : "Publish"}
             </Button>
             {hasSavedDocument ? (
-              <button
+              <Button
                 formAction={unpublishAction}
                 type="submit"
-                disabled={disabled}
-                onClick={() => setPendingIntent("unpublish")}
-                className="ui-control ui-control--danger"
+                isDisabled={disabled}
+                variant="danger"
+                onPress={() => setPendingIntent("unpublish")}
               >
                 {unpublishPending && pendingIntent === "unpublish"
                   ? "Unpublishing..."
                   : "Unpublish"}
-              </button>
+              </Button>
             ) : null}
           </>
         }
@@ -229,7 +229,7 @@ export function ThoughtEditor({
           <>
             <label className="ui-form-field">
               Slug
-              <input
+              <Input
                 value={draft.manualSlug ?? draft.slug}
                 onChange={(event) =>
                   setDraft((current) => ({
@@ -270,7 +270,7 @@ export function ThoughtEditor({
             </label>
             <label className="ui-form-field">
               Cover image URL
-              <input
+              <Input
                 type="text"
                 value={draft.manualCoverImageUrl ?? draft.coverImageUrl}
                 onChange={(event) =>
